@@ -21,7 +21,7 @@ p{margin:0 0 1em;color:var(--mu)}a{color:inherit;text-decoration:none}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:56px;gap:10px}
 .logo{font-weight:800;display:flex;align-items:center;gap:8px}.logo i{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--ac),var(--ac2));display:inline-block}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 16px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:600 14px inherit;cursor:pointer;transition:.15s;min-height:42px}
-.btn:hover{transform:translateY(-1px)}.btn.p{background:linear-gradient(135deg,var(--ac),#6d5ef0);color:#fff;border:0;box-shadow:0 6px 18px rgba(79,70,229,.3)}
+.btn:hover{transform:translateY(-1px)}\n.btn,.tab,.li,select,input,textarea{touch-action:manipulation;-webkit-tap-highlight-color:transparent}\nbutton,a{ -webkit-user-select:none;user-select:none}.btn.p{background:linear-gradient(135deg,var(--ac),#6d5ef0);color:#fff;border:0;box-shadow:0 6px 18px rgba(79,70,229,.3)}
 .btn.sm{padding:6px 10px;min-height:32px;font-size:13px}
 .links{display:flex;gap:6px;flex-wrap:wrap}
 .hero{padding:56px 0 36px;text-align:center}
@@ -264,7 +264,7 @@ function waTab(){
  <div class="card kpi"><small>RECEBIDAS</small><div>128</div></div><div class="card kpi"><small>RESPONDIDAS</small><div>121</div></div></div>
  <div class="card" style="margin-top:12px"><h3>Integração oficial</h3><p>O modo DEMO simula o canal. A arquitetura prevê o webhook <code>/api/whatsapp</code> com a Meta Cloud API oficial (sem soluções não oficiais), com token mantido apenas no servidor.</p></div>`;
 }
-if(typeof setTimeout==="function"){setTimeout(()=>{const el=document.getElementById("priorityText");if(el&&typeof leads!=="undefined"){const x=[...leads].sort((a,b)=>b.sc-a.sc)[0];if(x)el.textContent=x.n+" · "+x.c+" · Score "+x.sc+" — próxima ação: iniciar conversa";}},300)}
+// Fallback robusto para toque em celulares: alguns navegadores/webviews podem não disparar o click esperado.\n// Executa os handlers inline uma única vez no touchend e bloqueia o click duplicado seguinte.\n(function(){\n  let handledTouch=null;\n  document.addEventListener("touchend",function(ev){\n    const el=ev.target.closest("button,[onclick]");\n    if(!el || !document.body.contains(el)) return;\n    if(typeof el.onclick==="function"){\n      handledTouch=el;\n      ev.preventDefault();\n      try{el.onclick.call(el,ev)}catch(err){console.error(err)}\n      setTimeout(()=>{if(handledTouch===el)handledTouch=null},700);\n    }\n  },{passive:false});\n  document.addEventListener("click",function(ev){\n    if(handledTouch && (ev.target===handledTouch || handledTouch.contains(ev.target))){\n      ev.preventDefault();\n      ev.stopImmediatePropagation();\n      handledTouch=null;\n    }\n  },true);\n})();\n\nif(typeof setTimeout==="function"){setTimeout(()=>{const el=document.getElementById("priorityText");if(el&&typeof leads!=="undefined"){const x=[...leads].sort((a,b)=>b.sc-a.sc)[0];if(x)el.textContent=x.n+" · "+x.c+" · Score "+x.sc+" — próxima ação: iniciar conversa";}},300)}
 </script>
 </body>
 </html>
