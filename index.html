@@ -130,7 +130,7 @@ footer{padding:28px 0;color:var(--mu);text-align:center;font-size:13px}
 <section class="hero">
  <span class="tag">Portfólio</span><h1>AI Sales Agent</h1>
  <p>Plataforma de automação comercial desenvolvida para demonstrar como agentes de IA podem atender, qualificar e organizar leads automaticamente.</p>
- <div class="cta"><button class="btn p" onclick="go('app')">Testar projeto</button><a class="btn" href="https://github.com/" target="_blank" rel="noopener">Ver código</a><button class="btn" onclick="wa()">Solicitar projeto semelhante</button></div>
+ <div class="cta"><button class="btn p" onclick="go('app')">Testar projeto</button><a class="btn" href="https://github.com/RLGOMES92/mvp" target="_blank" rel="noopener">Ver código</a><button class="btn" onclick="wa()">Solicitar projeto semelhante</button></div>
 </section>
 <section class="sec"><h2 class="center">Tecnologias</h2>
  <div class="arch"><span>Next.js</span><span>React</span><span>TypeScript</span><span>OpenAI API</span><span>Vercel</span><span>PostgreSQL/Supabase</span></div></section>
@@ -179,7 +179,8 @@ function render(){
 function dash(){
  const q=leads.filter(l=>l.sc>=70).length,op=leads.filter(l=>["Proposta","Negociação"].includes(l.st)).length,f=leads.filter(l=>l.fu).length;
  const cnt=STAGES.map(s=>leads.filter(l=>l.st===s).length),mx=Math.max(...cnt,1);
- const K=[["LEADS",37],["QUALIFICADOS",18],["OPORTUNIDADES",9],["FOLLOW-UPS",6],["CONVERSÃO","24%"]];
+ const total=leads.length, qualified=leads.filter(l=>l.sc>=70).length, opportunities=leads.filter(l=>["Proposta","Negociação"].includes(l.st)).length, followups=leads.filter(l=>l.fu).length, won=leads.filter(l=>l.st==="Ganho").length;
+ const K=[["LEADS",total],["QUALIFICADOS",qualified],["OPORTUNIDADES",opportunities],["FOLLOW-UPS",followups],["CONVERSÃO",total?Math.round(won/total*100)+"%":"0%"]];
  $("t-dash").innerHTML=`<div class="kpis">${K.map(([a,b])=>`<div class="card kpi"><small>${a}</small><div>${b}</div></div>`).join("")}</div>
  <div class="two"><div class="card"><h3>Leads por etapa (demo ao vivo)</h3><div class="bars">${STAGES.map((s,i)=>`<div><i style="height:${cnt[i]/mx*110}px"></i>${cnt[i]}<br>${s.slice(0,5)}</div>`).join("")}</div></div>
  <div class="card"><h3>Atividade recente</h3>
@@ -187,7 +188,11 @@ function dash(){
  <div class="act">🟠<span><b>Maria Souza</b> — solicitou orçamento</span></div>
  <div class="act">🟡<span><b>Carlos Lima</b> — aguardando resposta</span></div>
  <div class="act">🟢<span><b>Ana Santos</b> — proposta enviada</span></div></div></div>
- <p style="margin-top:14px">Dica: abra <b>Conversas</b> e escreva como um cliente, por exemplo “Gostaria de fazer um orçamento”.</p>`;
+ <div class="cta" style="justify-content:flex-start;margin-top:14px">
+ <button class="btn p" onclick="newLead()">＋ Simular novo lead</button>
+ <button class="btn" onclick="setTab('chat')">Abrir conversas</button>
+ </div>
+ <p style="margin-top:10px">Dica: abra <b>Conversas</b> e escreva como um cliente, por exemplo “Gostaria de fazer um orçamento”. O score e o pipeline mudam durante a demonstração.</p>`;
 }
 function chat(){
  const l=leads[cur],[lb,col]=lab(l.sc);
@@ -225,7 +230,13 @@ function pipe(){
  <select onchange="mv(${i},this.value)" aria-label="Mover lead">${STAGES.map(o=>`<option ${o===s?"selected":""}>${o}</option>`).join("")}</select></div>`).join("")}</div>`).join("")}</div>`;
 }
 function mv(i,s){leads[i].st=s;toast(leads[i].n+" movido para "+s);pipe()}
-function fup(i){leads[i].fu=true;toast("Follow-up agendado para "+leads[i].n);if(tab==="fu")fu()}
+function newLead(){
+ const names=["Fernanda Alves","Marcos Ribeiro","Juliana Costa","Diego Martins"];
+ const companies=["Clínica Vida","MR Contábil","Studio J","Martins Engenharia"];
+ const i=Math.floor(Math.random()*names.length), l={n:names[i],c:companies[i],p:"(11) 90000-0000",e:"lead@empresa.com",s:"Solução digital",o:"Demonstração",sc:42,st:"Novo",li:"Agora",na:"Qualificar lead",ob:"Lead criado na demonstração.",fu:false,m:[["c","Olá! Gostaria de conhecer os serviços da Rodrigo Dev."]]};
+ leads.unshift(l);cur=0;tab="chat";toast("Novo lead criado ✓");render();
+}
+function fup(i){leads[i].fu=true;leads[i].na="Follow-up agendado";toast("Follow-up agendado para "+leads[i].n);if(tab==="fu")fu();}
 function fu(){
  const f=leads.map((l,i)=>[l,i]).filter(([l])=>l.fu);
  $("t-fu").innerHTML=`<div class="card"><h3>Follow-ups de hoje</h3>${f.length?f.map(([l,i],k)=>`<div class="act"><span>${k+1}.</span><span style="flex:1"><b>${esc(l.n)}</b><br><small style="color:var(--mu)">${l.st} · ${esc(l.na)}</small></span><button class="btn sm" onclick="leads[${i}].fu=false;toast('Concluído');fu()">Concluir</button></div>`).join(""):"<p>Nenhum follow-up pendente.</p>"}</div>
