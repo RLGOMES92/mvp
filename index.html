@@ -218,12 +218,18 @@ function agent(t){
  let r=buy?"Ótimo! Posso registrar seu pedido de orçamento. Qual é o seu nome, empresa e prazo desejado?":/site|loja|app|crm|chatbot|automa/.test(x)?kb.site:/pre[çc]o|valor/.test(x)?kb.preço:"Olá! Posso entender melhor o que sua empresa precisa?";
  return {r,sc,buy,tel};
 }
-function sendMsg(){
+async function sendMsg(){
  const i=$("inp"),t=i.value.trim();if(!t)return;const l=leads[cur];
  l.m.push(["c",t]);const a=agent(t);
  l.sc=Math.max(l.sc,a.sc);if(a.tel)l.p=a.tel;l.li="Agora";
- if(a.buy&&l.st==="Novo"){l.st="Qualificado";l.na="Enviar proposta";l.fu=true;toast("Lead criado ✓ Score calculado ✓ Oportunidade criada ✓ Follow-up sugerido ✓")}
- chat();setTimeout(()=>{l.m.push(["a",a.r]);chat()},500);
+ if(a.buy&&l.st==="Novo"){l.st="Qualificado";l.na="Enviar proposta";l.fu=true;toast("Lead qualificado ✓ Score calculado ✓ Follow-up sugerido ✓")}
+ chat();i.value="";
+ try{
+   const r=await fetch("/api/agent",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:t,lead:l})});
+   const d=await r.json();
+   if(r.ok&&d.reply){l.m.push(["a",d.reply]);chat();return;}
+ }catch(e){}
+ setTimeout(()=>{l.m.push(["a",a.r]);chat()},450);
 }
 function pipe(){
  const total=leads.length, hot=leads.filter(l=>l.sc>=70).length, active=leads.filter(l=>["Proposta","Negociação"].includes(l.st)).length;
