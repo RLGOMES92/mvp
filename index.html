@@ -40,7 +40,7 @@ footer{padding:28px 0;color:var(--mu);text-align:center;font-size:13px}
 .tabs{display:flex;gap:6px;overflow-x:auto;padding:12px 0;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
 .tab{white-space:nowrap;padding:8px 14px;border-radius:99px;border:1px solid var(--bd);background:var(--card);cursor:pointer;font-weight:600;font-size:14px;color:var(--mu)}
 .tab.on{background:var(--ac);color:#fff;border-color:var(--ac)}
-.kpis{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-bottom:14px}
+.kpis{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-bottom:14px}.kpi{position:relative;overflow:hidden}.kpi:after{content:"";position:absolute;right:-20px;top:-24px;width:72px;height:72px;border-radius:50%;background:color-mix(in srgb,var(--ac) 10%,transparent)}
 .kpi small{color:var(--mu);font-weight:600;letter-spacing:.05em;font-size:11px}.kpi div{font-size:30px;font-weight:800}
 .two{display:grid;gap:14px;grid-template-columns:1fr}@media(min-width:800px){.two{grid-template-columns:1.2fr 1fr}}
 .bars{display:flex;align-items:flex-end;gap:8px;height:140px}.bars div{flex:1;text-align:center;font-size:11px;color:var(--mu)}
@@ -181,9 +181,9 @@ function dash(){
  const cnt=STAGES.map(s=>leads.filter(l=>l.st===s).length),mx=Math.max(...cnt,1);
  const total=leads.length, qualified=leads.filter(l=>l.sc>=70).length, opportunities=leads.filter(l=>["Proposta","Negociação"].includes(l.st)).length, followups=leads.filter(l=>l.fu).length, won=leads.filter(l=>l.st==="Ganho").length;
  const K=[["LEADS",total],["QUALIFICADOS",qualified],["OPORTUNIDADES",opportunities],["FOLLOW-UPS",followups],["CONVERSÃO",total?Math.round(won/total*100)+"%":"0%"]];
- $("t-dash").innerHTML=`<div class="kpis">${K.map(([a,b])=>`<div class="card kpi"><small>${a}</small><div>${b}</div></div>`).join("")}</div>
+ $("t-dash").innerHTML=`<div class="kpis">${K.map(([a,b])=>`<div class="card kpi"><small>${a}</small><div>${b}</div><span style="font-size:11px;color:var(--ok)">● atualizado agora</span></div>`).join("")}</div>
  <div class="two"><div class="card"><h3>Leads por etapa (demo ao vivo)</h3><div class="bars">${STAGES.map((s,i)=>`<div><i style="height:${cnt[i]/mx*110}px"></i>${cnt[i]}<br>${s.slice(0,5)}</div>`).join("")}</div></div>
- <div class="card"><h3>Atividade recente</h3>
+ <div class="card"><h3>Atividade recente <span class="pill" style="background:#16a34a22;color:var(--ok)">AO VIVO</span></h3>
  <div class="act">🔥<span><b>João Silva</b> — interessado em criação de site</span></div>
  <div class="act">🟠<span><b>Maria Souza</b> — solicitou orçamento</span></div>
  <div class="act">🟡<span><b>Carlos Lima</b> — aguardando resposta</span></div>
@@ -192,7 +192,7 @@ function dash(){
  <button class="btn p" onclick="newLead()">＋ Simular novo lead</button>
  <button class="btn" onclick="setTab('chat')">Abrir conversas</button>
  </div>
- <p style="margin-top:10px">Dica: abra <b>Conversas</b> e escreva como um cliente, por exemplo “Gostaria de fazer um orçamento”. O score e o pipeline mudam durante a demonstração.</p>`;
+ <div class="card" style="margin-top:12px"><h3>Próxima ação recomendada</h3><p><b>Priorize leads quentes</b> e transforme cada conversa em uma próxima ação. O objetivo do agente é reduzir tempo de resposta e evitar oportunidades esquecidas.</p></div><p style="margin-top:10px">Dica: abra <b>Conversas</b> e escreva como um cliente, por exemplo “Gostaria de fazer um orçamento”. O score e o pipeline mudam durante a demonstração.</p>`;
 }
 function chat(){
  const l=leads[cur],[lb,col]=lab(l.sc);
