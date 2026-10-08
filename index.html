@@ -256,7 +256,7 @@ function waTab(){
  <div class="card kpi"><small>RECEBIDAS</small><div>128</div></div><div class="card kpi"><small>RESPONDIDAS</small><div>121</div></div></div>
  <div class="card" style="margin-top:12px"><h3>Integração oficial</h3><p>O modo DEMO simula o canal. A arquitetura prevê o webhook <code>/api/whatsapp</code> com a Meta Cloud API oficial (sem soluções não oficiais), com token mantido apenas no servidor.</p></div>`;
 }
-if(typeof setTimeout==="function"){setTimeout(()=>{const el=document.getElementById("priorityText");if(el&&typeof leads!=="undefined"){const x=[...leads].sort((a,b)=>b.score-a.score)[0];if(x)el.textContent=x.name+" · "+x.company+" · Score "+x.score+" — próxima ação: iniciar conversa";}},300)}
+if(typeof setTimeout==="function"){setTimeout(()=>{const el=document.getElementById("priorityText");if(el&&typeof leads!=="undefined"){const x=[...leads].sort((a,b)=>b.score-a.score)[0];if(x)el.textContent=x.n+" · "+x.c+" · Score "+x.sc+" — próxima ação: iniciar conversa";}},300)}
 </script>
 </body>
 </html>
