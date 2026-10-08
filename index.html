@@ -183,7 +183,7 @@ function dash(){
  const K=[["LEADS",total],["QUALIFICADOS",qualified],["OPORTUNIDADES",opportunities],["FOLLOW-UPS",followups],["CONVERSÃO",total?Math.round(won/total*100)+"%":"0%"]];
  $("t-dash").innerHTML=`<div class="kpis">${K.map(([a,b])=>`<div class="card kpi"><small>${a}</small><div>${b}</div><span style="font-size:11px;color:var(--ok)">● atualizado agora</span></div>`).join("")}</div>
  <div class="two"><div class="card"><h3>Leads por etapa (demo ao vivo)</h3><div class="bars">${STAGES.map((s,i)=>`<div><i style="height:${cnt[i]/mx*110}px"></i>${cnt[i]}<br>${s.slice(0,5)}</div>`).join("")}</div></div>
- <div class="card"><h3>Atividade recente <span class="pill" style="background:#16a34a22;color:var(--ok)">AO VIVO</span></h3>
+ <div class="card"><h3>Atividade recente <span class="pill" style="background:#16a34a22;color:var(--ok)">AO VIVO</span></h3><div id="priorityLead" style="margin:10px 0 14px;padding:12px;border:1px solid var(--bd);border-radius:12px;background:color-mix(in srgb,var(--ac) 5%,var(--card))"><small style="color:var(--mu)">🔥 LEAD PRIORITÁRIO</small><div id="priorityText" style="font-weight:700;margin-top:3px">Analisando oportunidade...</div><button class="btn sm p" style="margin-top:8px" onclick="openPriority()">Abrir conversa</button></div>
  <div class="act">🔥<span><b>João Silva</b> — interessado em criação de site</span></div>
  <div class="act">🟠<span><b>Maria Souza</b> — solicitou orçamento</span></div>
  <div class="act">🟡<span><b>Carlos Lima</b> — aguardando resposta</span></div>
@@ -230,7 +230,8 @@ function pipe(){
  <select onchange="mv(${i},this.value)" aria-label="Mover lead">${STAGES.map(o=>`<option ${o===s?"selected":""}>${o}</option>`).join("")}</select></div>`).join("")}</div>`).join("")}</div>`;
 }
 function mv(i,s){leads[i].st=s;toast(leads[i].n+" movido para "+s);pipe()}
-function newLead(){
+function openPriority(){const x=[...leads].sort((a,b)=>b.score-a.score)[0];if(!x)return;cur=x.id;tab("chat");toast("Abrindo "+x.name+" — lead prioritário");}
+
  const names=["Fernanda Alves","Marcos Ribeiro","Juliana Costa","Diego Martins"];
  const companies=["Clínica Vida","MR Contábil","Studio J","Martins Engenharia"];
  const i=Math.floor(Math.random()*names.length), l={n:names[i],c:companies[i],p:"(11) 90000-0000",e:"lead@empresa.com",s:"Solução digital",o:"Demonstração",sc:42,st:"Novo",li:"Agora",na:"Qualificar lead",ob:"Lead criado na demonstração.",fu:false,m:[["c","Olá! Gostaria de conhecer os serviços da Rodrigo Dev."]]};
@@ -248,6 +249,7 @@ function waTab(){
  <div class="card kpi"><small>RECEBIDAS</small><div>128</div></div><div class="card kpi"><small>RESPONDIDAS</small><div>121</div></div></div>
  <div class="card" style="margin-top:12px"><h3>Integração oficial</h3><p>O modo DEMO simula o canal. A arquitetura prevê o webhook <code>/api/whatsapp</code> com a Meta Cloud API oficial (sem soluções não oficiais), com token mantido apenas no servidor.</p></div>`;
 }
+if(typeof setTimeout==="function"){setTimeout(()=>{const el=document.getElementById("priorityText");if(el&&typeof leads!=="undefined"){const x=[...leads].sort((a,b)=>b.score-a.score)[0];if(x)el.textContent=x.name+" · "+x.company+" · Score "+x.score+" — próxima ação: iniciar conversa";}},300)}
 </script>
 </body>
 </html>
