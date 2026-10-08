@@ -226,11 +226,16 @@ function sendMsg(){
  chat();setTimeout(()=>{l.m.push(["a",a.r]);chat()},500);
 }
 function pipe(){
- $("t-pipe").innerHTML=`<div class="pipe">${STAGES.map(s=>`<div class="col"><h3>${s}<span>${leads.filter(l=>l.st===s).length}</span></h3>${leads.map((l,i)=>l.st!==s?"":`<div class="lc"><b>${esc(l.n)}</b> · ${l.sc}<br><span style="color:var(--mu)">${esc(l.c)} — ${esc(l.s)}</span>
- <select onchange="mv(${i},this.value)" aria-label="Mover lead">${STAGES.map(o=>`<option ${o===s?"selected":""}>${o}</option>`).join("")}</select></div>`).join("")}</div>`).join("")}</div>`;
+ const total=leads.length, hot=leads.filter(l=>l.sc>=70).length, active=leads.filter(l=>["Proposta","Negociação"].includes(l.st)).length;
+ $("t-pipe").innerHTML=`<div class="kpis">
+ <div class="card kpi"><small>LEADS NO PIPELINE</small><div>${total}</div></div>
+ <div class="card kpi"><small>QUENTES</small><div>${hot}</div></div>
+ <div class="card kpi"><small>OPORTUNIDADES</small><div>${active}</div></div>
+ </div>
+ <div class="pipe">${STAGES.map(s=>`<div class="col"><h3>${s}<span>${leads.filter(l=>l.st===s).length}</span></h3>${leads.filter(l=>l.st===s).map(l=>{const i=leads.indexOf(l),[lb,col]=lab(l.sc);return `<div class="lc" style="cursor:pointer" onclick="cur=${i};setTab('chat')"><b>${esc(l.n)}</b><br><span style="color:var(--mu)">${esc(l.c)}</span><div style="margin:5px 0"><span style="font-size:12px;color:${col}">${lb} · Score ${l.sc}</span></div><select onclick="event.stopPropagation()" onchange="mv(${i},this.value)" aria-label="Mover lead">${STAGES.map(o=>`<option ${o===s?"selected":""}>${o}</option>`).join("")}</select></div>`}).join("")}</div>`).join("")}</div>`;
 }
-function mv(i,s){leads[i].st=s;toast(leads[i].n+" movido para "+s);pipe()}
-function openPriority(){const x=[...leads].sort((a,b)=>b.score-a.score)[0];if(!x)return;cur=x.id;tab("chat");toast("Abrindo "+x.name+" — lead prioritário");}
+function mv(i,s){leads[i].st=s;toast(leads[i].n+" movido para "+s);render()}
+function openPriority(){const i=leads.reduce((best,l,idx)=>l.sc>leads[best].sc?idx:best,0);cur=i;setTab("chat");toast("Abrindo "+leads[i].n+" — lead prioritário");}
 
  const names=["Fernanda Alves","Marcos Ribeiro","Juliana Costa","Diego Martins"];
  const companies=["Clínica Vida","MR Contábil","Studio J","Martins Engenharia"];
