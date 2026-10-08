@@ -130,10 +130,10 @@ footer{padding:28px 0;color:var(--mu);text-align:center;font-size:13px}
 <section class="hero">
  <span class="tag">Portfólio</span><h1>AI Sales Agent</h1>
  <p>Plataforma de automação comercial desenvolvida para demonstrar como agentes de IA podem atender, qualificar e organizar leads automaticamente.</p>
- <div class="cta"><button class="btn p" onclick="go('app')">Testar projeto</button><a class="btn" href="https://github.com/RLGOMES92/mvp" target="_blank" rel="noopener">Ver código</a><button class="btn" onclick="wa()">Solicitar projeto semelhante</button></div>
+ <div class="cta"><button class="btn p" onclick="go('app')">Testar projeto</button><button class="btn" onclick="go('app');setTab('pipe')">Ver pipeline</button><a class="btn" href="https://github.com/RLGOMES92/mvp" target="_blank" rel="noopener">Ver código</a><button class="btn" onclick="wa()">Solicitar projeto semelhante</button></div>
 </section>
 <section class="sec"><h2 class="center">Tecnologias</h2>
- <div class="arch"><span>Next.js</span><span>React</span><span>TypeScript</span><span>OpenAI API</span><span>Vercel</span><span>PostgreSQL/Supabase</span></div></section>
+ <p class="center" style="max-width:700px;margin:0 auto 16px">A demonstração atual roda em modo local para mostrar o fluxo comercial. Na implementação real, estes componentes podem ser conectados com segurança ao ambiente de produção.</p><div class="arch"><span>OpenAI API</span><span>WhatsApp Cloud API</span><span>Zoho CRM</span><span>Vercel</span><span>PostgreSQL/Supabase</span></div></section>
 <section class="sec"><h2 class="center">Arquitetura</h2>
  <div class="arch"><span>CLIENTE</span><b>→</b><span>WHATSAPP</span><b>→</b><span>AGENTE IA</span><b>→</b><span>QUALIFICAÇÃO</span><b>→</b><span>CRM</span><b>→</b><span>FOLLOW-UP</span><b>→</b><span>VENDA</span></div></section>
 <section class="sec"><div class="grid">
@@ -147,7 +147,7 @@ footer{padding:28px 0;color:var(--mu);text-align:center;font-size:13px}
  <div id="t-dash"></div><div id="t-chat" class="hide"></div><div id="t-pipe" class="hide"></div><div id="t-fu" class="hide"></div><div id="t-wa" class="hide"></div>
  <div class="banner" style="margin:24px 0"><h3 style="font-size:20px">Quer implementar uma solução como essa na sua empresa?</h3><button class="btn" onclick="wa()">Falar com Rodrigo</button></div>
 </div></main>
-<footer>© Rodrigo Dev — AI Sales Agent (modo demonstração, dados fictícios)</footer>
+<footer>© Rodrigo Dev — AI Sales Agent · Demonstração comercial com dados fictícios · <button class="btn sm" onclick="go('home')">Voltar ao início</button></footer>
 
 <script>
 const WA_NUMBER="5511983179592"; // troque pelo seu número
