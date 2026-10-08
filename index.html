@@ -243,9 +243,11 @@ function pipe(){
 function mv(i,s){leads[i].st=s;toast(leads[i].n+" movido para "+s);render()}
 function openPriority(){const i=leads.reduce((best,l,idx)=>l.sc>leads[best].sc?idx:best,0);cur=i;setTab("chat");toast("Abrindo "+leads[i].n+" — lead prioritário");}
 
+function newLead(){
  const names=["Fernanda Alves","Marcos Ribeiro","Juliana Costa","Diego Martins"];
  const companies=["Clínica Vida","MR Contábil","Studio J","Martins Engenharia"];
- const i=Math.floor(Math.random()*names.length), l={n:names[i],c:companies[i],p:"(11) 90000-0000",e:"lead@empresa.com",s:"Solução digital",o:"Demonstração",sc:42,st:"Novo",li:"Agora",na:"Qualificar lead",ob:"Lead criado na demonstração.",fu:false,m:[["c","Olá! Gostaria de conhecer os serviços da Rodrigo Dev."]]};
+ const i=Math.floor(Math.random()*names.length);
+ const l={n:names[i],c:companies[i],p:"(11) 90000-0000",e:"lead@empresa.com",s:"Solução digital",o:"Demonstração",sc:42,st:"Novo",li:"Agora",na:"Qualificar lead",ob:"Lead criado na demonstração.",fu:false,m:[["c","Olá! Gostaria de conhecer os serviços da Rodrigo Dev."]]};
  leads.unshift(l);cur=0;tab="chat";toast("Novo lead criado ✓");render();
 }
 function fup(i){leads[i].fu=true;leads[i].na="Follow-up agendado";toast("Follow-up agendado para "+leads[i].n);if(tab==="fu")fu();}
@@ -262,7 +264,7 @@ function waTab(){
  <div class="card kpi"><small>RECEBIDAS</small><div>128</div></div><div class="card kpi"><small>RESPONDIDAS</small><div>121</div></div></div>
  <div class="card" style="margin-top:12px"><h3>Integração oficial</h3><p>O modo DEMO simula o canal. A arquitetura prevê o webhook <code>/api/whatsapp</code> com a Meta Cloud API oficial (sem soluções não oficiais), com token mantido apenas no servidor.</p></div>`;
 }
-if(typeof setTimeout==="function"){setTimeout(()=>{const el=document.getElementById("priorityText");if(el&&typeof leads!=="undefined"){const x=[...leads].sort((a,b)=>b.score-a.score)[0];if(x)el.textContent=x.n+" · "+x.c+" · Score "+x.sc+" — próxima ação: iniciar conversa";}},300)}
+if(typeof setTimeout==="function"){setTimeout(()=>{const el=document.getElementById("priorityText");if(el&&typeof leads!=="undefined"){const x=[...leads].sort((a,b)=>b.sc-a.sc)[0];if(x)el.textContent=x.n+" · "+x.c+" · Score "+x.sc+" — próxima ação: iniciar conversa";}},300)}
 </script>
 </body>
 </html>
