@@ -198,14 +198,14 @@ function chat(){
  const l=leads[cur],[lb,col]=lab(l.sc);
  $("t-chat").innerHTML=`<div class="inbox">
  <div class="list">${leads.map((x,i)=>`<div class="li ${i===cur?"on":""}" onclick="cur=${i};chat()"><b>${esc(x.n)}</b><small>${esc(x.s)}</small><small>${lab(x.sc)[0]} · ${x.sc}</small></div>`).join("")}</div>
- <div class="card"><div class="chat" id="msgs">${l.m.map(([r,t])=>`<div class="m ${r}">${esc(t)}</div>`).join("")}</div>
+ <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div><b>Atendimento inteligente</b><br><small style="color:var(--mu)">Agente ativo · qualificação automática</small></div><span class="pill" style="background:#16a34a22;color:var(--ok)">● ONLINE</span></div><div class="chat" id="msgs">${l.m.map(([r,t])=>`<div class="m ${r}">${esc(t)}</div>`).join("")}</div>
   <div class="send"><input id="inp" placeholder="Escreva como cliente…" maxlength="300" onkeydown="if(event.key==='Enter')sendMsg()"><button class="btn p" onclick="sendMsg()">Enviar</button></div></div>
  <div class="card"><h3>${esc(l.n)}</h3><div class="pill" style="background:${col}22;color:${col}">${lb}</div>
   <div style="margin-top:8px"><b>Score: ${l.sc}</b></div><div class="sc"><i style="width:${l.sc}%;background:${col}"></i></div>
   <div class="kv"><small>Interesse</small>${esc(l.s)}</div><div class="kv"><small>Empresa</small>${esc(l.c)}</div>
   <div class="kv"><small>Telefone</small>${esc(l.p)}</div><div class="kv"><small>Etapa</small>${l.st}</div>
   <div class="kv"><small>Próxima ação</small>${esc(l.na)}</div><div class="kv"><small>Observações</small>${esc(l.ob)}</div>
-  <button class="btn sm" onclick="fup(${cur})">Agendar follow-up</button></div></div>`;
+  <button class="btn sm" onclick="fup(${cur})">Agendar follow-up</button><button class="btn sm p" onclick="setTab('pipe')" style="margin-left:6px">Ver no pipeline</button></div></div>`;
  const m=$("msgs");m.scrollTop=m.scrollHeight;
 }
 // agente local (modo DEMO). No modo REAL, esta função chama /api/agent (OpenAI no servidor).
@@ -244,12 +244,14 @@ function openPriority(){const i=leads.reduce((best,l,idx)=>l.sc>leads[best].sc?i
 }
 function fup(i){leads[i].fu=true;leads[i].na="Follow-up agendado";toast("Follow-up agendado para "+leads[i].n);if(tab==="fu")fu();}
 function fu(){
+ const pending=leads.filter(l=>l.fu).length;
+ const hot=leads.filter(l=>l.fu&&l.sc>=70).length;
  const f=leads.map((l,i)=>[l,i]).filter(([l])=>l.fu);
- $("t-fu").innerHTML=`<div class="card"><h3>Follow-ups de hoje</h3>${f.length?f.map(([l,i],k)=>`<div class="act"><span>${k+1}.</span><span style="flex:1"><b>${esc(l.n)}</b><br><small style="color:var(--mu)">${l.st} · ${esc(l.na)}</small></span><button class="btn sm" onclick="leads[${i}].fu=false;toast('Concluído');fu()">Concluir</button></div>`).join(""):"<p>Nenhum follow-up pendente.</p>"}</div>
+ $("t-fu").innerHTML=`<div class="kpis"><div class="card kpi"><small>PENDENTES</small><div>${pending}</div></div><div class="card kpi"><small>PRIORITÁRIOS</small><div>${hot}</div></div></div><div class="card"><h3>Follow-ups de hoje</h3>${f.length?f.map(([l,i],k)=>`<div class="act"><span>${k+1}.</span><span style="flex:1"><b>${esc(l.n)}</b><br><small style="color:var(--mu)">${l.st} · ${esc(l.na)}</small></span><button class="btn sm" onclick="leads[${i}].fu=false;toast('Concluído');fu()">Concluir</button></div>`).join(""):"<p>Nenhum follow-up pendente.</p>"}</div>
  <div class="card" style="margin-top:12px"><h3>Agendar follow-up</h3><div class="send"><select id="fsel">${leads.map((l,i)=>`<option value="${i}">${esc(l.n)}</option>`).join("")}</select><button class="btn p" onclick="fup(+$('fsel').value)">Agendar</button></div></div>`;
 }
 function waTab(){
- $("t-wa").innerHTML=`<div class="grid"><div class="card kpi"><small>STATUS</small><div style="font-size:20px"><span class="dot"></span>Conectado (DEMO)</div></div>
+ $("t-wa").innerHTML=`<div class="kpis"><div class="card kpi"><small>STATUS</small><div style="font-size:20px"><span class="dot"></span>Conectado (DEMO)</div></div>
  <div class="card kpi"><small>NÚMERO</small><div style="font-size:20px">+55 XX XXXXX-XXXX</div></div>
  <div class="card kpi"><small>RECEBIDAS</small><div>128</div></div><div class="card kpi"><small>RESPONDIDAS</small><div>121</div></div></div>
  <div class="card" style="margin-top:12px"><h3>Integração oficial</h3><p>O modo DEMO simula o canal. A arquitetura prevê o webhook <code>/api/whatsapp</code> com a Meta Cloud API oficial (sem soluções não oficiais), com token mantido apenas no servidor.</p></div>`;
