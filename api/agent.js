@@ -73,7 +73,9 @@ export default async function handler(req, res) {
       if (r.status === 429) {
         return res.status(429).json({ code: "rate_limited", error: "O limite de uso ou crédito do serviço de IA foi atingido. Confira os limites e o faturamento do AI Gateway." });
       }
-      return res.status(502).json({ code: "gateway_unavailable", error: "O serviço de IA está indisponível no momento. Tente novamente em instantes." });
+      // Diagnóstico seguro: registrar status/modelo sem registrar a chave nem o conteúdo do cliente.
+      console.error("[agent] AI Gateway HTTP error", { status: r.status, model: process.env.AI_MODEL || "openai/gpt-5-mini", providerCode: typeof data?.error?.code === "string" ? data.error.code.slice(0, 80) : undefined });
+      return res.status(502).json({ code: "gateway_http_" + r.status, error: "O AI Gateway retornou HTTP " + r.status + ". A chave já foi configurada em Production; agora precisamos verificar o modelo ou a resposta do Gateway." });
     }
     const reply = clean(data?.choices?.[0]?.message?.content, 1500) || "Vou encaminhar sua solicitação para um especialista.";
     return res.status(200).json({ reply, mode: "ia", usage: data?.usage ? { total_tokens: data.usage.total_tokens } : undefined });
