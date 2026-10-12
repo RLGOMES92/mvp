@@ -142,7 +142,11 @@ code{background:var(--bg);padding:1px 5px;border-radius:5px;font-size:12px;word-
  </div>
 </section>
 <section class="sec">
+<<<<<<< HEAD
  <div class="card center"><h2>Demonstração interativa</h2><p>Entre no sistema com dados fictícios, crie e edite leads, mova o pipeline e agende follow-ups. Sem cadastro e sem chave de API.</p><button class="btn p" onclick="go('app')">Testar demonstração</button></div>
+=======
+ <div class="card center"><h2>Demonstração interativa</h2><p>Entre no sistema com dados fictícios e veja um lead percorrer atendimento, qualificação, pipeline e follow-up. Sem cadastro e sem chave de API.</p><button class="btn p" onclick="go('app')">Testar demonstração</button></div>
+>>>>>>> origin/main
 </section>
 <section class="sec">
  <h2 class="center">O que você recebe na implementação</h2>
@@ -290,6 +294,7 @@ const empty=(ic,t,b)=>`<div class="card empty"><div class="ic">${ic}</div><p>${t
 
 /* ---------- dashboard ---------- */
 function dash(){
+<<<<<<< HEAD
  const L=D.leads.filter(inP),tot=L.length,c=f=>L.filter(f).length,won=c(l=>l.st==="Ganho");
  const pend=D.leads.filter(l=>fst(l)),late=pend.filter(l=>fst(l)==="atrasado").length;
  const K=[["LEADS NO PERÍODO",tot],["NOVOS",c(l=>l.st==="Novo")],["EM ATENDIMENTO",c(l=>ACTIVE.includes(l.st))],["QUALIFICADOS (SCORE ≥ 70)",c(l=>l.sc>=70&&l.st!=="Perdido")],["PROPOSTAS / NEGOCIAÇÃO",c(l=>["Proposta","Negociação"].includes(l.st))],["VENDAS (DEMO)",won],["FOLLOW-UPS PENDENTES",pend.length],["ATRASADOS",late],["CONVERSÃO",tot?Math.round(won/tot*100)+"%":"—"]];
@@ -314,6 +319,38 @@ function leads(){
  const L=D.leads.filter(l=>(!S.stage||l.st===S.stage)&&(!q||[l.n,l.c,l.e,l.p,l.s].join(" ").toLowerCase().includes(q))).sort((a,b)=>b.lt-a.lt);
  $("t-leads").innerHTML=`<div class="bar"><input id="sq" type="search" placeholder="Buscar nome, empresa, e-mail…" value="${esc(S.q)}" oninput="S.q=this.value;leadList()" aria-label="Buscar leads"><select onchange="S.stage=this.value;leadList()" aria-label="Filtrar etapa"><option value="">Todas as etapas</option>${STAGES.map(s=>`<option ${S.stage===s?"selected":""}>${s}</option>`).join("")}</select><button class="btn p" onclick="leadForm()">＋ Novo lead</button></div><div id="ll"></div>`;
  leadList();
+=======
+ const q=leads.filter(l=>l.sc>=70).length,op=leads.filter(l=>["Proposta","Negociação"].includes(l.st)).length,f=leads.filter(l=>l.fu).length;
+ const cnt=STAGES.map(s=>leads.filter(l=>l.st===s).length),mx=Math.max(...cnt,1);
+ const total=leads.length, qualified=leads.filter(l=>l.sc>=70).length, opportunities=leads.filter(l=>["Proposta","Negociação"].includes(l.st)).length, followups=leads.filter(l=>l.fu).length, won=leads.filter(l=>l.st==="Ganho").length;
+ const K=[["LEADS",total],["QUALIFICADOS",qualified],["OPORTUNIDADES",opportunities],["FOLLOW-UPS",followups],["CONVERSÃO",total?Math.round(won/total*100)+"%":"0%"]];
+ $("t-dash").innerHTML=`<div class="kpis">${K.map(([a,b])=>`<div class="card kpi"><small>${a}</small><div>${b}</div><span style="font-size:11px;color:var(--ok)">● atualizado agora</span></div>`).join("")}</div>
+ <div class="two"><div class="card"><h3>Leads por etapa (demo ao vivo)</h3><div class="bars">${STAGES.map((s,i)=>`<div><i style="height:${cnt[i]/mx*110}px"></i>${cnt[i]}<br>${s.slice(0,5)}</div>`).join("")}</div></div>
+ <div class="card"><h3>Atividade recente <span class="pill" style="background:#16a34a22;color:var(--ok)">AO VIVO</span></h3><div id="priorityLead" style="margin:10px 0 14px;padding:12px;border:1px solid var(--bd);border-radius:12px;background:color-mix(in srgb,var(--ac) 5%,var(--card))"><small style="color:var(--mu)">🔥 LEAD PRIORITÁRIO</small><div id="priorityText" style="font-weight:700;margin-top:3px">Analisando oportunidade...</div><button class="btn sm p" style="margin-top:8px" onclick="openPriority()">Abrir conversa</button></div>
+ <div class="act">🔥<span><b>João Silva</b> — interessado em criação de site</span></div>
+ <div class="act">🟠<span><b>Maria Souza</b> — solicitou orçamento</span></div>
+ <div class="act">🟡<span><b>Carlos Lima</b> — aguardando resposta</span></div>
+ <div class="act">🟢<span><b>Ana Santos</b> — proposta enviada</span></div></div></div>
+ <div class="cta" style="justify-content:flex-start;margin-top:14px">
+ <button class="btn p" onclick="newLead()">＋ Simular novo lead</button>
+ <button class="btn" onclick="setTab('chat')">Abrir conversas</button>
+ </div>
+ <div class="card" style="margin-top:12px"><h3>Próxima ação recomendada</h3><p><b>Priorize leads quentes</b> e transforme cada conversa em uma próxima ação. O objetivo do agente é reduzir tempo de resposta e evitar oportunidades esquecidas.</p></div><p style="margin-top:10px">Dica: abra <b>Conversas</b> e escreva como um cliente, por exemplo “Gostaria de fazer um orçamento”. O score e o pipeline mudam durante a demonstração.</p>`;
+}
+function chat(){
+ const l=leads[cur],[lb,col]=lab(l.sc);
+ $("t-chat").innerHTML=`<div class="inbox">
+ <div class="list">${leads.map((x,i)=>`<div class="li ${i===cur?"on":""}" onclick="cur=${i};chat()"><b>${esc(x.n)}</b><small>${esc(x.s)}</small><small>${lab(x.sc)[0]} · ${x.sc}</small></div>`).join("")}</div>
+ <div class="card"><div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px"><div><b>Atendimento inteligente</b><br><small style="color:var(--mu)">Agente ativo · qualificação automática</small></div><span class="pill" style="background:#16a34a22;color:var(--ok)">● ONLINE</span></div><div class="chat" id="msgs">${l.m.map(([r,t])=>`<div class="m ${r}">${esc(t)}</div>`).join("")}</div>
+  <div class="send"><input id="inp" placeholder="Escreva como cliente…" maxlength="300" onkeydown="if(event.key==='Enter')sendMsg()"><button class="btn p" onclick="sendMsg()">Enviar</button></div></div>
+ <div class="card"><h3>${esc(l.n)}</h3><div class="pill" style="background:${col}22;color:${col}">${lb}</div>
+  <div style="margin-top:8px"><b>Score: ${l.sc}</b></div><div class="sc"><i style="width:${l.sc}%;background:${col}"></i></div>
+  <div class="kv"><small>Interesse</small>${esc(l.s)}</div><div class="kv"><small>Empresa</small>${esc(l.c)}</div>
+  <div class="kv"><small>Telefone</small>${esc(l.p)}</div><div class="kv"><small>Etapa</small>${l.st}</div>
+  <div class="kv"><small>Próxima ação</small>${esc(l.na)}</div><div class="kv"><small>Observações</small>${esc(l.ob)}</div>
+  <button class="btn sm" onclick="fup(${cur})">Agendar follow-up</button><button class="btn sm p" onclick="setTab('pipe')" style="margin-left:6px">Ver no pipeline</button></div></div>`;
+ const m=$("msgs");m.scrollTop=m.scrollHeight;
+>>>>>>> origin/main
 }
 function leadList(){
  const q=S.q.trim().toLowerCase();
@@ -384,6 +421,7 @@ function analyze(l,t){
  const r=buy?"Ótimo! Posso registrar seu pedido de orçamento. Qual é o seu nome, empresa e prazo desejado?":/site|loja|app|crm|chatbot|automa/.test(x)?"Criamos soluções digitais sob medida. Os valores dependem do escopo, então vou encaminhar sua solicitação para um especialista.":/pre[çc]o|valor/.test(x)?"Vou encaminhar sua solicitação para um especialista, pois os valores dependem do escopo.":"Olá! Posso entender melhor o que sua empresa precisa?";
  return{opt,r};
 }
+<<<<<<< HEAD
 async function aiReply(l,t,a){
  try{
   const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),12000);
@@ -393,6 +431,20 @@ async function aiReply(l,t,a){
   if(r.ok){const d=await r.json();if(d&&typeof d.reply==="string"&&d.reply){if(d.usage){D.cfg.usage.calls++;D.cfg.usage.tokens+=Number(d.usage.total_tokens)||0}return{t:d.reply,src:"ia"}}}
  }catch(e){}
  return{t:a.r,src:"local"};
+=======
+async function sendMsg(){
+ const i=$("inp"),t=i.value.trim();if(!t)return;const l=leads[cur];
+ l.m.push(["c",t]);const a=agent(t);
+ l.sc=Math.max(l.sc,a.sc);if(a.tel)l.p=a.tel;l.li="Agora";
+ if(a.buy&&l.st==="Novo"){l.st="Qualificado";l.na="Enviar proposta";l.fu=true;toast("Lead qualificado ✓ Score calculado ✓ Follow-up sugerido ✓")}
+ chat();i.value="";
+ try{
+   const r=await fetch("/api/agent",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:t,lead:l})});
+   const d=await r.json();
+   if(r.ok&&d.reply){l.m.push(["a",d.reply]);chat();return;}
+ }catch(e){}
+ setTimeout(()=>{l.m.push(["a",a.r]);chat()},450);
+>>>>>>> origin/main
 }
 const push=(l,r,t,src)=>{l.m.push({r,t,ts:Date.now(),src})};
 function chat(){
@@ -431,6 +483,7 @@ function toHuman(id){const l=get(id);l.hum=!l.hum;addAct(l,l.hum?"Encaminhado pa
 
 /* ---------- pipeline ---------- */
 function pipe(){
+<<<<<<< HEAD
  const sum=a=>D.leads.filter(l=>a.includes(l.st)).reduce((s,l)=>s+(l.val||0),0);
  $("t-pipe").innerHTML=`<div class="kpis"><div class="card kpi"><small>LEADS</small><div>${D.leads.length}</div></div><div class="card kpi"><small>EM ABERTO (R$ ESTIMADO)</small><div style="font-size:22px">${brl(sum(ACTIVE))}</div></div><div class="card kpi"><small>GANHOS (DEMO)</small><div style="font-size:22px">${brl(sum(["Ganho"]))}</div></div></div>
  <div class="pipe">${STAGES.map(s=>{const L=D.leads.filter(l=>l.st===s);return`<div class="col"><h3>${s}<span>${L.length}</span></h3>${L.map(l=>{const[lb,col]=lab(l.sc);return`<div class="lc" onclick="openLead(${l.id})"><b>${esc(l.n)}</b><br><span class="mu">${esc(l.c||"—")}</span><div style="margin:5px 0;font-size:12px;color:${col}">${lb} · ${l.sc}${l.val?" · "+brl(l.val):""}</div><select onclick="event.stopPropagation()" onchange="mv(${l.id},this.value)" aria-label="Mover ${esc(l.n)}">${STAGES.map(o=>`<option ${o===s?"selected":""}>${o}</option>`).join("")}</select></div>`}).join("")||'<p class="mu" style="font-size:12px">Vazio</p>'}</div>`}).join("")}</div>`;
@@ -445,6 +498,33 @@ function fu(){
  $("t-fu").innerHTML=`<div class="kpis"><div class="card kpi"><small>ATRASADOS</small><div>${g("atrasado").length}</div></div><div class="card kpi"><small>HOJE</small><div>${g("hoje").length}</div></div><div class="card kpi"><small>PRÓXIMOS</small><div>${g("proximo").length}</div></div></div>
  ${P.length?sec("⚠️ Atrasados",g("atrasado"))+sec("📅 Hoje",g("hoje"))+sec("Próximos",g("proximo")):empty("✅","Nenhum follow-up pendente.")}
  ${D.leads.length?`<div class="card"><h3>Agendar follow-up</h3><div class="fgrid">${fld("fsel","Lead",`<select id="fsel">${D.leads.map(l=>`<option value="${l.id}" ${l.id===S.cur?"selected":""}>${esc(l.n)}</option>`).join("")}</select>`)}${fld("fdate","Data",`<input id="fdate" type="date" value="${tm}">`)}${fld("fprio","Prioridade",sel("fprio",PRIOS,"média"))}${fld("fnote","Próxima ação",`<input id="fnote" maxlength="100" placeholder="Ex.: ligar para confirmar">`)}</div><button class="btn p" onclick="fuSchedule()">Agendar follow-up</button></div>`:""}`;
+=======
+ const total=leads.length, hot=leads.filter(l=>l.sc>=70).length, active=leads.filter(l=>["Proposta","Negociação"].includes(l.st)).length;
+ $("t-pipe").innerHTML=`<div class="kpis">
+ <div class="card kpi"><small>LEADS NO PIPELINE</small><div>${total}</div></div>
+ <div class="card kpi"><small>QUENTES</small><div>${hot}</div></div>
+ <div class="card kpi"><small>OPORTUNIDADES</small><div>${active}</div></div>
+ </div>
+ <div class="pipe">${STAGES.map(s=>`<div class="col"><h3>${s}<span>${leads.filter(l=>l.st===s).length}</span></h3>${leads.filter(l=>l.st===s).map(l=>{const i=leads.indexOf(l),[lb,col]=lab(l.sc);return `<div class="lc" style="cursor:pointer" onclick="cur=${i};setTab('chat')"><b>${esc(l.n)}</b><br><span style="color:var(--mu)">${esc(l.c)}</span><div style="margin:5px 0"><span style="font-size:12px;color:${col}">${lb} · Score ${l.sc}</span></div><select onclick="event.stopPropagation()" onchange="mv(${i},this.value)" aria-label="Mover lead">${STAGES.map(o=>`<option ${o===s?"selected":""}>${o}</option>`).join("")}</select></div>`}).join("")}</div>`).join("")}</div>`;
+}
+function mv(i,s){leads[i].st=s;toast(leads[i].n+" movido para "+s);render()}
+function openPriority(){const i=leads.reduce((best,l,idx)=>l.sc>leads[best].sc?idx:best,0);cur=i;setTab("chat");toast("Abrindo "+leads[i].n+" — lead prioritário");}
+
+function newLead(){
+ const names=["Fernanda Alves","Marcos Ribeiro","Juliana Costa","Diego Martins"];
+ const companies=["Clínica Vida","MR Contábil","Studio J","Martins Engenharia"];
+ const i=Math.floor(Math.random()*names.length);
+ const l={n:names[i],c:companies[i],p:"(11) 90000-0000",e:"lead@empresa.com",s:"Solução digital",o:"Demonstração",sc:42,st:"Novo",li:"Agora",na:"Qualificar lead",ob:"Lead criado na demonstração.",fu:false,m:[["c","Olá! Gostaria de conhecer os serviços da Rodrigo Dev."]]};
+ leads.unshift(l);cur=0;tab="chat";toast("Novo lead criado ✓");render();
+}
+function fup(i){leads[i].fu=true;leads[i].na="Follow-up agendado";toast("Follow-up agendado para "+leads[i].n);if(tab==="fu")fu();}
+function fu(){
+ const pending=leads.filter(l=>l.fu).length;
+ const hot=leads.filter(l=>l.fu&&l.sc>=70).length;
+ const f=leads.map((l,i)=>[l,i]).filter(([l])=>l.fu);
+ $("t-fu").innerHTML=`<div class="kpis"><div class="card kpi"><small>PENDENTES</small><div>${pending}</div></div><div class="card kpi"><small>PRIORITÁRIOS</small><div>${hot}</div></div></div><div class="card"><h3>Follow-ups de hoje</h3>${f.length?f.map(([l,i],k)=>`<div class="act"><span>${k+1}.</span><span style="flex:1"><b>${esc(l.n)}</b><br><small style="color:var(--mu)">${l.st} · ${esc(l.na)}</small></span><button class="btn sm" onclick="leads[${i}].fu=false;toast('Concluído');fu()">Concluir</button></div>`).join(""):"<p>Nenhum follow-up pendente.</p>"}</div>
+ <div class="card" style="margin-top:12px"><h3>Agendar follow-up</h3><div class="send"><select id="fsel">${leads.map((l,i)=>`<option value="${i}">${esc(l.n)}</option>`).join("")}</select><button class="btn p" onclick="fup(+$('fsel').value)">Agendar</button></div></div>`;
+>>>>>>> origin/main
 }
 function fuSchedule(){const l=get(+$("fsel").value),d=parseYmd($("fdate").value);if(!l)return;if(l.opt)return toast("Lead pediu para não receber mensagens.");if(d===null)return toast("Escolha uma data válida.");
  l.fd=d;l.fs="pendente";l.pr=$("fprio").value;const n=$("fnote").value.trim();if(n)l.na=n;addAct(l,"Follow-up agendado para "+fdate(d));save();fu();toast("Follow-up agendado para "+l.n)}
@@ -462,6 +542,7 @@ function fuSaveResult(id){const l=get(id),t=$("rs").value.trim();if(!t)return to
 
 /* ---------- WhatsApp, config ---------- */
 function waTab(){
+<<<<<<< HEAD
  $("t-wa").innerHTML=`<div class="kpis"><div class="card kpi"><small>STATUS</small><div style="font-size:20px"><span class="dot off"></span>Não conectado</div></div><div class="card kpi"><small>MODO</small><div style="font-size:20px">Demonstração</div></div><div class="card kpi"><small>MENSAGENS REAIS</small><div>0</div></div></div>
  <div class="card"><h3>Integração oficial (pendente)</h3><p>Esta demonstração não envia nem recebe mensagens do WhatsApp. A integração com a API oficial (Meta Cloud API) exige conta Business, número verificado e um backend com webhook.</p>
  <p class="note">Variáveis necessárias no servidor: <code>WHATSAPP_TOKEN</code>, <code>WHATSAPP_PHONE_NUMBER_ID</code>, <code>WHATSAPP_VERIFY_TOKEN</code>, <code>WHATSAPP_APP_SECRET</code>. Fluxo: validar assinatura do webhook → identificar lead → registrar → (se autorizado) gerar resposta → enviar → registrar resultado.</p></div>`;
@@ -479,6 +560,37 @@ function exportData(){try{const b=new Blob([JSON.stringify(D,null,2)],{type:"app
 function resetDemo(){if(!confirm("Restaurar os dados fictícios? Suas alterações serão perdidas."))return;D={v:1,leads:seed(),cfg:D.cfg};S.cur=null;S.drafts={};save();render();toast("Dados de demonstração restaurados")}
 function wipe(){if(!confirm("Apagar TODOS os leads e configurações deste navegador?"))return;D={v:1,leads:[],cfg:defCfg()};S.cur=null;S.drafts={};save();render();toast("Dados apagados")}
 
+=======
+ $("t-wa").innerHTML=`<div class="kpis"><div class="card kpi"><small>STATUS</small><div style="font-size:20px"><span class="dot"></span>Conectado (DEMO)</div></div>
+ <div class="card kpi"><small>NÚMERO</small><div style="font-size:20px">+55 XX XXXXX-XXXX</div></div>
+ <div class="card kpi"><small>RECEBIDAS</small><div>128</div></div><div class="card kpi"><small>RESPONDIDAS</small><div>121</div></div></div>
+ <div class="card" style="margin-top:12px"><h3>Integração oficial</h3><p>O modo DEMO simula o canal. A arquitetura prevê o webhook <code>/api/whatsapp</code> com a Meta Cloud API oficial (sem soluções não oficiais), com token mantido apenas no servidor.</p></div>`;
+}
+// Fallback robusto para toque em celulares: alguns navegadores/webviews podem não disparar o click esperado.
+// Executa os handlers inline uma única vez no touchend e bloqueia o click duplicado seguinte.
+(function(){
+  let handledTouch=null;
+  document.addEventListener("touchend",function(ev){
+    const el=ev.target.closest("button,[onclick]");
+    if(!el || !document.body.contains(el)) return;
+    if(typeof el.onclick==="function"){
+      handledTouch=el;
+      ev.preventDefault();
+      try{el.onclick.call(el,ev)}catch(err){console.error(err)}
+      setTimeout(()=>{if(handledTouch===el)handledTouch=null},700);
+    }
+  },{passive:false});
+  document.addEventListener("click",function(ev){
+    if(handledTouch && (ev.target===handledTouch || handledTouch.contains(ev.target))){
+      ev.preventDefault();
+      ev.stopImmediatePropagation();
+      handledTouch=null;
+    }
+  },true);
+})();
+
+if(typeof setTimeout==="function"){setTimeout(()=>{const el=document.getElementById("priorityText");if(el&&typeof leads!=="undefined"){const x=[...leads].sort((a,b)=>b.sc-a.sc)[0];if(x)el.textContent=x.n+" · "+x.c+" · Score "+x.sc+" — próxima ação: iniciar conversa";}},300)}
+>>>>>>> origin/main
 </script>
 </body>
 </html>
