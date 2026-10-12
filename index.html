@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Rodrigo Dev — Agente Comercial com IA</title>
-<meta name="description" content="Agente de IA para atendimento, qualificação de leads e automação comercial.">
+<title>Rodrigo Dev — Demonstração de Atendimento Comercial</title>
+<meta name="description" content="Demonstração interativa de atendimento comercial da Rodrigo Dev. Teste o fluxo e solicite uma solução personalizada.">
 <meta property="og:title" content="Rodrigo Dev — Agente Comercial com IA">
 <meta property="og:description" content="Agente comercial com IA para atender, qualificar e acompanhar leads 24h."><meta name="theme-color" content="#4f46e5">
 <style>
@@ -146,18 +146,18 @@ code{background:var(--bg);padding:1px 5px;border-radius:5px;font-size:12px;word-
 <section class="sec" id="demo-ia">
  <div class="card ds">
   <span class="tag">DEMONSTRAÇÃO PERSONALIZADA</span>
-  <h2>Teste uma IA no seu negócio</h2>
-  <p>Informe o endereço do seu site e descubra como um assistente de inteligência artificial pode ajudar sua empresa a atender clientes, apresentar serviços e gerar oportunidades.</p>
+  <h2>Monte uma demonstração para o seu negócio</h2>
+  <p>Informe o endereço do site e personalize os dados da empresa. Você poderá testar uma conversa demonstrativa sem depender de uma API externa. As respostas são simuladas com base nas informações preenchidas.</p>
 
   <div id="ds-s1">
    <label class="fl" for="ds-url">Endereço do seu site</label>
-   <div class="ds-row"><input id="ds-url" type="text" inputmode="url" autocomplete="url" autocapitalize="off" spellcheck="false" placeholder="www.suaempresa.com.br" maxlength="300" aria-describedby="ds-err"><button class="btn p" id="ds-go" type="button">Analisar meu site</button></div>
+   <div class="ds-row"><input id="ds-url" type="text" inputmode="url" autocomplete="url" autocapitalize="off" spellcheck="false" placeholder="www.suaempresa.com.br" maxlength="300" aria-describedby="ds-err"><button class="btn p" id="ds-go" type="button">Montar demonstração</button></div>
    <p id="ds-err" class="ds-err" role="alert"></p>
-   <p class="note">Lemos apenas páginas públicas do site informado (poucas páginas), respeitamos o robots.txt e não executamos scripts. Não guardamos o que foi lido. <button type="button" class="linklike" id="ds-manual">Prefiro preencher manualmente</button></p>
+   <p class="note">Nesta versão de demonstração, o endereço serve para identificar a empresa; o site não é rastreado automaticamente. Revise e preencha os dados na próxima etapa. <button type="button" class="linklike" id="ds-manual">Prefiro preencher sem site</button></p>
   </div>
 
   <div id="ds-s2" hidden aria-live="polite">
-   <h3>Analisando <span id="ds-host"></span></h3>
+   <h3>Preparando a demonstração <span id="ds-host"></span></h3>
    <ol class="ds-steps" id="ds-steps">
     <li data-id="validate">Validando o endereço</li><li data-id="robots">Verificando as regras de acesso do site</li><li data-id="home">Lendo a página inicial</li><li data-id="pages">Lendo páginas internas relevantes</li><li data-id="structure">Organizando as informações encontradas</li>
    </ol>
@@ -185,8 +185,8 @@ code{background:var(--bg);padding:1px 5px;border-radius:5px;font-size:12px;word-
   </div>
 
   <div id="ds-s4" hidden>
-   <div class="rowb"><h3 id="ds-chat-title" style="margin:0">Assistente</h3><span class="ds-badge">DEMO · IA</span></div>
-   <p class="note" id="ds-chat-sub">Respostas baseadas no que foi lido do site e confirmado por você. IA pode errar: confirme informações importantes com a empresa.</p>
+   <div class="rowb"><h3 id="ds-chat-title" style="margin:0">Assistente</h3><span class="ds-badge">DEMO · SIMULADA</span></div>
+   <p class="note" id="ds-chat-sub">Simulação local baseada nos dados que você preencheu. Não é uma IA generativa e não consulta serviços externos.</p>
    <div class="ds-chips" id="ds-chips"></div>
    <div class="chat ds-chat" id="ds-msgs" aria-live="polite"></div>
    <div class="send"><input id="ds-q" maxlength="300" placeholder="Pergunte como um cliente…" aria-label="Mensagem para o assistente"><button class="btn p" id="ds-send" type="button">Enviar</button></div>
@@ -593,34 +593,17 @@ function err(el,t){$(el).textContent=t||""}
 function lines(v,n,len){return String(v||"").split(/\n+/).map(function(x){return x.trim().slice(0,len)}).filter(Boolean).slice(0,n)}
 function list(v,n,len){return String(v||"").split(/[\n;,]+/).map(function(x){return x.trim().slice(0,len)}).filter(Boolean).slice(0,n)}
 
-/* ---------- 1. análise ---------- */
-function stepUI(ev){var li=document.querySelector('#ds-steps li[data-id="'+ev.id+'"]');if(!li)return;li.className=ev.status==="done"?"done":"active";var d=li.querySelector("small");if(d)d.remove();if(ev.detail&&ev.status==="done"){var s=document.createElement("small");s.textContent=ev.detail;li.appendChild(s)}}
-function friendly(status,d){
- if(status===404)return"A análise automática não está disponível neste endereço (ela roda no servidor da Vercel). Preencha os dados manualmente.";
- if(status===429)return(d&&d.error)||"Você atingiu o limite de análises por hora. Tente mais tarde.";
- if(status===503)return(d&&d.error)||"A demonstração está temporariamente indisponível.";
- if(status===403||status===400||status===413)return(d&&d.error)||"Não foi possível analisar este endereço.";
- return"Não foi possível concluir a análise agora. Você pode preencher os dados manualmente."}
-async function analyze(){
- if(S.busy)return;var url=$("ds-url").value.trim();err("ds-err","");
- if(!url){err("ds-err","Informe o endereço do seu site.");$("ds-url").focus();return}
- if(url.length>300||/\s/.test(url)){err("ds-err","Endereço inválido. Exemplo: www.suaempresa.com.br");return}
- S.busy=true;$("ds-go").disabled=true;$("ds-host").textContent="";document.querySelectorAll("#ds-steps li").forEach(function(l){l.className="";var d=l.querySelector("small");if(d)d.remove()});show(2);
- var ctl=new AbortController(),to=setTimeout(function(){ctl.abort()},50000),final=null,fail=null;
- try{
-  var res=await fetch(apiUrl("/api/analyze"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({url:url}),signal:ctl.signal});
-  if(!res.ok){var d={};try{d=await res.json()}catch(e){}fail={message:friendly(res.status,d),manual:res.status!==400&&res.status!==403}}
-  else{
-   var handle=function(line){if(!line.trim())return;var ev;try{ev=JSON.parse(line)}catch(e){return}
-    if(ev.type==="step")stepUI(ev);else if(ev.type==="done")final=ev;else if(ev.type==="error")fail=ev};
-   if(res.body&&res.body.getReader){var rd=res.body.getReader(),dec=new TextDecoder(),buf="";for(;;){var r=await rd.read();if(r.done)break;buf+=dec.decode(r.value,{stream:true});var parts=buf.split("\n");buf=parts.pop();parts.forEach(handle)}handle(buf)}
-   else{(await res.text()).split("\n").forEach(handle)}
-   if(!final&&!fail)fail={message:"A análise foi interrompida antes de terminar. Tente novamente ou preencha manualmente.",manual:true}}
- }catch(e){fail={message:e&&e.name==="AbortError"?"A análise demorou demais. Tente novamente ou preencha manualmente.":"Não foi possível falar com o servidor. Verifique sua conexão ou preencha manualmente.",manual:true}}
- clearTimeout(to);S.busy=false;$("ds-go").disabled=false;
- if(fail){if(fail.manual){openReview({host:"",contacts:{}},[fail.message||"A análise automática não foi concluída. Você pode continuar preenchendo os dados manualmente."],false,true)}else{show(1);err("ds-err",fail.message||"Confira o endereço informado.")}return}
- openReview(final.profile,final.notes||[],!!final.partial,false)}
-
+/* ---------- 1. análise local para demonstração ---------- */
+function analyze(){
+ if(S.busy)return;
+ var raw=$("ds-url").value.trim();err("ds-err","");
+ if(!raw){err("ds-err","Informe o endereço do site ou escolha preencher sem site.");$("ds-url").focus();return}
+ if(raw.length>300||/\s/.test(raw)){err("ds-err","Endereço inválido. Exemplo: www.suaempresa.com.br");return}
+ var parsed;try{parsed=new URL(/^https?:\/\//i.test(raw)?raw:"https://"+raw);if(!parsed.hostname||!parsed.hostname.includes("."))throw new Error("invalid")}catch(e){err("ds-err","Confira o endereço. Exemplo: www.suaempresa.com.br");return}
+ var host=parsed.hostname.replace(/^www\./i,"");
+ S.profile={host:host,url:parsed.href,differentiators:[]};
+ openReview({host:host,url:parsed.href,contacts:{}},["Modo demonstração: o endereço foi identificado, mas o site não foi rastreado. Preencha e confirme os dados para testar respostas simuladas."],false,true);
+}
 /* ---------- 2. conferir e corrigir ---------- */
 var FIELDS=[["name","ds-name"],["segment","ds-seg"],["description","ds-desc"],["services","ds-svc"],["phone","ds-phone"],["email","ds-email"],["address","ds-addr"],["hours","ds-hours"],["faqs","ds-faq"]];
 function openReview(p,notes,partial,manual){
@@ -629,7 +612,7 @@ function openReview(p,notes,partial,manual){
  S.profile={host:p.host||"",url:p.url||"",differentiators:p.differentiators||[]};S.found={};
  FIELDS.forEach(function(f){var el=$(f[1]);el.value=vals[f[0]];S.found[f[0]]=!!vals[f[0]]&&!manual;var t=document.querySelector('.ds-tag[data-f="'+f[0]+'"]');t.textContent=manual?"":(vals[f[0]]?"encontrado no site":"não encontrado — complete se quiser");t.className="ds-tag "+(manual?"":(vals[f[0]]?"found":"miss"))});
  $("ds-rv-title").textContent=manual?"Conte sobre o seu negócio":"Confira o que encontramos"+(p.host?" em "+p.host:"");
- $("ds-rv-note").textContent=manual?"Preencha o que souber. O agente só responderá com base no que você informar aqui.":"Estas informações foram lidas do conteúdo público do site"+(p.segmentVia&&p.segment?" (segmento por "+p.segmentVia+")":"")+". Revise, corrija e complete antes de testar. Nada foi inventado: o que não apareceu no site está marcado como não encontrado.";
+ $("ds-rv-note").textContent=manual?"Esta é uma demonstração guiada: o site não foi lido automaticamente. Preencha os campos; a conversa será simulada com base nos dados informados.":"Revise, corrija e complete as informações antes de testar.";
  var nb=$("ds-notes");nb.textContent="";var items=notes.slice();if(partial&&!manual)items.unshift("Poucas informações foram encontradas. Complete os campos para o agente responder melhor.");
  if(p.pagesAnalyzed&&p.pagesAnalyzed.length&&!manual)items.push("Páginas lidas: "+p.pagesAnalyzed.length+" ("+p.pagesAnalyzed.map(function(u){try{return new URL(u).pathname||"/"}catch(e){return u}}).join(", ")+")");
  if(items.length){var ul=document.createElement("ul");items.forEach(function(t){var li=document.createElement("li");li.textContent=t;ul.appendChild(li)});nb.appendChild(ul);nb.hidden=false}else nb.hidden=true;
@@ -652,54 +635,42 @@ function startChat(){
  var ch=$("ds-chips");ch.textContent="";q.forEach(function(t){var b=document.createElement("button");b.type="button";b.className="ds-chip";b.textContent=t;b.addEventListener("click",function(){$("ds-q").value=t;send()});ch.appendChild(b)});
  bubble("bot","Olá! Sou o assistente"+(p.name?" de "+p.name:"")+". Pergunte o que um cliente perguntaria. Toque em uma sugestão ou escreva abaixo.","demonstração");
  show(4);$("ds-s4").scrollIntoView({behavior:"smooth",block:"start"});$("ds-q").focus()}
+function normalizeText(v){return String(v||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
 function localAnswer(q){
- var p=S.profile,x=q.toLowerCase(),c=p.contacts,ph=c.phones.concat(c.whatsapp||[]);
- var miss="Não encontrei essa informação nos dados da empresa.";
- if(/servi[cç]|oferec|produto|fazem|trabalham/.test(x))return p.services.length?"Os serviços informados são: "+p.services.join("; ")+".":miss;
- if(/contato|telefone|whats|e-?mail|falar|endere[cç]o|onde fica|localiza/.test(x)){var o=[];if(ph.length)o.push("Telefone/WhatsApp: "+ph.join(", "));if(c.emails.length)o.push("E-mail: "+c.emails.join(", "));if(c.address)o.push("Endereço: "+c.address);return o.length?o.join(". ")+".":miss}
- if(/hor[aá]rio|abre|funciona|atendimento/.test(x))return p.hours.length?"Horários informados: "+p.hours.join(" | ")+".":miss;
- if(/or[cç]amento|contratar|comprar|agendar|solicitar/.test(x)){var cc=ph.concat(c.emails);return cc.length?"Para solicitar um orçamento, fale com a empresa por: "+cc.join(", ")+".":miss}
- if(/diferencial|por que|melhor/.test(x))return p.differentiators.length?"Diferenciais citados no site: "+p.differentiators.join("; ")+".":miss;
- return null}
-async function send(){
+ var p=S.profile||{},x=normalizeText(q),c=p.contacts||{phones:[],whatsapp:[],emails:[],address:""},ph=(c.phones||[]).concat(c.whatsapp||[]),services=p.services||[],hours=p.hours||[],faqs=p.faqs||[];
+ var miss="Ainda não tenho essa informação nos dados preenchidos. Você pode perguntar sobre serviços, contato, horários ou orçamento — ou falar com a Rodrigo Dev para montar uma solução completa.";
+ for(var i=0;i<faqs.length;i++){var fq=normalizeText(faqs[i].q),words=fq.split(/[^a-z0-9]+/).filter(function(w){return w.length>3});var matches=words.filter(function(w){return x.indexOf(w)>=0}).length;if(fq&&x.indexOf(fq)>=0)return faqs[i].a;if(words.length&&matches>=Math.min(2,words.length))return faqs[i].a}
+ if(/^(oi|ola|bom dia|boa tarde|boa noite|tudo bem)[!. ]*$/.test(x))return "Olá! Seja bem-vindo(a)"+(p.name?" à "+p.name:"")+"! 😊 Posso te ajudar com informações sobre os serviços, horários e como entrar em contato. O que você gostaria de saber?";
+ if(/servi[cç]|oferec|produto|fazem|trabalham|vendem/.test(x))return services.length?"A empresa oferece: "+services.join("; ")+". Posso te ajudar com mais alguma informação?":miss;
+ if(/contato|telefone|whats|e-?mail|falar|endere[cç]o|onde fica|localiza/.test(x)){var o=[];if(ph.length)o.push("Telefone/WhatsApp: "+ph.join(", "));if((c.emails||[]).length)o.push("E-mail: "+c.emails.join(", "));if(c.address)o.push("Endereço: "+c.address);return o.length?o.join(". ")+".":miss}
+ if(/hor[aá]rio|abre|funciona|atendimento/.test(x))return hours.length?"Horários informados: "+hours.join(" | ")+".":miss;
+ if(/or[cç]amento|contratar|comprar|agendar|solicitar|pre[cç]o|valor|quanto custa/.test(x)){var cc=ph.concat(c.emails||[]);return cc.length?"Para solicitar um orçamento, entre em contato por: "+cc.join(", ")+". Os valores devem ser confirmados diretamente com a empresa.":"Para montar um orçamento, precisamos confirmar os detalhes do que você procura. Preencha os dados da empresa ou fale com a Rodrigo Dev para personalizar esse atendimento."}
+ if(/diferencial|por que|melhor|vantagem/.test(x))return (p.differentiators||[]).length?"Entre os diferenciais informados estão: "+p.differentiators.join("; ")+".":"Posso te apresentar os serviços e ajudar você a encontrar o melhor caminho. Para não inventar informações, confirme os diferenciais diretamente com a empresa.";
+ if(/quem e|sobre a empresa|o que voces fazem|sobre voces/.test(x))return (p.description||"")?p.description:miss;
+ if(/obrigad|valeu|agrade/.test(x))return "Imagina! 😊 Se quiser, posso te ajudar com outra dúvida ou encaminhar você para um orçamento.";
+ return miss;
+}
+function send(){
  if(S.busy)return;var q=$("ds-q").value.trim();if(!q)return;
- if(q.length>300){toast&&toast("A mensagem pode ter até 300 caracteres.");return}
- if(S.count>=MAXMSG){bubble("bot","Você chegou ao limite de "+MAXMSG+" mensagens desta demonstração. Que tal conversarmos sobre a sua solução?","limite da demonstração");offerCta();return}
+ if(q.length>300){err("ds-rv-err","A mensagem pode ter até 300 caracteres.");return}
+ if(S.count>=MAXMSG){bubble("bot","Você chegou ao limite de "+MAXMSG+" mensagens desta demonstração. Fale com a Rodrigo Dev para conhecer a versão completa.","limite da demonstração");offerCta();return}
  $("ds-q").value="";S.count++;$("ds-count").textContent=String(S.count);bubble("user",q);S.busy=true;$("ds-send").disabled=true;
- var wait=bubble("bot","digitando…");var hist=S.msgs.slice(-8);
- try{
-  if(S.aiDown)throw {local:true};
-  var ctl=new AbortController(),to=setTimeout(function(){ctl.abort()},20000);
-  var res=await fetch(apiUrl("/api/demo-chat"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:q,history:hist,profile:S.profile}),signal:ctl.signal});clearTimeout(to);
-  var d={};try{d=await res.json()}catch(e){}
-  if(res.ok&&d.reply){wait.remove();bubble("bot",d.reply,"IA · baseada nos dados confirmados");S.msgs.push({role:"user",content:q},{role:"assistant",content:d.reply});offerCta()}
-  else if(res.status===503&&d.code==="not_configured"||res.status===404){S.aiDown=true;throw {local:true}}
-  else{wait.remove();bubble("bot",d.error||"Não consegui responder agora. Tente novamente em instantes.","erro");if(res.status===429||d.code==="daily_limit")offerCta(true)}
- }catch(e){
-  if(e&&e.local){wait.remove();var a=localAnswer(q);bubble("bot",a||"A IA não está disponível neste ambiente agora, então só consigo responder perguntas simples sobre serviços, contatos e horários com os dados informados.","resposta automática SEM IA (a IA está indisponível)");offerCta()}
-  else{wait.remove();bubble("bot","Não consegui responder agora. Verifique sua conexão e tente novamente.","erro")}}
- S.busy=false;$("ds-send").disabled=false}
+ var reply=localAnswer(q);bubble("bot",reply,"resposta simulada · baseada nos dados preenchidos");S.msgs.push({role:"user",content:q},{role:"assistant",content:reply});offerCta();S.busy=false;$("ds-send").disabled=false;
+}
 function offerCta(force){if(!S.cta||force){S.cta=true;$("ds-s5").hidden=false}}
-
 /* ---------- 4. contratar / orçamento ---------- */
 function waUrl(text){var n=typeof WA_NUMBER!=="undefined"?WA_NUMBER:"";return "https://wa.me/"+n+"?text="+encodeURIComponent(text)}
 function waOpen(text){var n=typeof WA_NUMBER!=="undefined"?WA_NUMBER:"";if(!n){err("ld-err","O WhatsApp comercial ainda não está configurado.");return}window.open(waUrl(text),"_blank","noopener")}
 function openLead(kind){S.kind=kind;$("ds-lead").hidden=false;if(!$("ld-company").value&&S.profile&&S.profile.name)$("ld-company").value=S.profile.name;err("ld-err","");$("ld-name").focus()}
-async function sendLead(){
- var name=$("ld-name").value.trim(),contact=$("ld-contact").value.trim(),dg=contact.replace(/\D/g,"");err("ld-err","");
+function sendLead(){
+ var name=$("ld-name").value.trim(),contact=$("ld-contact").value.trim(),dg=contact.replace(/\D/g,""),company=$("ld-company").value.trim();err("ld-err","");
  if(name.length<2){err("ld-err","Informe seu nome.");return}
  if(!(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(contact)||(dg.length>=10&&dg.length<=13))){err("ld-err","Informe um e-mail ou telefone (com DDD) válido.");return}
  if(!$("ld-consent").checked){err("ld-err","Autorize o retorno comercial para continuar.");return}
- var waWindow=null;try{if(typeof WA_NUMBER!=="undefined"&&WA_NUMBER)waWindow=window.open("about:blank","_blank")}catch(e){}
- $("ld-send").disabled=true;
- try{
-  var res=await fetch(apiUrl("/api/lead"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:name,company:$("ld-company").value.trim(),contact:contact,consent:true,kind:S.kind,host:(S.profile&&S.profile.host)||"",website:$("ld-website").value})});
-  var d={};try{d=await res.json()}catch(e){}
-  if(res.ok&&d.whatsappText){var target=waUrl(d.whatsappText);if(waWindow&&!waWindow.closed)waWindow.location.href=target;else window.location.href=target;err("ld-err","");toast&&toast("O WhatsApp foi aberto com sua mensagem. Ela só será enviada quando você tocar em enviar.")}
-  else{if(waWindow&&!waWindow.closed)waWindow.close();err("ld-err",d.error||(res.ok?"Não foi possível preparar a mensagem. Tente novamente.":"Não foi possível validar agora. Tente novamente."))}
- }catch(e){if(waWindow&&!waWindow.closed)waWindow.close();err("ld-err","Não foi possível validar agora. Verifique sua conexão e tente novamente.")}
- $("ld-send").disabled=false}
-
+ var message="Olá Rodrigo! Quero conversar sobre uma solução de atendimento comercial.\nNome: "+name+"\nEmpresa: "+(company||"Não informada")+"\nContato para retorno: "+contact+"\nInteresse: "+(S.kind==="quote"?"Solicitar orçamento":"Contratar uma solução")+"\nSite: "+((S.profile&&S.profile.host)||"Não informado");
+ var n=typeof WA_NUMBER!=="undefined"?WA_NUMBER:"";if(!n){err("ld-err","O WhatsApp comercial ainda não está configurado.");return}
+ window.open(waUrl(message),"_blank","noopener");toast&&toast("O WhatsApp foi aberto. Revise a mensagem e toque em enviar para concluir.");
+}
 /* ---------- eventos ---------- */
 $("ds-go").addEventListener("click",analyze);$("ds-url").addEventListener("keydown",function(e){if(e.key==="Enter")analyze()});
 $("ds-manual").addEventListener("click",function(){openReview({host:"",contacts:{}},[],false,true)});
