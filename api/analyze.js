@@ -1,7 +1,7 @@
 // POST /api/analyze  { url }  → stream NDJSON com o progresso REAL da análise e, no fim, o perfil encontrado.
 import { analyzeSite, CrawlError } from "./_lib/crawl.js";
 import { safeFetcher } from "./_lib/net.js";
-import { hit, clientIp, sameOrigin } from "./_lib/limit.js";
+import { hit, clientIp, cors } from "./_lib/limit.js";
 import { body, num, dayKey } from "./_lib/http.js";
 
 export const config = { maxDuration: 40 };
@@ -10,8 +10,9 @@ const cache = new Map();                                 // host → { at, paylo
 
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
+  if (!cors(req, res)) return res.status(403).json({ error: "Origem não permitida." });
+  if (req.method === "OPTIONS") return res.status(204).end();
   if (req.method !== "POST") return res.status(405).json({ error: "Método não permitido." });
-  if (!sameOrigin(req)) return res.status(403).json({ error: "Origem não permitida." });
   const b = body(req, 2000); if (b.error) return res.status(b.error).json({ error: "Requisição inválida." });
   const url = typeof b.data.url === "string" ? b.data.url : ""; if (!url || url.length > 2048) return res.status(400).json({ error: "Informe o endereço do site." });
 
