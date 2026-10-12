@@ -153,6 +153,34 @@ code{background:var(--bg);padding:1px 5px;border-radius:5px;font-size:12px;word-
  #mv-float-nav .mv-float-trigger{padding:10px 12px}
 }
 
+
+/* Identidade LED: botões com brilho cromático e movimento suave */
+button:not(.mv-float-link):not(.mv-float-trigger){
+ position:relative;
+ border-color:color-mix(in srgb,var(--ac2) 45%,var(--bd));
+ box-shadow:0 0 0 1px rgba(34,211,238,.07),0 4px 14px rgba(79,70,229,.12);
+ transition:transform .22s ease,box-shadow .28s ease,border-color .28s ease,filter .28s ease;
+}
+button:not(.mv-float-link):not(.mv-float-trigger):hover{
+ border-color:#22d3ee;
+ box-shadow:0 0 0 1px rgba(34,211,238,.2),0 0 13px rgba(34,211,238,.22),0 0 22px rgba(139,92,246,.2);
+ filter:saturate(1.12);
+}
+button:not(.mv-float-link):not(.mv-float-trigger):focus-visible{
+ outline:2px solid #22d3ee;outline-offset:3px;
+ box-shadow:0 0 0 4px rgba(34,211,238,.13),0 0 18px rgba(139,92,246,.28);
+}
+.btn{background-image:linear-gradient(115deg,rgba(34,211,238,.045),rgba(139,92,246,.08),rgba(244,114,182,.045));background-size:200% 100%;animation:btn-led-flow 7s ease-in-out infinite}
+.btn.p{background-image:linear-gradient(115deg,#4f46e5,#7c3aed,#0891b2,#7c3aed);background-size:260% 100%;animation:btn-led-flow 5s ease-in-out infinite;box-shadow:0 0 12px rgba(99,102,241,.28),0 0 24px rgba(34,211,238,.12)}
+.tab{background-image:linear-gradient(115deg,rgba(34,211,238,.045),rgba(139,92,246,.07),rgba(244,114,182,.04));background-size:200% 100%;transition:all .25s ease}
+.tab.on{background-image:linear-gradient(115deg,#4f46e5,#7c3aed,#0891b2);background-size:220% 100%;box-shadow:0 0 12px rgba(99,102,241,.3),0 0 22px rgba(34,211,238,.14);animation:btn-led-flow 5s ease-in-out infinite}
+@keyframes btn-led-flow{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+#mv-float-nav .mv-float-trigger{min-width:58px;justify-content:center;padding:12px 18px;background:linear-gradient(115deg,#4f46e5,#9333ea,#0891b2,#db2777,#4f46e5);background-size:280% 100%;animation:mv-led-pulse 2.4s ease-in-out infinite,btn-led-flow 6s ease-in-out infinite}
+#mv-float-nav .mv-float-trigger .mv-float-label{letter-spacing:.13em;font-size:12px;font-weight:900}
+#mv-float-nav .mv-float-link{border:1px solid transparent;transition:border-color .2s ease,box-shadow .2s ease,background .2s ease}
+#mv-float-nav .mv-float-link:hover,#mv-float-nav .mv-float-link:focus-visible{border-color:rgba(34,211,238,.55);box-shadow:0 0 14px rgba(34,211,238,.12),inset 0 0 12px rgba(139,92,246,.07)}
+@media(prefers-reduced-motion:reduce){.btn,.tab,button:not(.mv-float-link):not(.mv-float-trigger),#mv-float-nav .mv-float-trigger{animation:none!important;transition:none!important}}
+
 </style>
 </head>
 <body>
@@ -167,7 +195,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:5px;font-size:12px;word-
 </div></div>
 <div id="mv-float-nav" data-open="false">
  <button class="mv-float-trigger" id="mv-float-trigger" type="button" aria-expanded="false" aria-controls="mv-float-menu">
-  <span class="mv-led" aria-hidden="true"></span><span>Explorar MVP</span><span aria-hidden="true">⌃</span>
+  <span class="mv-led" aria-hidden="true"></span><span class="mv-float-label">MVP</span>
  </button>
  <div class="mv-float-menu" id="mv-float-menu" role="menu" aria-label="Atalhos do MVP">
   <button class="mv-float-link" type="button" role="menuitem" data-mv-action="demo">Personalizar demonstração<small>Configure uma demo para seu negócio</small></button>
