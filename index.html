@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Rodrigo Dev — Demonstração de Atendimento Comercial</title>
 <meta name="description" content="Demonstração interativa de atendimento comercial da Rodrigo Dev. Teste o fluxo e solicite uma solução personalizada.">
-<meta property="og:title" content="Rodrigo Dev — Agente Comercial com IA">
-<meta property="og:description" content="Agente comercial com IA para atender, qualificar e acompanhar leads 24h."><meta name="theme-color" content="#4f46e5">
+<meta property="og:title" content="Rodrigo Dev — Demonstração de Atendimento Comercial">
+<meta property="og:description" content="Teste uma demonstração guiada de atendimento comercial e veja como adaptar uma solução para sua empresa."><meta name="theme-color" content="#4f46e5">
 <style>
 :root{--bg:#f6f7fb;--card:#fff;--tx:#0f172a;--mu:#64748b;--bd:#e2e8f0;--ac:#4f46e5;--ac2:#06b6d4;--ok:#16a34a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1020;--card:#131a2e;--tx:#e8ecf7;--mu:#94a3b8;--bd:#222c47}}
@@ -101,7 +101,7 @@ input,select,textarea{font:inherit;color:var(--tx)}input[type=search],input:not(
 .plan ul{padding-left:18px;margin:10px 0;color:var(--mu);font-size:14px}.plan.hl{border-color:var(--ac);box-shadow:0 0 0 2px color-mix(in srgb,var(--ac) 25%,transparent)}
 code{background:var(--bg);padding:1px 5px;border-radius:5px;font-size:12px;word-break:break-all}
 .card,.li,.lc{min-width:0;overflow-wrap:anywhere}
-/* ---- Teste uma IA no seu negócio ---- */
+/* ---- Demonstração guiada de atendimento comercial ---- */
 [hidden]{display:none!important}
 .ds{max-width:760px;margin:0 auto}.ds h2{margin-bottom:.3em}
 .ds-row{display:flex;gap:8px;margin-top:6px}.ds-row input{flex:1;min-width:0}
@@ -139,9 +139,9 @@ code{background:var(--bg);padding:1px 5px;border-radius:5px;font-size:12px;word-
 <div class="wrap">
 <section class="hero">
  <span class="tag">AI Sales Agent</span>
- <h1>Transforme conversas em <span class="grad">oportunidades de venda</span> com IA.</h1>
- <p>Um agente comercial inteligente que atende, qualifica e organiza seus leads automaticamente — para sua equipe vender mais e perder menos oportunidades.</p>
- <div class="cta"><a class="btn p" href="#demo-ia">Testar com o meu site</a><button class="btn" onclick="go('app')">Ver demonstração do CRM</button><a class="btn" href="#como">Ver como funciona</a></div>
+ <h1>Transforme conversas em <span class="grad">oportunidades de venda</span>.</h1>
+ <p>Explore uma demonstração interativa de atendimento comercial, qualificação de leads e organização de oportunidades. As respostas deste protótipo são simuladas; a versão com IA real é configurada para cada empresa.</p>
+ <div class="cta"><a class="btn p" href="#demo-ia">Testar demonstração</a><button class="btn" onclick="go('app')">Ver demonstração do CRM</button><a class="btn" href="#como">Ver como funciona</a></div>
 </section>
 <section class="sec" id="demo-ia">
  <div class="card ds">
@@ -159,7 +159,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:5px;font-size:12px;word-
   <div id="ds-s2" hidden aria-live="polite">
    <h3>Preparando a demonstração <span id="ds-host"></span></h3>
    <ol class="ds-steps" id="ds-steps">
-    <li data-id="validate">Validando o endereço</li><li data-id="robots">Verificando as regras de acesso do site</li><li data-id="home">Lendo a página inicial</li><li data-id="pages">Lendo páginas internas relevantes</li><li data-id="structure">Organizando as informações encontradas</li>
+    <li data-id="validate">Validando o endereço informado</li><li data-id="robots">Preparando os campos da demonstração</li><li data-id="home">Aguardando dados da empresa</li><li data-id="pages">Organizando informações preenchidas</li><li data-id="structure">Preparando respostas simuladas</li>
    </ol>
   </div>
 
@@ -194,9 +194,9 @@ code{background:var(--bg);padding:1px 5px;border-radius:5px;font-size:12px;word-
   </div>
 
   <div id="ds-s5" hidden class="ds-cta">
-   <h3>Gostou de ver uma IA funcionando no seu negócio?</h3>
+   <h3>Quer uma solução como esta para o seu negócio?</h3>
    <p>Podemos transformar esta demonstração em uma solução personalizada para sua empresa, integrada ao seu site e aos seus canais de atendimento.</p>
-   <div class="cta" style="justify-content:flex-start"><button class="btn p" type="button" data-lead="hire">Quero contratar minha IA</button><button class="btn" type="button" data-lead="quote">Solicitar orçamento</button></div>
+   <div class="cta" style="justify-content:flex-start"><button class="btn p" type="button" data-lead="hire">Quero uma solução personalizada</button><button class="btn" type="button" data-lead="quote">Solicitar orçamento</button></div>
    <div id="ds-lead" hidden>
     <div class="ds-grid">
      <label class="fl">Seu nome *<input id="ld-name" maxlength="80" autocomplete="name"></label>
@@ -321,7 +321,7 @@ const WA_NUMBER="5511983179592";
 // GitHub Pages hospeda apenas os arquivos estáticos; as APIs rodam na Vercel.
 const API_BASE = location.hostname === "rlgomes92.github.io" ? "https://mvp-pi-two.vercel.app" : "";
 const apiUrl = path => API_BASE + path;
-const WA_MSG="Olá Rodrigo! Vi o AI Sales Agent e gostaria de conhecer uma solução semelhante para minha empresa.";
+const WA_MSG="Olá Rodrigo! Vi a demonstração de atendimento comercial e gostaria de conhecer uma solução semelhante para minha empresa.";
 const STORE="aisa:v1",DAY=864e5,HR=36e5;
 const STAGES=["Novo","Qualificado","Proposta","Negociação","Ganho","Perdido"];
 const ACTIVE=["Qualificado","Proposta","Negociação"];
@@ -485,16 +485,8 @@ function analyze(l,t){
  return{opt,r};
 }
 async function aiReply(l,t,a){
- let to;
- try{
-  const ctl=new AbortController();to=setTimeout(()=>ctl.abort(),18000);
-  const hist=l.m.filter(m=>m.r==="c"||m.r==="a").slice(-9,-1).map(m=>({role:m.r==="c"?"user":"assistant",content:m.t}));
-  const r=await fetch(apiUrl("/api/agent"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:t,history:hist,kb:D.cfg.kb,company:D.cfg.company}),signal:ctl.signal});
-  const d=await r.json().catch(()=>({}));
-  if(r.ok&&d&&typeof d.reply==="string"&&d.reply){if(d.usage){D.cfg.usage.calls++;D.cfg.usage.tokens+=Number(d.usage.total_tokens)||0}return{t:d.reply,src:"ia"}}
-  return{t:a.r,src:"local",error:d.error||("O agente retornou erro HTTP "+r.status+".")};
- }catch(e){return{t:a.r,src:"local",error:e&&e.name==="AbortError"?"A IA demorou para responder.":"Não foi possível conectar ao agente. Verifique a conexão e tente novamente."}}
- finally{clearTimeout(to)}
+ // Modo demonstração: respostas locais, sem chamadas externas ou credenciais de IA.
+ return{t:a.r,src:"local"};
 }
 const push=(l,r,t,src)=>{l.m.push({r,t,ts:Date.now(),src})};
 function chat(){
