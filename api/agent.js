@@ -63,8 +63,17 @@ export default async function handler(req, res) {
     });
     const data = await r.json().catch(() => ({}));
     if (!r.ok) {
-      const code = r.status === 429 ? 429 : r.status >= 500 ? 502 : 500;
-      return res.status(code).json({ error: r.status === 429 ? "Limite de uso da IA atingido." : "Serviço de IA indisponível." });
+      // Mensagens seguras e acionáveis; nunca devolva corpo bruto do provedor ou dados da chave.
+      if (r.status === 401 || r.status === 403) {
+        return res.status(502).json({ code: "gateway_auth", error: "O serviço de IA recusou a autenticação. Confira a variável AI_GATEWAY_API_KEY nas configurações de produção da Vercel." });
+      }
+      if (r.status === 404) {
+        return res.status(502).json({ code: "model_unavailable", error: "O modelo de IA configurado não foi encontrado. Confira AI_MODEL nas variáveis da Vercel ou remova essa variável para usar o modelo padrão." });
+      }
+      if (r.status === 429) {
+        return res.status(429).json({ code: "rate_limited", error: "O limite de uso ou crédito do serviço de IA foi atingido. Confira os limites e o faturamento do AI Gateway." });
+      }
+      return res.status(502).json({ code: "gateway_unavailable", error: "O serviço de IA está indisponível no momento. Tente novamente em instantes." });
     }
     const reply = clean(data?.choices?.[0]?.message?.content, 1500) || "Vou encaminhar sua solicitação para um especialista.";
     return res.status(200).json({ reply, mode: "ia", usage: data?.usage ? { total_tokens: data.usage.total_tokens } : undefined });
