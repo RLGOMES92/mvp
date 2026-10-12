@@ -31,8 +31,21 @@ export default async function handler(req, res) {
     return res.status(200).json({ reply: guardDemoReply(r.text, profile), usage: { total_tokens: r.tokens } });
   } catch (e) {
     const code = e instanceof LlmError ? e.code : "unavailable";
-    const map = { rate_limited: [429, "A IA está com muitas solicitações agora. Tente novamente em instantes."], timeout: [504, "A IA demorou para responder. Tente novamente."], bad_response: [502, "A IA devolveu uma resposta inválida. Tente novamente."], not_configured: [503, "IA não configurada."] };
-    const [st, msg] = map[code] || [502, "A IA está indisponível agora. Tente novamente em instantes."];
+    const map = {
+      rate_limited: [429, "A IA está com muitas solicitações agora. Tente novamente em instantes."],
+      timeout: [504, "A IA demorou para responder. Tente novamente."],
+      bad_response: [502, "A IA devolveu uma resposta inválida. Tente novamente."],
+      not_configured: [503, "A IA da demonstração não está configurada em Production."],
+      gateway_auth: [502, "A chave do AI Gateway foi recusada. Confira se AI_GATEWAY_API_KEY contém uma chave ativa do Vercel AI Gateway no ambiente Production."],
+      model_unavailable: [502, "O modelo configurado não foi encontrado. Remova AI_MODEL nas variáveis da Vercel para usar o modelo padrão."],
+      gateway_http_400: [502, "O AI Gateway rejeitou a solicitação (HTTP 400)."],
+      gateway_http_402: [502, "O AI Gateway retornou HTTP 402. Verifique créditos, plano ou faturamento."],
+      gateway_http_500: [502, "O AI Gateway apresentou um erro interno (HTTP 500)."],
+      gateway_http_502: [502, "O AI Gateway está temporariamente indisponível (HTTP 502)."],
+      gateway_http_503: [503, "O AI Gateway está temporariamente indisponível (HTTP 503)."]
+    };
+    const [st, msg] = map[code] || (code.startsWith("gateway_http_") ? [502, "O AI Gateway retornou " + code.replace("gateway_http_", "HTTP ") + ". Confira a configuração da chave e do modelo."] : [502, "A IA está indisponível agora. Código: " + code + "."]);
+    console.error("[demo-chat] Request failed", { code, status: st });
     return res.status(st).json({ error: msg, code });
   }
 }
