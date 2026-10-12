@@ -1,33 +1,56 @@
 # AI Sales Agent — Rodrigo Dev
 
-Demonstração comercial de um CRM com agente de IA (leads, pipeline, follow-ups, conversas).
+Demonstração de um painel comercial para organizar leads, acompanhar oportunidades e follow-ups e simular conversas com um agente de atendimento.
 
-## Estado atual (verdade sobre o que existe)
-| Item | Estado |
-|---|---|
-| Leads (criar/editar/excluir/buscar/filtrar), duplicidade, validação | ✅ Funciona (dados no `localStorage` do navegador) |
-| Pipeline, follow-ups (adiar/concluir/cancelar), dashboard calculado | ✅ Funciona (mesmo armazenamento) |
-| IA real (`/api/agent`) | ⚠️ Só funciona na **Vercel** com `AI_GATEWAY_API_KEY`. No GitHub Pages cai no agente local (regras) |
-| Login, multiempresa, banco, RLS, auditoria | ❌ Não existe (exige backend, ex.: Supabase) |
-| WhatsApp oficial, Zoho CRM, pagamento recorrente | ❌ Não existe (apenas preparado/documentado) |
+**Demo online:** https://rlgomes92.github.io/mvp/
 
-Dados e vendas exibidos são **fictícios**. Os dados do usuário ficam só no navegador dele.
+## O que a demonstração inclui
 
-## Deploy da IA real (Vercel)
-1. Importe o repositório na Vercel.
-2. Configure `AI_GATEWAY_API_KEY` (veja `.env.example`) e, se quiser, `ALLOWED_ORIGINS`.
-3. A chave nunca vai para o navegador nem para o repositório.
+- **Dashboard:** indicadores calculados a partir dos dados da demonstração.
+- **Leads:** cadastro, edição, busca, filtros e validações básicas.
+- **Pipeline comercial:** acompanhamento das etapas das oportunidades.
+- **Follow-ups:** agendamento, adiamento e conclusão de tarefas.
+- **Conversas:** simulação de atendimento, sugestões de resposta e encaminhamento para atendimento humano.
+- **Configurações:** base de conhecimento e opções de comportamento do agente.
 
-## Regras do agente
-Só responde com a "Base de conhecimento" (aba Config), não inventa preço, encaminha a um especialista quando não souber, não responde a quem pediu para não receber mensagens e, por padrão, **apenas sugere** respostas (envio automático só se autorizado em Config).
+## Importante: o que funciona hoje
 
-## Testes
-`npm i jsdom && node tests/run.js` — roda o `index.html` em jsdom e a API com `fetch` simulado. Não substitui teste em celular real.
+Este projeto é um **MVP demonstrativo**, não um CRM pronto para uso empresarial em produção.
 
-## Limitações conhecidas
-- Rate limit da API é em memória (por instância); em produção use Upstash/Vercel KV.
-- Consumo de IA mostra tokens, não custo em R$.
-- Resumo de conversa e mensagens de follow-up por IA ainda não implementados (follow-up usa modelo simples).
+- A interface publicada no GitHub Pages é estática.
+- Os dados ficam no armazenamento local do navegador (`localStorage`). Eles não são sincronizados entre dispositivos nem compartilhados com uma equipe.
+- A demonstração inclui dados fictícios. Não insira informações reais ou confidenciais de clientes.
+- O atendimento local usa regras de demonstração; isso não significa que uma IA externa esteja conectada.
+- A rota `/api/agent` é uma função de servidor destinada à Vercel. Para usar a integração real de IA, é necessário publicar o backend e configurar as variáveis de ambiente.
+- Login, banco de dados centralizado, contas separadas por empresa, integrações operacionais com WhatsApp e Zoho CRM e cobrança recorrente **ainda não estão implementados**.
 
-## Próximos passos
-Next.js + Supabase (auth, RLS por empresa, auditoria) → WhatsApp Cloud API (webhook com assinatura) → Zoho → cobrança recorrente.
+## Publicar a integração de IA na Vercel
+
+1. Importe este repositório na Vercel.
+2. Em **Settings → Environment Variables**, configure `AI_GATEWAY_API_KEY`.
+3. Opcionalmente, configure:
+   - `AI_MODEL`: modelo utilizado pelo gateway. O padrão no código é `openai/gpt-5-mini`.
+   - `AI_MAX_TOKENS`: limite de tokens da resposta.
+   - `ALLOWED_ORIGINS`: origens permitidas, separadas por vírgula.
+4. Faça o deploy e configure o frontend para chamar o endpoint da implantação.
+
+**Segurança:** nunca coloque chaves de API no HTML, no JavaScript do navegador ou em commits do GitHub. Use variáveis de ambiente no backend.
+
+## Como testar localmente
+
+Abra `index.html` em um navegador para experimentar a interface. Como o projeto usa recursos do navegador, teste também em um celular real antes de apresentar a demonstração a clientes.
+
+O repositório contém testes em `tests/run.js`; para executá-los, é necessário preparar um ambiente Node.js e instalar as dependências apropriadas. Os testes automatizados não substituem a validação do fluxo publicado nem a configuração do backend.
+
+## Próximas etapas para uma versão de produção
+
+1. Backend e banco de dados persistente.
+2. Autenticação e isolamento seguro dos dados de cada empresa.
+3. Testes de segurança, monitoramento e limitação de requisições persistente.
+4. Integração com WhatsApp Business Platform e Zoho CRM.
+5. Gestão de consentimento, descadastro e auditoria.
+6. Planos e cobrança recorrente.
+
+---
+
+Projeto desenvolvido por **Rodrigo Dev** como demonstração de produto e portfólio.
