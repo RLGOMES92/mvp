@@ -121,6 +121,21 @@ code{background:var(--bg);padding:1px 5px;border-radius:5px;font-size:12px;word-
 .ds-chat{min-height:160px;margin-top:6px}.ds-badge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;background:color-mix(in srgb,var(--ac) 14%,transparent);color:var(--ac)}
 .ds-cta{margin-top:18px;padding-top:16px;border-top:1px solid var(--bd)}
 @media(max-width:600px){.ds-row{flex-direction:column}.ds-row .btn,.ds .cta .btn{width:100%}.ds-chip{flex:1 1 100%;text-align:left}}
+
+/* Navegação flutuante LED do MVP */
+#mv-float-nav{position:fixed;right:max(16px,env(safe-area-inset-right));bottom:max(18px,env(safe-area-inset-bottom));z-index:80;font-family:inherit}
+#mv-float-nav .mv-float-trigger{display:flex;align-items:center;gap:9px;min-height:48px;padding:12px 16px;border:1px solid rgba(165,180,252,.7);border-radius:999px;color:#fff;background:linear-gradient(120deg,#4338ca,#7c3aed 55%,#0891b2);font:700 13px/1.2 inherit;box-shadow:0 0 0 1px rgba(129,140,248,.18),0 0 18px rgba(99,102,241,.48),0 8px 24px rgba(15,23,42,.24);cursor:pointer;animation:mv-led-pulse 2.4s ease-in-out infinite}
+#mv-float-nav .mv-led{width:8px;height:8px;flex:0 0 8px;border-radius:50%;background:#a7f3d0;box-shadow:0 0 7px #6ee7b7,0 0 14px #34d399}
+#mv-float-nav .mv-float-menu{display:none;position:absolute;right:0;bottom:calc(100% + 12px);width:min(264px,calc(100vw - 32px));padding:8px;border:1px solid var(--bd);border-radius:16px;background:var(--card);box-shadow:0 16px 42px rgba(2,6,23,.25)}
+#mv-float-nav[data-open="true"] .mv-float-menu{display:grid;gap:5px}
+#mv-float-nav .mv-float-link{display:flex;flex-direction:column;gap:2px;width:100%;padding:11px 12px;border:0;border-radius:10px;background:transparent;color:var(--tx);text-align:left;font:600 14px/1.3 inherit;cursor:pointer}
+#mv-float-nav .mv-float-link:hover,#mv-float-nav .mv-float-link:focus-visible{outline:2px solid var(--ac2);outline-offset:-2px;background:color-mix(in srgb,var(--ac) 9%,var(--card))}
+#mv-float-nav .mv-float-link small{color:var(--mu);font-size:12px;font-weight:400}
+#mv-float-nav .mv-float-trigger:focus-visible{outline:3px solid var(--ac2);outline-offset:3px}
+@keyframes mv-led-pulse{0%,100%{box-shadow:0 0 0 1px rgba(129,140,248,.18),0 0 14px rgba(99,102,241,.35),0 8px 24px rgba(15,23,42,.24)}50%{box-shadow:0 0 0 2px rgba(165,180,252,.35),0 0 25px rgba(99,102,241,.68),0 8px 28px rgba(15,23,42,.28)}}
+@media(max-width:520px){#mv-float-nav .mv-float-trigger{min-height:44px;padding:11px 13px;font-size:12px}#mv-float-nav{right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom))}}
+@media(prefers-reduced-motion:reduce){#mv-float-nav .mv-float-trigger{animation:none;scroll-behavior:auto}}
+
 </style>
 </head>
 <body>
@@ -673,5 +688,41 @@ FIELDS.forEach(function(f){$(f[1]).addEventListener("input",function(){var t=doc
 window.__ds={analyze:analyze,send:send,state:S};
 })();
 </script>
+
+<div id="mv-float-nav" data-open="false">
+ <button class="mv-float-trigger" id="mv-float-trigger" type="button" aria-expanded="false" aria-controls="mv-float-menu">
+  <span class="mv-led" aria-hidden="true"></span><span>Explorar MVP</span><span aria-hidden="true">⌃</span>
+ </button>
+ <div class="mv-float-menu" id="mv-float-menu" role="menu" aria-label="Atalhos do MVP">
+  <button class="mv-float-link" type="button" role="menuitem" data-mv-action="demo">Personalizar demonstração<small>Configure uma demo para seu negócio</small></button>
+  <button class="mv-float-link" type="button" role="menuitem" data-mv-action="app">Testar o CRM<small>Dashboard, leads e pipeline</small></button>
+  <button class="mv-float-link" type="button" role="menuitem" data-mv-action="project">Conhecer o projeto<small>Recursos e funcionamento</small></button>
+  <button class="mv-float-link" type="button" role="menuitem" data-mv-action="plans">Ver planos<small>Opções de implantação</small></button>
+ </div>
+</div>
+<script>
+(function(){
+ var root=document.getElementById("mv-float-nav");
+ var trigger=document.getElementById("mv-float-trigger");
+ if(!root||!trigger)return;
+ function setOpen(open){root.setAttribute("data-open",open?"true":"false");trigger.setAttribute("aria-expanded",open?"true":"false");}
+ trigger.addEventListener("click",function(){setOpen(root.getAttribute("data-open")!=="true");});
+ root.querySelectorAll("[data-mv-action]").forEach(function(button){
+  button.addEventListener("click",function(){
+   var action=button.getAttribute("data-mv-action");
+   setOpen(false);
+   if(action==="demo"){
+    go("home");
+    window.setTimeout(function(){var target=document.getElementById("demo-ia");if(target)target.scrollIntoView({behavior:window.matchMedia("(prefers-reduced-motion: reduce)").matches?"auto":"smooth",block:"start"});},60);
+   }else if(action==="app"){go("app");}
+   else if(action==="project"){go("project");}
+   else if(action==="plans"){go("plans");}
+  });
+ });
+ document.addEventListener("click",function(event){if(!root.contains(event.target))setOpen(false);});
+ document.addEventListener("keydown",function(event){if(event.key==="Escape"&&root.getAttribute("data-open")==="true"){setOpen(false);trigger.focus();}});
+})();
+</script>
+
 </body>
 </html>
