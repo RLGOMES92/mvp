@@ -6,7 +6,7 @@
 <title>Rodrigo Dev — Agente Comercial com IA</title>
 <meta name="description" content="Agente de IA para atendimento, qualificação de leads e automação comercial.">
 <meta property="og:title" content="Rodrigo Dev — Agente Comercial com IA">
-<meta property="og:description" content="Agente de IA para atendimento, qualificação de leads e automação comercial.">
+<meta property="og:description" content="Agente comercial com IA para atender, qualificar e acompanhar leads 24h."><meta name="theme-color" content="#4f46e5">
 <style>
 :root{--bg:#f6f7fb;--card:#fff;--tx:#0f172a;--mu:#64748b;--bd:#e2e8f0;--ac:#4f46e5;--ac2:#06b6d4;--ok:#16a34a;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
 @media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0b1020;--card:#131a2e;--tx:#e8ecf7;--mu:#94a3b8;--bd:#222c47}}
@@ -21,7 +21,9 @@ p{margin:0 0 1em;color:var(--mu)}a{color:inherit;text-decoration:none}
 .nav .wrap{display:flex;align-items:center;justify-content:space-between;height:56px;gap:10px}
 .logo{font-weight:800;display:flex;align-items:center;gap:8px}.logo i{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--ac),var(--ac2));display:inline-block}
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:10px 16px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:600 14px inherit;cursor:pointer;transition:.15s;min-height:42px}
-.btn:hover{transform:translateY(-1px)}.btn.p{background:linear-gradient(135deg,var(--ac),#6d5ef0);color:#fff;border:0;box-shadow:0 6px 18px rgba(79,70,229,.3)}
+.btn:hover{transform:translateY(-1px)}
+.btn,.tab,.li,select,input,textarea{touch-action:manipulation;-webkit-tap-highlight-color:transparent}
+button,a{ -webkit-user-select:none;user-select:none}.btn.p{background:linear-gradient(135deg,var(--ac),#6d5ef0);color:#fff;border:0;box-shadow:0 6px 18px rgba(79,70,229,.3)}
 .btn.sm{padding:6px 10px;min-height:32px;font-size:13px}
 .links{display:flex;gap:6px;flex-wrap:wrap}
 .hero{padding:56px 0 36px;text-align:center}
@@ -40,7 +42,7 @@ footer{padding:28px 0;color:var(--mu);text-align:center;font-size:13px}
 .tabs{display:flex;gap:6px;overflow-x:auto;padding:12px 0;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}
 .tab{white-space:nowrap;padding:8px 14px;border-radius:99px;border:1px solid var(--bd);background:var(--card);cursor:pointer;font-weight:600;font-size:14px;color:var(--mu)}
 .tab.on{background:var(--ac);color:#fff;border-color:var(--ac)}
-.kpis{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-bottom:14px}
+.kpis{display:grid;gap:12px;grid-template-columns:repeat(auto-fit,minmax(140px,1fr));margin-bottom:14px}.kpi{position:relative;overflow:hidden}.kpi:after{content:"";position:absolute;right:-20px;top:-24px;width:72px;height:72px;border-radius:50%;background:color-mix(in srgb,var(--ac) 10%,transparent)}
 .kpi small{color:var(--mu);font-weight:600;letter-spacing:.05em;font-size:11px}.kpi div{font-size:30px;font-weight:800}
 .two{display:grid;gap:14px;grid-template-columns:1fr}@media(min-width:800px){.two{grid-template-columns:1.2fr 1fr}}
 .bars{display:flex;align-items:flex-end;gap:8px;height:140px}.bars div{flex:1;text-align:center;font-size:11px;color:var(--mu)}
@@ -64,6 +66,34 @@ footer{padding:28px 0;color:var(--mu);text-align:center;font-size:13px}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#0f172a;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;z-index:50;max-width:92vw;animation:in .25s}
 .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--ok);margin-right:6px}
 .hide{display:none}
+
+/* v2 */
+.mu,small.mu{color:var(--mu)}.note{font-size:12px;color:var(--mu);margin:8px 0}.err{color:#dc2626;font-size:13px;min-height:1em;margin:6px 0}
+.bar{display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:12px}.bar input{flex:1;min-width:160px}.bar select{flex:0 1 auto;min-width:120px}
+input,select,textarea{font:inherit;color:var(--tx)}input[type=search],input:not([type=checkbox]){padding:10px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--card);min-width:0;width:100%}
+.bar input{width:auto}.send input{width:auto}textarea{width:100%;resize:vertical}
+:focus-visible{outline:2px solid var(--ac);outline-offset:2px}
+.rowb{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+.lead{cursor:pointer;transition:.15s}.lead:hover{border-color:var(--ac)}
+.empty{text-align:center;padding:32px 18px}.empty .ic{font-size:32px}
+.fgrid{display:grid;gap:10px;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));margin-bottom:10px}
+.fl{display:block;font-size:12px;font-weight:600;color:var(--mu)}.fl input,.fl select,.fl textarea{margin-top:4px;font-weight:400;font-size:15px;width:100%}
+.ck{display:flex;gap:8px;align-items:flex-start;font-size:14px;margin:8px 0}.ck input{margin-top:3px}
+.btn.danger{color:#dc2626;border-color:#dc262655}.btn[disabled]{opacity:.5;cursor:not-allowed}
+.ov{position:fixed;inset:0;z-index:40;background:rgba(2,6,23,.55);display:flex;align-items:flex-end;justify-content:center}
+.mdl{background:var(--card);color:var(--tx);width:100%;max-width:680px;max-height:92vh;overflow-y:auto;border-radius:18px 18px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px))}
+@media(min-width:700px){.ov{align-items:center}.mdl{border-radius:18px}}
+.mh{display:flex;justify-content:space-between;align-items:center;gap:8px;margin-bottom:10px}.mh h3{margin:0}
+.hist{max-height:200px;overflow-y:auto}
+.m.s{align-self:center;background:transparent;border:1px dashed var(--bd);color:var(--mu);font-size:12px;max-width:95%}
+.src{display:block;font-size:10px;opacity:.75;margin-top:2px}
+.draft{border:1px dashed var(--ac);border-radius:12px;padding:10px;margin-top:10px;background:color-mix(in srgb,var(--ac) 6%,transparent)}
+.demo{background:color-mix(in srgb,#ca8a04 14%,var(--card));border:1px solid #ca8a0455;border-radius:10px;padding:8px 12px;font-size:13px;margin-top:10px}
+.fu{flex-wrap:wrap;align-items:center}.acts{display:flex;gap:6px;flex-wrap:wrap}
+.dot.off{background:#94a3b8}.price{font-size:34px;font-weight:800}.price small{font-size:14px;font-weight:500;color:var(--mu)}
+.plan ul{padding-left:18px;margin:10px 0;color:var(--mu);font-size:14px}.plan.hl{border-color:var(--ac);box-shadow:0 0 0 2px color-mix(in srgb,var(--ac) 25%,transparent)}
+code{background:var(--bg);padding:1px 5px;border-radius:5px;font-size:12px;word-break:break-all}
+.card,.li,.lc{min-width:0;overflow-wrap:anywhere}
 </style>
 </head>
 <body>
@@ -71,6 +101,7 @@ footer{padding:28px 0;color:var(--mu);text-align:center;font-size:13px}
  <a href="#" class="logo" onclick="go('home');return false"><i></i>Rodrigo Dev</a>
  <div class="links">
   <button class="btn sm" onclick="go('project')">Projeto</button>
+  <button class="btn sm" onclick="go('plans')">Planos</button>
   <button class="btn sm p" onclick="go('app')">Testar demonstração</button>
  </div>
 </div></div>
@@ -81,7 +112,7 @@ footer{padding:28px 0;color:var(--mu);text-align:center;font-size:13px}
 <section class="hero">
  <span class="tag">AI Sales Agent</span>
  <h1>Transforme conversas em <span class="grad">oportunidades de venda</span> com IA.</h1>
- <p>Um agente comercial inteligente que atende, qualifica e organiza seus leads automaticamente.</p>
+ <p>Um agente comercial inteligente que atende, qualifica e organiza seus leads automaticamente — para sua equipe vender mais e perder menos oportunidades.</p>
  <div class="cta"><button class="btn p" onclick="go('app')">Testar demonstração</button><a class="btn" href="#como">Ver como funciona</a></div>
 </section>
 <section class="sec">
@@ -95,7 +126,7 @@ footer{padding:28px 0;color:var(--mu);text-align:center;font-size:13px}
 <section class="sec" id="como">
  <h2 class="center">Como funciona</h2>
  <div class="grid steps">
-  <div class="card"><h3>Atende</h3><p>O agente responde no WhatsApp 24h, só com informações da sua base.</p></div>
+  <div class="card"><h3>Atende</h3><p>Na implementação real, o agente responde no WhatsApp 24h, só com informações da sua base.</p></div>
   <div class="card"><h3>Qualifica</h3><p>Coleta nome, empresa, serviço, orçamento e prazo, e calcula o score.</p></div>
   <div class="card"><h3>Organiza</h3><p>Cria lead e oportunidade no CRM e sugere a próxima ação.</p></div>
   <div class="card"><h3>Acompanha</h3><p>Follow-ups agendados para nenhum lead ser esquecido.</p></div>
@@ -107,11 +138,30 @@ footer{padding:28px 0;color:var(--mu);text-align:center;font-size:13px}
   <div class="card"><div class="ic">💬</div><h3>Central de conversas</h3><p>Caixa de entrada com dados do lead ao lado.</p></div>
   <div class="card"><div class="ic">🔥</div><h3>Score de 0 a 100</h3><p>Muito quente, quente, morno ou frio.</p></div>
   <div class="card"><div class="ic">📊</div><h3>Pipeline visual</h3><p>Do novo ao ganho, movendo leads entre etapas.</p></div>
-  <div class="card"><div class="ic">📲</div><h3>WhatsApp oficial</h3><p>Arquitetura pronta para Meta Cloud API.</p></div>
+  <div class="card"><div class="ic">📲</div><h3>WhatsApp oficial</h3><p>Arquitetura preparada para a API oficial da Meta (integração sob configuração).</p></div>
  </div>
 </section>
 <section class="sec">
- <div class="card center"><h2>Demonstração</h2><p>Entre no sistema com dados fictícios. Sem cadastro, sem chave de API.</p><button class="btn p" onclick="go('app')">Testar demonstração</button></div>
+ <div class="card center"><h2>Demonstração interativa</h2><p>Entre no sistema com dados fictícios, crie e edite leads, mova o pipeline e agende follow-ups. Sem cadastro e sem chave de API.</p><button class="btn p" onclick="go('app')">Testar demonstração</button></div>
+</section>
+<section class="sec">
+ <h2 class="center">O que você recebe na implementação</h2>
+ <div class="grid">
+  <div class="card"><div class="ic">🤖</div><h3>Agente de IA</h3><p>Atendimento inteligente para entender a necessidade do cliente e conduzir a conversa.</p></div>
+  <div class="card"><div class="ic">📲</div><h3>WhatsApp + CRM</h3><p>Conversas organizadas e leads encaminhados para o processo comercial.</p></div>
+  <div class="card"><div class="ic">🎯</div><h3>Qualificação automática</h3><p>Score, etapa, interesse e próxima ação definidos durante o atendimento.</p></div>
+  <div class="card"><div class="ic">🔁</div><h3>Follow-up</h3><p>Oportunidades acompanhadas para reduzir perdas por falta de retorno.</p></div>
+  <div class="card"><div class="ic">📊</div><h3>Dashboard comercial</h3><p>Visão do pipeline, oportunidades, leads prioritários e conversão.</p></div>
+  <div class="card"><div class="ic">🛠️</div><h3>Projeto sob medida</h3><p>A solução é adaptada ao processo, canais e necessidades de cada empresa.</p></div>
+ </div>
+</section>
+<section class="sec">
+ <div class="banner">
+  <span class="tag" style="background:#ffffff22;color:#fff">PRÓXIMO PASSO</span>
+  <h2>Teste primeiro. Depois, leve o agente para sua empresa.</h2>
+  <p>Você pode testar esta demonstração agora. Se fizer sentido para seu negócio, fale comigo para desenhar a implementação real.</p>
+  <div class="cta"><button class="btn" onclick="go('app')">Testar agora</button><button class="btn p" style="background:#fff;color:#312e81" onclick="wa()">Quero uma solução assim</button></div>
+ </div>
 </section>
 <section class="sec">
  <h2 class="center">Benefícios</h2>
@@ -121,7 +171,7 @@ footer{padding:28px 0;color:var(--mu);text-align:center;font-size:13px}
   <div class="card"><h3>+ controle</h3><p>Tudo registrado, com histórico e próximos passos.</p></div>
  </div>
 </section>
-<section class="sec"><div class="banner"><h2>Quer implementar uma solução como essa na sua empresa?</h2><p>Vamos conversar sobre o seu processo comercial.</p><button class="btn" onclick="wa()">Falar com Rodrigo</button></div></section>
+<section class="sec"><div class="banner"><span class="tag" style="background:#ffffff22;color:#fff">IMPLEMENTAÇÃO PERSONALIZADA</span><h2>Quer colocar isso para trabalhar na sua empresa?</h2><p>Eu adapto o agente ao seu atendimento, conecto os canais e estruturo o processo comercial.</p><button class="btn" onclick="wa()">Falar com Rodrigo</button></div></section>
 </div>
 </main>
 
@@ -130,113 +180,305 @@ footer{padding:28px 0;color:var(--mu);text-align:center;font-size:13px}
 <section class="hero">
  <span class="tag">Portfólio</span><h1>AI Sales Agent</h1>
  <p>Plataforma de automação comercial desenvolvida para demonstrar como agentes de IA podem atender, qualificar e organizar leads automaticamente.</p>
- <div class="cta"><button class="btn p" onclick="go('app')">Testar projeto</button><a class="btn" href="https://github.com/" target="_blank" rel="noopener">Ver código</a><button class="btn" onclick="wa()">Solicitar projeto semelhante</button></div>
+ <div class="cta"><button class="btn p" onclick="go('app')">Testar projeto</button><button class="btn" onclick="go('app');setTab('pipe')">Ver pipeline</button><a class="btn" href="https://github.com/RLGOMES92/mvp" target="_blank" rel="noopener">Ver código</a><button class="btn" onclick="wa()">Solicitar projeto semelhante</button></div>
 </section>
 <section class="sec"><h2 class="center">Tecnologias</h2>
- <div class="arch"><span>Next.js</span><span>React</span><span>TypeScript</span><span>OpenAI API</span><span>Vercel</span><span>PostgreSQL/Supabase</span></div></section>
+ <p class="center" style="max-width:700px;margin:0 auto 16px">A demonstração atual roda em modo local para mostrar o fluxo comercial. Na implementação real, estes componentes podem ser conectados com segurança ao ambiente de produção.</p><div class="arch"><span>OpenAI API</span><span>WhatsApp Cloud API</span><span>Zoho CRM</span><span>Vercel</span><span>PostgreSQL/Supabase</span></div></section>
 <section class="sec"><h2 class="center">Arquitetura</h2>
  <div class="arch"><span>CLIENTE</span><b>→</b><span>WHATSAPP</span><b>→</b><span>AGENTE IA</span><b>→</b><span>QUALIFICAÇÃO</span><b>→</b><span>CRM</span><b>→</b><span>FOLLOW-UP</span><b>→</b><span>VENDA</span></div></section>
 <section class="sec"><div class="grid">
- <div class="card"><h3>Modo DEMO</h3><p>Dados fictícios e agente local. Funciona sem nenhuma chave.</p></div>
- <div class="card"><h3>Modo REAL</h3><p>OpenAI, WhatsApp Cloud API e banco, via variáveis de ambiente no servidor.</p></div>
+ <div class="card"><h3>Modo DEMO</h3><p>Dados fictícios e agente local para apresentação comercial. Funciona sem nenhuma chave.</p></div>
+ <div class="card"><h3>Modo REAL</h3><p>OpenAI, WhatsApp Cloud API, CRM e banco, com credenciais protegidas no servidor.</p></div>
 </div></section></div></main>
+
+
+<!-- PLANOS -->
+<main id="v-plans" class="hide"><div class="wrap">
+<section class="hero"><span class="tag">Planos</span><h1>Planos e implantação</h1>
+ <p>Valores de teste para validação com os primeiros clientes. Podem ser ajustados após piloto.</p></section>
+<section class="sec" style="padding-top:0"><div class="grid">
+ <div class="card plan"><h3>Essencial</h3><div class="price">R$ 149<small>/mês</small></div><ul><li>Gestão de leads</li><li>Pipeline comercial</li><li>Tarefas e follow-ups</li><li>Relatórios básicos</li></ul><button class="btn" onclick="wa('Olá Rodrigo! Tenho interesse no plano Essencial do AI Sales Agent.')">Quero este plano</button></div>
+ <div class="card plan hl"><h3>Inteligente</h3><div class="price">R$ 249<small>/mês</small></div><ul><li>Tudo do Essencial</li><li>Assistência de IA com limite de uso definido</li><li>Sugestões de respostas e acompanhamento</li><li>Relatórios avançados</li></ul><button class="btn p" onclick="wa('Olá Rodrigo! Tenho interesse no plano Inteligente do AI Sales Agent.')">Quero este plano</button></div>
+ <div class="card plan"><h3>Implantação personalizada</h3><div class="price"><small>a partir de</small> R$ 500</div><ul><li>Configuração inicial</li><li>Cadastro dos dados comerciais</li><li>Organização do pipeline</li><li>Fluxos dentro do escopo contratado</li></ul><button class="btn" onclick="wa('Olá Rodrigo! Quero saber mais sobre a implantação personalizada do AI Sales Agent.')">Falar sobre implantação</button></div>
+</div>
+<div class="card" style="margin-top:14px"><h3>Transparência</h3><ul style="color:var(--mu);font-size:14px;padding-left:18px;margin:0">
+ <li>Preços são hipóteses comerciais de teste, não uma oferta fechada.</li>
+ <li>Esta página é uma demonstração. A versão com login, banco de dados por empresa e IA em produção está em desenvolvimento e será liberada em pilotos.</li>
+ <li>O limite de uso de IA do plano Inteligente é definido em contrato.</li>
+ <li>Integrações (WhatsApp Business, Zoho CRM) dependem de configuração e têm custos próprios de terceiros, como tarifas da Meta, que não estão incluídos.</li>
+ <li>Não há pagamento online neste site: a contratação é combinada por conversa.</li></ul></div></section>
+</div></main>
 
 <!-- APP -->
 <main id="v-app" class="hide"><div class="wrap">
+ <div class="demo" role="note">🧪 <b>DEMO</b> — dados fictícios, salvos só neste navegador. Nenhuma mensagem é enviada a clientes reais.</div>
  <div class="tabs" id="tabs"></div>
- <div id="t-dash"></div><div id="t-chat" class="hide"></div><div id="t-pipe" class="hide"></div><div id="t-fu" class="hide"></div><div id="t-wa" class="hide"></div>
+ <div id="t-dash"></div><div id="t-leads" class="hide"></div><div id="t-cfg" class="hide"></div><div id="t-chat" class="hide"></div><div id="t-pipe" class="hide"></div><div id="t-fu" class="hide"></div><div id="t-wa" class="hide"></div>
  <div class="banner" style="margin:24px 0"><h3 style="font-size:20px">Quer implementar uma solução como essa na sua empresa?</h3><button class="btn" onclick="wa()">Falar com Rodrigo</button></div>
 </div></main>
-<footer>© Rodrigo Dev — AI Sales Agent (modo demonstração, dados fictícios)</footer>
+<footer>© Rodrigo Dev — AI Sales Agent · Demonstração comercial com dados fictícios · <button class="btn sm" onclick="go('home')">Voltar ao início</button></footer>
 
 <script>
-const WA_NUMBER="5511983179592"; // troque pelo seu número
+"use strict";
+const WA_NUMBER="5511983179592";
 const WA_MSG="Olá Rodrigo! Vi o AI Sales Agent e gostaria de conhecer uma solução semelhante para minha empresa.";
+const STORE="aisa:v1",DAY=864e5,HR=36e5;
 const STAGES=["Novo","Qualificado","Proposta","Negociação","Ganho","Perdido"];
-let leads=[
-{n:"João Silva",c:"Clínica XYZ",p:"(11) 91234-5601",e:"joao@clinicaxyz.com",s:"Criação de site",o:"WhatsApp",sc:92,st:"Qualificado",li:"Hoje, 09:40",na:"Enviar proposta hoje",ob:"Prazo até 30 dias. Quer WhatsApp e captação.",fu:true,m:[["c","Olá, gostaria de saber quanto custa um site."],["a","Olá! Claro. Posso entender um pouco melhor o que sua empresa precisa para indicar a melhor solução?"],["c","Tenho uma clínica e quero conseguir mais clientes."],["a","Perfeito. Nesse caso podemos criar uma página focada em conversão, com WhatsApp e captação de leads. Qual seu prazo?"],["c","Até 30 dias. Meu nome é João, tel (11) 91234-5601."]]},
-{n:"Maria Souza",c:"Studio Bela",p:"(21) 99876-1122",e:"maria@studiobela.com",s:"Orçamento de loja virtual",o:"Instagram",sc:78,st:"Proposta",li:"Ontem, 16:10",na:"Contato amanhã",ob:"Proposta enviada, aguardando retorno.",fu:true,m:[["c","Boa tarde, preciso de um orçamento para loja virtual."],["a","Boa tarde! Para indicar o melhor formato, você já vende em algum canal hoje?"],["c","Só pelo Instagram."],["a","Entendi. Vou registrar seu pedido e encaminhar a proposta."]]},
-{n:"Carlos Lima",c:"Lima Advocacia",p:"(31) 98877-4433",e:"carlos@limaadv.com",s:"Automação de atendimento",o:"Site",sc:55,st:"Novo",li:"2 dias atrás",na:"Aguardando resposta",ob:"Está comparando fornecedores.",fu:true,m:[["c","Vocês fazem chatbot para escritório?"],["a","Fazemos agentes de atendimento. Quantos contatos vocês recebem por semana?"],["c","Uns 30. Vou ver com meu sócio."]]},
-{n:"Ana Santos",c:"Nutri Ana",p:"(41) 99111-2020",e:"ana@nutriana.com",s:"Landing page",o:"Indicação",sc:88,st:"Negociação",li:"Hoje, 08:15",na:"Fechar contrato",ob:"Proposta enviada e aprovada verbalmente.",fu:false,m:[["c","Recebi a proposta, podemos fechar essa semana?"],["a","Ótimo! Vou encaminhar sua solicitação para um especialista confirmar condições."]]},
-{n:"Pedro Alves",c:"Alves Imóveis",p:"(11) 97766-5544",e:"pedro@alvesimoveis.com",s:"CRM + WhatsApp",o:"Google",sc:95,st:"Qualificado",li:"Hoje, 10:02",na:"Ligar em 1h",ob:"Orçamento definido, urgência alta.",fu:false,m:[["c","Preciso de um CRM com WhatsApp, tenho orçamento e quero começar já."]]},
-{n:"Luiza Prado",c:"Pet Prado",p:"(19) 98123-9900",e:"luiza@petprado.com",s:"Site institucional",o:"Instagram",sc:35,st:"Novo",li:"5 dias atrás",na:"Reengajar",ob:"Apenas pesquisando.",fu:false,m:[["c","Só queria ver preços por curiosidade."]]},
-{n:"Rafael Costa",c:"Costa Fit",p:"(51) 99345-7788",e:"rafael@costafit.com",s:"App de treinos",o:"WhatsApp",sc:62,st:"Qualificado",li:"Ontem, 11:30",na:"Agendar reunião",ob:"Orçamento ainda indefinido.",fu:false,m:[["c","Queria um app para meus alunos."]]},
-{n:"Bianca Rocha",c:"Rocha Odonto",p:"(85) 98456-1212",e:"bianca@rochaodonto.com",s:"Criação de site",o:"Site",sc:98,st:"Ganho",li:"Semana passada",na:"Onboarding",ob:"Contrato assinado.",fu:false,m:[["c","Fechado, pode seguir!"]]}];
-let cur=0,tab="dash";
-const lab=s=>s>=90?["🔥 Muito quente","#dc2626"]:s>=70?["🟠 Quente","#ea580c"]:s>=40?["🟡 Morno","#ca8a04"]:["🔵 Frio","#2563eb"];
+const ACTIVE=["Qualificado","Proposta","Negociação"];
+const ORIGINS=["WhatsApp","Instagram","Site","Google","Indicação","Demonstração","Outro"];
+const PRIOS=["alta","média","baixa"];
 const $=id=>document.getElementById(id);
-const esc=t=>String(t).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-function toast(t){const d=document.createElement("div");d.className="toast";d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),2600)}
-function wa(){window.open("https://wa.me/"+WA_NUMBER+"?text="+encodeURIComponent(WA_MSG),"_blank","noopener")}
-function go(v){["home","project","app"].forEach(x=>$("v-"+x).classList.toggle("hide",x!==v));scrollTo(0,0);if(v==="app")render()}
-const TABS=[["dash","Dashboard"],["chat","Conversas"],["pipe","Pipeline"],["fu","Follow-ups"],["wa","WhatsApp"]];
-function setTab(t){tab=t;render()}
+const esc=t=>String(t==null?"":t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const brl=v=>"R$ "+Number(v||0).toLocaleString("pt-BR");
+const sod=t=>{const d=new Date(t);d.setHours(0,0,0,0);return d.getTime()};
+const ymd=t=>{const d=new Date(t);return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0")};
+const parseYmd=s=>{const m=/^(\d{4})-(\d{2})-(\d{2})$/.exec(s||"");return m?new Date(+m[1],+m[2]-1,+m[3]).getTime():null};
+const rel=t=>{const d=Date.now()-t;if(d<6e4)return"agora";if(d<HR)return"há "+Math.round(d/6e4)+" min";if(d<DAY)return"há "+Math.round(d/HR)+" h";return"há "+Math.round(d/DAY)+" d"};
+const fdate=t=>t?new Date(t).toLocaleDateString("pt-BR"):"—";
+const lab=s=>s>=90?["🔥 Muito quente","#dc2626"]:s>=70?["🟠 Quente","#ea580c"]:s>=40?["🟡 Morno","#ca8a04"]:["🔵 Frio","#2563eb"];
+function toast(t){const d=document.createElement("div");d.className="toast";d.setAttribute("role","status");d.textContent=t;document.body.appendChild(d);setTimeout(()=>d.remove(),2800)}
+function wa(msg){window.open("https://wa.me/"+WA_NUMBER+"?text="+encodeURIComponent(msg||WA_MSG),"_blank","noopener")}
+
+/* ---------- dados e persistência (localStorage; modo DEMO) ---------- */
+function defCfg(){return{company:"Rodrigo Dev (demo)",kb:"Serviços: criação de sites e landing pages, lojas virtuais, automação de atendimento com IA e CRM com WhatsApp. Valores sob consulta, após entender o escopo do projeto.",auto:false,usage:{calls:0,tokens:0}}}
+function seed(){
+ const t=Date.now();
+ const L=(id,n,c,p,e,o,s,st,val,sc,na,fd,pr,ob,cd,ah,msgs)=>{
+  const lt=t-ah*HR,ct=t-cd*DAY;
+  return{id,n,c,p,e,o,s,st,val,sc,own:"Rodrigo",na,fd:fd===null?null:sod(t)+fd*DAY,pr,fs:fd===null?"":"pendente",ob,cons:true,opt:false,hum:false,ct,lt,lc:null,
+   act:[{t:"Etapa atual: "+st,ts:lt},{t:"Lead criado (dados fictícios)",ts:ct}],
+   m:msgs.map((x,i)=>({r:x[0],t:x[1],ts:lt-(msgs.length-i)*3e5}))}};
+ return[
+ L(1,"João Silva","Clínica XYZ","(11) 91234-5601","joao@clinicaxyz.com","WhatsApp","Criação de site","Qualificado",4800,92,"Enviar proposta hoje",0,"alta","Prazo até 30 dias. Quer WhatsApp e captação.",3,5,[["c","Olá, gostaria de saber quanto custa um site."],["a","Olá! Posso entender melhor o que sua empresa precisa para indicar a melhor solução?"],["c","Tenho uma clínica e quero conseguir mais clientes."],["a","Perfeito. Podemos criar uma página focada em conversão, com WhatsApp e captação de leads. Qual seu prazo?"],["c","Até 30 dias."]]),
+ L(2,"Maria Souza","Studio Bela","(21) 99876-1122","maria@studiobela.com","Instagram","Orçamento de loja virtual","Proposta",6500,78,"Cobrar retorno da proposta",-1,"alta","Proposta enviada, aguardando retorno.",9,26,[["c","Boa tarde, preciso de um orçamento para loja virtual."],["a","Boa tarde! Você já vende em algum canal hoje?"],["c","Só pelo Instagram."],["a","Entendi. Vou registrar seu pedido e encaminhar a proposta."]]),
+ L(3,"Carlos Lima","Lima Advocacia","(31) 98877-4433","carlos@limaadv.com","Site","Automação de atendimento","Novo",3200,55,"Aguardando resposta",0,"média","Comparando fornecedores.",14,48,[["c","Vocês fazem chatbot para escritório?"],["a","Fazemos agentes de atendimento. Quantos contatos vocês recebem por semana?"],["c","Uns 30. Vou ver com meu sócio."]]),
+ L(4,"Ana Santos","Nutri Ana","(41) 99111-2020","ana@nutriana.com","Indicação","Landing page","Negociação",2900,88,"Fechar contrato",1,"alta","Proposta aprovada verbalmente.",20,4,[["c","Recebi a proposta, podemos fechar essa semana?"],["a","Ótimo! Vou encaminhar sua solicitação para um especialista confirmar as condições."]]),
+ L(5,"Pedro Alves","Alves Imóveis","(11) 97766-5544","pedro@alvesimoveis.com","Google","CRM + WhatsApp","Qualificado",9800,95,"Ligar em 1h",0,"alta","Orçamento definido, urgência alta.",2,1,[["c","Preciso de um CRM com WhatsApp, tenho orçamento e quero começar já."]]),
+ L(6,"Luiza Prado","Pet Prado","(19) 98123-9900","luiza@petprado.com","Instagram","Site institucional","Novo",0,35,"Reengajar",null,"baixa","Apenas pesquisando.",33,120,[["c","Só queria ver preços por curiosidade."]]),
+ L(7,"Rafael Costa","Costa Fit","(51) 99345-7788","rafael@costafit.com","WhatsApp","App de treinos","Qualificado",7500,62,"Agendar reunião",2,"média","Orçamento ainda indefinido.",6,30,[["c","Queria um app para meus alunos."]]),
+ L(8,"Bianca Rocha","Rocha Odonto","(85) 98456-1212","bianca@rochaodonto.com","Site","Criação de site","Ganho",5200,98,"Onboarding",null,"baixa","Contrato assinado (dado fictício).",38,168,[["c","Fechado, pode seguir!"]])];
+}
+let D=load();
+function load(){try{const r=JSON.parse(localStorage.getItem(STORE)||"null");if(r&&r.v===1&&Array.isArray(r.leads)&&r.cfg&&r.cfg.usage)return r}catch(e){}return{v:1,leads:seed(),cfg:defCfg()}}
+function save(){try{localStorage.setItem(STORE,JSON.stringify(D))}catch(e){}}
+const S={tab:"dash",cur:null,period:"all",q:"",stage:"",drafts:{},busy:false};
+const get=id=>D.leads.find(l=>l.id===id);
+const fst=l=>{if(l.fs!=="pendente"||!l.fd)return null;const s=sod(Date.now());return l.fd<s?"atrasado":l.fd<s+DAY?"hoje":"proximo"};
+const addAct=(l,t)=>{l.act.unshift({t,ts:Date.now()})};
+const inP=l=>S.period==="all"||l.ct>=Date.now()-(+S.period)*DAY;
+function baseScore(f){let s=20;if(f.p)s+=10;if(f.e)s+=5;if(Number(f.val)>0)s+=15;if(f.s)s+=10;return Math.min(s,100)}
+
+/* ---------- navegação ---------- */
+function go(v){["home","project","plans","app"].forEach(x=>$("v-"+x).classList.toggle("hide",x!==v));scrollTo(0,0);if(v==="app")render()}
+const TABS=[["dash","Dashboard"],["leads","Leads"],["chat","Conversas"],["pipe","Pipeline"],["fu","Follow-ups"],["wa","WhatsApp"],["cfg","Config"]];
+function setTab(t){S.tab=t;render()}
 function render(){
- $("tabs").innerHTML=TABS.map(([k,l])=>`<button class="tab ${k===tab?"on":""}" onclick="setTab('${k}')">${l}</button>`).join("");
- TABS.forEach(([k])=>$("t-"+k).classList.toggle("hide",k!==tab));
- ({dash,chat,pipe,fu,wa:waTab})[tab]();
+ closeModal();
+ $("tabs").innerHTML=TABS.map(([k,l])=>`<button class="tab ${k===S.tab?"on":""}" onclick="setTab('${k}')">${l}</button>`).join("");
+ TABS.forEach(([k])=>$("t-"+k).classList.toggle("hide",k!==S.tab));
+ ({dash,leads,chat,pipe,fu,wa:waTab,cfg})[S.tab]();
 }
+function modal(title,body){
+ closeModal();const o=document.createElement("div");o.className="ov";o.id="ov";
+ o.innerHTML=`<div class="mdl" role="dialog" aria-modal="true" aria-label="${esc(title)}"><div class="mh"><h3>${esc(title)}</h3><button class="btn sm" onclick="closeModal()" aria-label="Fechar">✕</button></div><div class="mb">${body}</div></div>`;
+ o.addEventListener("click",e=>{if(e.target===o)closeModal()});document.body.appendChild(o);document.body.style.overflow="hidden";
+}
+function closeModal(){const o=$("ov");if(o)o.remove();document.body.style.overflow=""}
+document.addEventListener("keydown",e=>{if(e.key==="Escape")closeModal()});
+const pill=(t,c)=>`<span class="pill" style="background:${c}22;color:${c}">${t}</span>`;
+const empty=(ic,t,b)=>`<div class="card empty"><div class="ic">${ic}</div><p>${t}</p>${b||""}</div>`;
+
+/* ---------- dashboard ---------- */
 function dash(){
- const q=leads.filter(l=>l.sc>=70).length,op=leads.filter(l=>["Proposta","Negociação"].includes(l.st)).length,f=leads.filter(l=>l.fu).length;
- const cnt=STAGES.map(s=>leads.filter(l=>l.st===s).length),mx=Math.max(...cnt,1);
- const K=[["LEADS",37],["QUALIFICADOS",18],["OPORTUNIDADES",9],["FOLLOW-UPS",6],["CONVERSÃO","24%"]];
- $("t-dash").innerHTML=`<div class="kpis">${K.map(([a,b])=>`<div class="card kpi"><small>${a}</small><div>${b}</div></div>`).join("")}</div>
- <div class="two"><div class="card"><h3>Leads por etapa (demo ao vivo)</h3><div class="bars">${STAGES.map((s,i)=>`<div><i style="height:${cnt[i]/mx*110}px"></i>${cnt[i]}<br>${s.slice(0,5)}</div>`).join("")}</div></div>
- <div class="card"><h3>Atividade recente</h3>
- <div class="act">🔥<span><b>João Silva</b> — interessado em criação de site</span></div>
- <div class="act">🟠<span><b>Maria Souza</b> — solicitou orçamento</span></div>
- <div class="act">🟡<span><b>Carlos Lima</b> — aguardando resposta</span></div>
- <div class="act">🟢<span><b>Ana Santos</b> — proposta enviada</span></div></div></div>
- <p style="margin-top:14px">Dica: abra <b>Conversas</b> e escreva como um cliente, por exemplo “Gostaria de fazer um orçamento”.</p>`;
+ const L=D.leads.filter(inP),tot=L.length,c=f=>L.filter(f).length,won=c(l=>l.st==="Ganho");
+ const pend=D.leads.filter(l=>fst(l)),late=pend.filter(l=>fst(l)==="atrasado").length;
+ const K=[["LEADS NO PERÍODO",tot],["NOVOS",c(l=>l.st==="Novo")],["EM ATENDIMENTO",c(l=>ACTIVE.includes(l.st))],["QUALIFICADOS (SCORE ≥ 70)",c(l=>l.sc>=70&&l.st!=="Perdido")],["PROPOSTAS / NEGOCIAÇÃO",c(l=>["Proposta","Negociação"].includes(l.st))],["VENDAS (DEMO)",won],["FOLLOW-UPS PENDENTES",pend.length],["ATRASADOS",late],["CONVERSÃO",tot?Math.round(won/tot*100)+"%":"—"]];
+ const wk=[];for(let i=5;i>=0;i--){const e=sod(Date.now())+DAY-i*7*DAY,s=e-7*DAY;wk.push(D.leads.filter(l=>l.ct>=s&&l.ct<e).length)}const mx=Math.max(...wk,1);
+ const acts=D.leads.flatMap(l=>l.act.map(a=>({n:l.n,id:l.id,t:a.t,ts:a.ts,sc:l.sc}))).sort((a,b)=>b.ts-a.ts).slice(0,5);
+ const recs=[];
+ if(late)recs.push(["⚠️",`${late} follow-up(s) atrasado(s)`,"fu"]);
+ D.leads.filter(l=>l.sc>=70&&!fst(l)&&!["Ganho","Perdido"].includes(l.st)&&!l.opt).slice(0,2).forEach(l=>recs.push(["🔥",`${esc(l.n)} é lead quente sem follow-up agendado`,"lead:"+l.id]));
+ D.leads.filter(l=>fst(l)==="hoje").slice(0,2).forEach(l=>recs.push(["📞",`Hoje: ${esc(l.n)} — ${esc(l.na||"contato")}`,"lead:"+l.id]));
+ $("t-dash").innerHTML=`<div class="bar"><label>Período <select onchange="S.period=this.value;dash()" aria-label="Período">${[["7","Últimos 7 dias"],["30","Últimos 30 dias"],["90","Últimos 90 dias"],["all","Todo o período"]].map(([v,t])=>`<option value="${v}" ${S.period===v?"selected":""}>${t}</option>`).join("")}</select></label></div>
+ <div class="kpis">${K.map(([a,b])=>`<div class="card kpi"><small>${a}</small><div>${b}</div></div>`).join("")}</div>
+ <p class="note">Conversão = leads em “Ganho” ÷ leads criados no período. Vendas e valores são dados fictícios de demonstração, não faturamento real.</p>
+ <div class="two"><div class="card"><h3>Leads criados por semana</h3><div class="bars">${wk.map((n,i)=>`<div><i style="height:${n/mx*110}px"></i>${n}<br>${i===5?"atual":"-"+(5-i)+"s"}</div>`).join("")}</div></div>
+ <div class="card"><h3>Atividade recente</h3>${acts.length?acts.map(a=>`<div class="act" onclick="openLead(${a.id})" style="cursor:pointer"><span>${lab(a.sc)[0].slice(0,2)}</span><span style="flex:1"><b>${esc(a.n)}</b> — ${esc(a.t)}<br><small class="mu">${rel(a.ts)}</small></span></div>`).join(""):"<p>Nenhuma atividade ainda.</p>"}</div></div>
+ <div class="card" style="margin-top:12px"><h3>Próximas ações recomendadas</h3>${recs.length?recs.map(([i,t,a])=>`<div class="act" style="cursor:pointer" onclick="${a==="fu"?"setTab('fu')":"openLead("+a.split(":")[1]+")"}"><span>${i}</span><span>${t}</span></div>`).join(""):"<p>Tudo em dia. Cadastre leads ou agende follow-ups.</p>"}</div>
+ <div class="cta" style="justify-content:flex-start;margin-top:14px"><button class="btn p" onclick="leadForm()">＋ Novo lead</button><button class="btn" onclick="setTab('chat')">Abrir conversas</button></div>`;
 }
-function chat(){
- const l=leads[cur],[lb,col]=lab(l.sc);
- $("t-chat").innerHTML=`<div class="inbox">
- <div class="list">${leads.map((x,i)=>`<div class="li ${i===cur?"on":""}" onclick="cur=${i};chat()"><b>${esc(x.n)}</b><small>${esc(x.s)}</small><small>${lab(x.sc)[0]} · ${x.sc}</small></div>`).join("")}</div>
- <div class="card"><div class="chat" id="msgs">${l.m.map(([r,t])=>`<div class="m ${r}">${esc(t)}</div>`).join("")}</div>
-  <div class="send"><input id="inp" placeholder="Escreva como cliente…" maxlength="300" onkeydown="if(event.key==='Enter')sendMsg()"><button class="btn p" onclick="sendMsg()">Enviar</button></div></div>
- <div class="card"><h3>${esc(l.n)}</h3><div class="pill" style="background:${col}22;color:${col}">${lb}</div>
-  <div style="margin-top:8px"><b>Score: ${l.sc}</b></div><div class="sc"><i style="width:${l.sc}%;background:${col}"></i></div>
-  <div class="kv"><small>Interesse</small>${esc(l.s)}</div><div class="kv"><small>Empresa</small>${esc(l.c)}</div>
-  <div class="kv"><small>Telefone</small>${esc(l.p)}</div><div class="kv"><small>Etapa</small>${l.st}</div>
-  <div class="kv"><small>Próxima ação</small>${esc(l.na)}</div><div class="kv"><small>Observações</small>${esc(l.ob)}</div>
-  <button class="btn sm" onclick="fup(${cur})">Agendar follow-up</button></div></div>`;
- const m=$("msgs");m.scrollTop=m.scrollHeight;
+
+/* ---------- leads: criar, editar, buscar, filtrar ---------- */
+function leads(){
+ const q=S.q.trim().toLowerCase();
+ const L=D.leads.filter(l=>(!S.stage||l.st===S.stage)&&(!q||[l.n,l.c,l.e,l.p,l.s].join(" ").toLowerCase().includes(q))).sort((a,b)=>b.lt-a.lt);
+ $("t-leads").innerHTML=`<div class="bar"><input id="sq" type="search" placeholder="Buscar nome, empresa, e-mail…" value="${esc(S.q)}" oninput="S.q=this.value;leadList()" aria-label="Buscar leads"><select onchange="S.stage=this.value;leadList()" aria-label="Filtrar etapa"><option value="">Todas as etapas</option>${STAGES.map(s=>`<option ${S.stage===s?"selected":""}>${s}</option>`).join("")}</select><button class="btn p" onclick="leadForm()">＋ Novo lead</button></div><div id="ll"></div>`;
+ leadList();
 }
-// agente local (modo DEMO). No modo REAL, esta função chama /api/agent (OpenAI no servidor).
-function agent(t){
- const x=t.toLowerCase(),kb={site:"Criamos sites e páginas de conversão. Os valores dependem do escopo, então vou encaminhar sua solicitação para um especialista.",preço:"Vou encaminhar sua solicitação para um especialista, pois os valores dependem do escopo."};
- const buy=/orçamento|orcamento|contratar|fechar|comprar|quanto custa|proposta/.test(x);
- const urg=/urgente|hoje|já|agora|semana/.test(x);
+function leadList(){
+ const q=S.q.trim().toLowerCase();
+ const L=D.leads.filter(l=>(!S.stage||l.st===S.stage)&&(!q||[l.n,l.c,l.e,l.p,l.s].join(" ").toLowerCase().includes(q))).sort((a,b)=>b.lt-a.lt);
+ $("ll").innerHTML=L.length?`<div class="grid">${L.map(l=>{const[lb,col]=lab(l.sc),f=fst(l);return`<div class="card lead" onclick="openLead(${l.id})" tabindex="0" onkeydown="if(event.key==='Enter')openLead(${l.id})"><div class="rowb"><b>${esc(l.n)}</b>${pill(esc(l.st),"#4f46e5")}</div><small class="mu">${esc(l.c||"Sem empresa")} · ${esc(l.s||"Sem interesse definido")}</small><div class="rowb" style="margin-top:8px"><span style="font-size:12px;color:${col}">${lb} · ${l.sc}</span><span style="font-size:12px">${l.val?brl(l.val):"sem valor"}</span></div><small class="mu">${l.opt?"🚫 Não receber mensagens":f?(f==="atrasado"?"⚠️ Atrasado: ":"📅 ")+fdate(l.fd)+" — "+esc(l.na):"Sem follow-up"}</small></div>`}).join("")}</div>`
+ :empty("🔎",D.leads.length?"Nenhum lead encontrado com esses filtros.":"Nenhum lead cadastrado ainda.",`<button class="btn p" onclick="leadForm()">＋ Novo lead</button>`);
+}
+const fld=(id,label,inner)=>`<label class="fl" for="${id}">${label}${inner}</label>`;
+const inp=(id,v,ph,extra)=>`<input id="${id}" value="${esc(v)}" placeholder="${esc(ph||"")}" ${extra||""}>`;
+const sel=(id,opts,v)=>`<select id="${id}">${opts.map(o=>`<option ${o===v?"selected":""}>${esc(o)}</option>`).join("")}</select>`;
+function openLead(id){const l=get(id);if(!l)return;S.cur=id;leadForm(id)}
+function leadForm(id){
+ const l=id?get(id):null;
+ const v=l||{n:"",c:"",p:"",e:"",o:"Site",s:"",st:"Novo",val:"",own:"Rodrigo",na:"",fd:null,pr:"média",ob:"",cons:false,opt:false};
+ const hist=l?`<h3 style="margin-top:16px">Histórico de atividades</h3><div class="hist">${l.act.slice(0,15).map(a=>`<div class="act"><span style="flex:1">${esc(a.t)}</span><small class="mu">${rel(a.ts)}</small></div>`).join("")}</div>`:"";
+ modal(l?"Lead: "+l.n:"Novo lead",`<div class="fgrid">
+ ${fld("f_n","Nome *",inp("f_n",v.n,"Nome completo",'maxlength="80"'))}${fld("f_c","Empresa",inp("f_c",v.c,"",'maxlength="80"'))}
+ ${fld("f_p","Telefone",inp("f_p",v.p,"(11) 90000-0000",'inputmode="tel" maxlength="20"'))}${fld("f_e","E-mail",inp("f_e",v.e,"nome@empresa.com",'type="email" maxlength="100"'))}
+ ${fld("f_o","Origem",sel("f_o",ORIGINS,v.o))}${fld("f_s","Interesse comercial",inp("f_s",v.s,"Ex.: criação de site",'maxlength="80"'))}
+ ${fld("f_st","Etapa do pipeline",sel("f_st",STAGES,v.st))}${fld("f_val","Valor estimado (R$)",inp("f_val",v.val,"0",'inputmode="decimal"'))}
+ ${fld("f_own","Responsável",inp("f_own",v.own,"",'maxlength="40"'))}${fld("f_pr","Prioridade",sel("f_pr",PRIOS,v.pr))}
+ ${fld("f_na","Próxima ação",inp("f_na",v.na,"Ex.: enviar proposta",'maxlength="100"'))}${fld("f_fd","Data do follow-up",inp("f_fd",v.fd?ymd(v.fd):"","",'type="date"'))}</div>
+ ${fld("f_ob","Observações",`<textarea id="f_ob" rows="3" maxlength="500">${esc(v.ob)}</textarea>`)}
+ <label class="ck"><input type="checkbox" id="f_cons" ${v.cons?"checked":""}> Consentimento para contato comercial registrado (LGPD)</label>
+ <label class="ck"><input type="checkbox" id="f_opt" ${v.opt?"checked":""}> Pediu para não receber novas mensagens</label>
+ <p id="f_err" class="err" role="alert"></p>
+ <div class="cta" style="justify-content:flex-start"><button class="btn p" onclick="saveLead(${id||0})">Salvar</button><button class="btn" onclick="closeModal()">Cancelar</button>${l?`<button class="btn" onclick="S.cur=${l.id};setTab('chat')">Abrir conversa</button><button class="btn danger" onclick="delLead(${l.id})">Excluir</button>`:""}</div>${hist}`);
+}
+function vErr(f,id){
+ if(f.n.length<2)return"Informe o nome (mínimo 2 letras).";
+ const dg=f.p.replace(/\D/g,"");
+ if(f.p&&(dg.length<10||dg.length>13))return"Telefone inválido: use DDD + número.";
+ if(f.e&&!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(f.e))return"E-mail inválido.";
+ if(f.val!==""&&!(Number(f.val)>=0&&isFinite(Number(f.val))))return"Valor estimado inválido.";
+ if(f.fdRaw&&f.fd===null)return"Data de follow-up inválida.";
+ const dup=D.leads.find(x=>x.id!==id&&((dg.length>=10&&x.p.replace(/\D/g,"").slice(-10)===dg.slice(-10))||(f.e&&x.e&&x.e.toLowerCase()===f.e.toLowerCase())));
+ return dup?"Possível duplicado: "+dup.n+" já usa o mesmo telefone ou e-mail.":null;
+}
+function saveLead(id){
+ const g=k=>($("f_"+k).value||"").trim();
+ const f={n:g("n"),c:g("c"),p:g("p"),e:g("e"),o:g("o"),s:g("s"),st:g("st"),val:g("val"),own:g("own"),pr:g("pr"),na:g("na"),ob:g("ob"),fdRaw:g("fd"),fd:parseYmd(g("fd")),cons:$("f_cons").checked,opt:$("f_opt").checked};
+ const er=vErr(f,id);if(er){$("f_err").textContent=er;return}
+ if(!STAGES.includes(f.st)||!ORIGINS.includes(f.o)||!PRIOS.includes(f.pr)){$("f_err").textContent="Valor inválido em algum campo.";return}
+ const val=f.val===""?0:Number(f.val);
+ let l=id?get(id):null;
+ if(!l){l={id:Math.max(0,...D.leads.map(x=>x.id))+1,sc:baseScore(f),ct:Date.now(),lc:null,hum:false,act:[{t:"Lead criado manualmente",ts:Date.now()}],m:[],fs:""};D.leads.unshift(l)}
+ else if(l.st!==f.st)addAct(l,"Etapa alterada: "+l.st+" → "+f.st);
+ if(l.opt!==f.opt)addAct(l,f.opt?"Registrado: não receber mensagens":"Opt-out removido");
+ Object.assign(l,{n:f.n,c:f.c,p:f.p,e:f.e,o:f.o,s:f.s,st:f.st,val,own:f.own,pr:f.pr,na:f.na,ob:f.ob,cons:f.cons,opt:f.opt,fd:f.fd,lt:Date.now()});
+ if(l.opt){l.fd=null;l.fs="cancelado"}else if(l.fd){l.fs="pendente"}else if(l.fs==="pendente"){l.fs=""}
+ if(id)addAct(l,"Dados do lead atualizados");
+ S.cur=l.id;save();closeModal();render();toast(id?"Lead atualizado ✓":"Lead criado ✓");
+}
+function delLead(id){const l=get(id);if(!l||!confirm("Excluir "+l.n+"? Esta ação não pode ser desfeita."))return;D.leads=D.leads.filter(x=>x.id!==id);if(S.cur===id)S.cur=null;save();render();toast("Lead excluído")}
+
+/* ---------- conversas e agente ---------- */
+function analyze(l,t){
+ const x=t.toLowerCase();
+ const opt=/n[aã]o quero (mais )?(receber|mensagem)|pare de (me )?(enviar|mandar)|parar de receber|descadastr|remov[ae] meu/.test(x);
+ const buy=/or[cç]amento|contratar|fechar|comprar|quanto custa|proposta/.test(x);
+ const urg=/urgente|hoje|j[aá]\b|agora|esta semana/.test(x);
  const tel=(t.match(/\(?\d{2}\)?\s?9?\d{4}-?\d{4}/)||[])[0];
- let sc=30+(buy?35:0)+(urg?15:0)+(tel?15:0);sc=Math.min(sc,100);
- let r=buy?"Ótimo! Posso registrar seu pedido de orçamento. Qual é o seu nome, empresa e prazo desejado?":/site|loja|app|crm|chatbot|automa/.test(x)?kb.site:/pre[çc]o|valor/.test(x)?kb.preço:"Olá! Posso entender melhor o que sua empresa precisa?";
- return {r,sc,buy,tel};
+ if(opt){l.opt=true;l.fd=null;l.fs="cancelado";addAct(l,"Cliente pediu para não receber mensagens");return{opt,r:""}}
+ if(tel&&!l.p){l.p=tel;addAct(l,"Telefone coletado na conversa")}
+ const sc=Math.min(30+(buy?35:0)+(urg?15:0)+(tel?15:0),100);
+ if(sc>l.sc){l.sc=sc;addAct(l,"Score atualizado para "+sc)}
+ if(buy&&l.st==="Novo"){l.st="Qualificado";l.na="Enviar proposta";l.pr="alta";l.fd=sod(Date.now())+DAY;l.fs="pendente";addAct(l,"Intenção de compra detectada: qualificado e follow-up sugerido");toast("Lead qualificado ✓ Score atualizado ✓ Follow-up sugerido ✓")}
+ const r=buy?"Ótimo! Posso registrar seu pedido de orçamento. Qual é o seu nome, empresa e prazo desejado?":/site|loja|app|crm|chatbot|automa/.test(x)?"Criamos soluções digitais sob medida. Os valores dependem do escopo, então vou encaminhar sua solicitação para um especialista.":/pre[çc]o|valor/.test(x)?"Vou encaminhar sua solicitação para um especialista, pois os valores dependem do escopo.":"Olá! Posso entender melhor o que sua empresa precisa?";
+ return{opt,r};
 }
-function sendMsg(){
- const i=$("inp"),t=i.value.trim();if(!t)return;const l=leads[cur];
- l.m.push(["c",t]);const a=agent(t);
- l.sc=Math.max(l.sc,a.sc);if(a.tel)l.p=a.tel;l.li="Agora";
- if(a.buy&&l.st==="Novo"){l.st="Qualificado";l.na="Enviar proposta";l.fu=true;toast("Lead criado ✓ Score calculado ✓ Oportunidade criada ✓ Follow-up sugerido ✓")}
- chat();setTimeout(()=>{l.m.push(["a",a.r]);chat()},500);
+async function aiReply(l,t,a){
+ try{
+  const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),12000);
+  const hist=l.m.filter(m=>m.r==="c"||m.r==="a").slice(-9,-1).map(m=>({role:m.r==="c"?"user":"assistant",content:m.t}));
+  const r=await fetch("/api/agent",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:t,history:hist,kb:D.cfg.kb,company:D.cfg.company}),signal:ctl.signal});
+  clearTimeout(to);
+  if(r.ok){const d=await r.json();if(d&&typeof d.reply==="string"&&d.reply){if(d.usage){D.cfg.usage.calls++;D.cfg.usage.tokens+=Number(d.usage.total_tokens)||0}return{t:d.reply,src:"ia"}}}
+ }catch(e){}
+ return{t:a.r,src:"local"};
 }
+const push=(l,r,t,src)=>{l.m.push({r,t,ts:Date.now(),src})};
+function chat(){
+ if(!D.leads.length){$("t-chat").innerHTML=empty("💬","Cadastre um lead para iniciar uma conversa.",`<button class="btn p" onclick="leadForm()">＋ Novo lead</button>`);return}
+ if(!get(S.cur))S.cur=D.leads[0].id;
+ const l=get(S.cur),[lb,col]=lab(l.sc),dr=S.drafts[l.id],f=fst(l);
+ $("t-chat").innerHTML=`<div class="inbox">
+ <div class="list">${D.leads.map(x=>`<div class="li ${x.id===l.id?"on":""}" onclick="S.cur=${x.id};chat()"><b>${esc(x.n)}</b><small>${esc(x.s||"—")}</small><small>${lab(x.sc)[0]} · ${x.sc}</small></div>`).join("")}</div>
+ <div class="card"><div class="rowb" style="margin-bottom:10px"><div><b>Atendimento inteligente</b><br><small class="mu">${l.hum?"Atendimento humano ativo":l.opt?"Contato bloqueado (opt-out)":D.cfg.auto?"IA responde automaticamente":"IA sugere, humano aprova"}</small></div>${pill(l.hum?"👤 HUMANO":"● DEMO",l.hum?"#ea580c":"#16a34a")}</div>
+ <div class="chat" id="msgs">${l.m.length?l.m.map(m=>`<div class="m ${m.r}">${esc(m.t)}${m.src?`<small class="src">${m.src==="ia"?"gerada por IA":"agente local (demo)"}</small>`:""}</div>`).join(""):'<p class="mu">Sem mensagens. Escreva como se fosse o cliente.</p>'}${S.busy&&S.busy===l.id?'<div class="m a">digitando…</div>':""}</div>
+ ${dr?`<div class="draft"><small class="mu">Resposta SUGERIDA (ainda não enviada). Edite se quiser:</small><textarea id="dr" rows="3" maxlength="600">${esc(dr.t)}</textarea><div class="cta" style="justify-content:flex-start"><button class="btn sm p" onclick="approveDraft(${l.id})">Aprovar e enviar</button><button class="btn sm" onclick="delete S.drafts[${l.id}];chat()">Descartar</button></div></div>`:""}
+ <div class="send"><input id="inp" placeholder="Escreva como cliente…" maxlength="300" onkeydown="if(event.key==='Enter')sendMsg()" aria-label="Mensagem do cliente"><button class="btn p" onclick="sendMsg()">Enviar</button></div>
+ <div class="cta" style="justify-content:flex-start;margin-top:8px"><button class="btn sm" onclick="manualDraft(${l.id})">Responder manualmente</button><button class="btn sm" onclick="toHuman(${l.id})">${l.hum?"Devolver à IA":"Encaminhar para humano"}</button></div>
+ <p class="note">Demonstração: as mensagens ficam apenas neste navegador. Nada é enviado ao WhatsApp.</p></div>
+ <div class="card"><h3>${esc(l.n)}</h3>${pill(lb,col)}<div style="margin-top:8px"><b>Score: ${l.sc}</b></div><div class="sc"><i style="width:${l.sc}%;background:${col}"></i></div>
+ <div class="kv"><small>Interesse</small>${esc(l.s||"—")}</div><div class="kv"><small>Empresa</small>${esc(l.c||"—")}</div><div class="kv"><small>Telefone</small>${esc(l.p||"—")}</div><div class="kv"><small>Etapa</small>${l.st}</div><div class="kv"><small>Oportunidade (valor estimado)</small>${l.val?brl(l.val):"não informado"}</div><div class="kv"><small>Próxima ação</small>${esc(l.na||"—")}${f?" · "+fdate(l.fd):""}</div><div class="kv"><small>Observações</small>${esc(l.ob||"—")}</div>
+ <div class="cta" style="justify-content:flex-start"><button class="btn sm" onclick="leadForm(${l.id})">Editar</button><button class="btn sm" onclick="setTab('fu')">Follow-up</button><button class="btn sm p" onclick="setTab('pipe')">Pipeline</button></div></div></div>`;
+ const m=$("msgs");if(m)m.scrollTop=m.scrollHeight;
+}
+async function sendMsg(){
+ const l=get(S.cur);if(!l||S.busy)return;const i=$("inp"),t=i.value.trim().slice(0,300);if(!t)return;
+ push(l,"c",t);l.lt=Date.now();const a=analyze(l,t);save();
+ if(a.opt){push(l,"s","Pedido de descadastro registrado. Nenhuma mensagem automática será gerada para este lead.");save();chat();return}
+ if(l.hum){addAct(l,"Mensagem recebida durante atendimento humano");save();chat();toast("Atendimento humano ativo: a IA não responde.");return}
+ S.busy=l.id;chat();
+ const r=await aiReply(l,t,a);S.busy=false;
+ if(D.cfg.auto){push(l,"a",r.t,r.src);l.lc=Date.now();addAct(l,"Resposta enviada automaticamente ("+(r.src==="ia"?"IA":"agente local")+")")}
+ else S.drafts[l.id]={t:r.t,src:r.src};
+ save();if(S.tab==="chat")chat();
+}
+function approveDraft(id){const l=get(id),d=S.drafts[id],t=(($("dr")||{}).value||"").trim();if(!l||!d||!t)return toast("Escreva a resposta antes de enviar.");
+ if(l.opt)return toast("Lead pediu para não receber mensagens.");
+ push(l,"a",t,d.src);l.lc=Date.now();l.lt=Date.now();addAct(l,"Resposta aprovada e registrada (demo, não enviada ao WhatsApp)");delete S.drafts[id];save();chat();toast("Resposta registrada ✓")}
+function manualDraft(id){const l=get(id);if(l&&l.opt)return toast("Lead pediu para não receber mensagens.");S.drafts[id]={t:"",src:""};chat();const e=$("dr");if(e)e.focus()}
+function toHuman(id){const l=get(id);l.hum=!l.hum;addAct(l,l.hum?"Encaminhado para atendimento humano":"Atendimento devolvido à IA");if(l.hum)l.na="Atendimento humano";save();chat();toast(l.hum?"Encaminhado para humano ✓":"Devolvido à IA")}
+
+/* ---------- pipeline ---------- */
 function pipe(){
- $("t-pipe").innerHTML=`<div class="pipe">${STAGES.map(s=>`<div class="col"><h3>${s}<span>${leads.filter(l=>l.st===s).length}</span></h3>${leads.map((l,i)=>l.st!==s?"":`<div class="lc"><b>${esc(l.n)}</b> · ${l.sc}<br><span style="color:var(--mu)">${esc(l.c)} — ${esc(l.s)}</span>
- <select onchange="mv(${i},this.value)" aria-label="Mover lead">${STAGES.map(o=>`<option ${o===s?"selected":""}>${o}</option>`).join("")}</select></div>`).join("")}</div>`).join("")}</div>`;
+ const sum=a=>D.leads.filter(l=>a.includes(l.st)).reduce((s,l)=>s+(l.val||0),0);
+ $("t-pipe").innerHTML=`<div class="kpis"><div class="card kpi"><small>LEADS</small><div>${D.leads.length}</div></div><div class="card kpi"><small>EM ABERTO (R$ ESTIMADO)</small><div style="font-size:22px">${brl(sum(ACTIVE))}</div></div><div class="card kpi"><small>GANHOS (DEMO)</small><div style="font-size:22px">${brl(sum(["Ganho"]))}</div></div></div>
+ <div class="pipe">${STAGES.map(s=>{const L=D.leads.filter(l=>l.st===s);return`<div class="col"><h3>${s}<span>${L.length}</span></h3>${L.map(l=>{const[lb,col]=lab(l.sc);return`<div class="lc" onclick="openLead(${l.id})"><b>${esc(l.n)}</b><br><span class="mu">${esc(l.c||"—")}</span><div style="margin:5px 0;font-size:12px;color:${col}">${lb} · ${l.sc}${l.val?" · "+brl(l.val):""}</div><select onclick="event.stopPropagation()" onchange="mv(${l.id},this.value)" aria-label="Mover ${esc(l.n)}">${STAGES.map(o=>`<option ${o===s?"selected":""}>${o}</option>`).join("")}</select></div>`}).join("")||'<p class="mu" style="font-size:12px">Vazio</p>'}</div>`}).join("")}</div>`;
 }
-function mv(i,s){leads[i].st=s;toast(leads[i].n+" movido para "+s);pipe()}
-function fup(i){leads[i].fu=true;toast("Follow-up agendado para "+leads[i].n);if(tab==="fu")fu()}
+function mv(id,s){const l=get(id);if(!l||l.st===s)return;addAct(l,"Etapa alterada: "+l.st+" → "+s);l.st=s;l.lt=Date.now();save();render();toast(l.n+" movido para "+s)}
+
+/* ---------- follow-ups ---------- */
 function fu(){
- const f=leads.map((l,i)=>[l,i]).filter(([l])=>l.fu);
- $("t-fu").innerHTML=`<div class="card"><h3>Follow-ups de hoje</h3>${f.length?f.map(([l,i],k)=>`<div class="act"><span>${k+1}.</span><span style="flex:1"><b>${esc(l.n)}</b><br><small style="color:var(--mu)">${l.st} · ${esc(l.na)}</small></span><button class="btn sm" onclick="leads[${i}].fu=false;toast('Concluído');fu()">Concluir</button></div>`).join(""):"<p>Nenhum follow-up pendente.</p>"}</div>
- <div class="card" style="margin-top:12px"><h3>Agendar follow-up</h3><div class="send"><select id="fsel">${leads.map((l,i)=>`<option value="${i}">${esc(l.n)}</option>`).join("")}</select><button class="btn p" onclick="fup(+$('fsel').value)">Agendar</button></div></div>`;
+ const P=D.leads.filter(fst).sort((a,b)=>a.fd-b.fd),g=k=>P.filter(l=>fst(l)===k);
+ const sec=(t,L)=>L.length?`<div class="card" style="margin-bottom:12px"><h3>${t} (${L.length})</h3>${L.map(l=>`<div class="act fu"><span style="flex:1;min-width:150px"><b>${esc(l.n)}</b> ${pill(l.pr,l.pr==="alta"?"#dc2626":l.pr==="média"?"#ca8a04":"#2563eb")}<br><small class="mu">${l.st} · ${esc(l.na||"contato")} · ${fdate(l.fd)}</small></span><span class="acts"><button class="btn sm" onclick="fuMsg(${l.id})">Sugerir mensagem</button><button class="btn sm" onclick="fuResult(${l.id})">Registrar contato</button><button class="btn sm" onclick="fuSnooze(${l.id})">Adiar 1 dia</button><button class="btn sm" onclick="fuDone(${l.id},'concluído')">Concluir</button><button class="btn sm danger" onclick="fuDone(${l.id},'cancelado')">Cancelar</button></span></div>`).join("")}</div>`:"";
+ const tm=ymd(sod(Date.now())+DAY);
+ $("t-fu").innerHTML=`<div class="kpis"><div class="card kpi"><small>ATRASADOS</small><div>${g("atrasado").length}</div></div><div class="card kpi"><small>HOJE</small><div>${g("hoje").length}</div></div><div class="card kpi"><small>PRÓXIMOS</small><div>${g("proximo").length}</div></div></div>
+ ${P.length?sec("⚠️ Atrasados",g("atrasado"))+sec("📅 Hoje",g("hoje"))+sec("Próximos",g("proximo")):empty("✅","Nenhum follow-up pendente.")}
+ ${D.leads.length?`<div class="card"><h3>Agendar follow-up</h3><div class="fgrid">${fld("fsel","Lead",`<select id="fsel">${D.leads.map(l=>`<option value="${l.id}" ${l.id===S.cur?"selected":""}>${esc(l.n)}</option>`).join("")}</select>`)}${fld("fdate","Data",`<input id="fdate" type="date" value="${tm}">`)}${fld("fprio","Prioridade",sel("fprio",PRIOS,"média"))}${fld("fnote","Próxima ação",`<input id="fnote" maxlength="100" placeholder="Ex.: ligar para confirmar">`)}</div><button class="btn p" onclick="fuSchedule()">Agendar follow-up</button></div>`:""}`;
 }
+function fuSchedule(){const l=get(+$("fsel").value),d=parseYmd($("fdate").value);if(!l)return;if(l.opt)return toast("Lead pediu para não receber mensagens.");if(d===null)return toast("Escolha uma data válida.");
+ l.fd=d;l.fs="pendente";l.pr=$("fprio").value;const n=$("fnote").value.trim();if(n)l.na=n;addAct(l,"Follow-up agendado para "+fdate(d));save();fu();toast("Follow-up agendado para "+l.n)}
+function fuSnooze(id){const l=get(id);l.fd=Math.max(l.fd,sod(Date.now()))+DAY;addAct(l,"Follow-up adiado para "+fdate(l.fd));save();fu()}
+function fuDone(id,st){const l=get(id);if(st==="cancelado"&&!confirm("Cancelar o follow-up de "+l.n+"?"))return;l.fs=st;addAct(l,"Follow-up "+st);save();fu();toast("Follow-up "+st)}
+function fuMsg(id){
+ const l=get(id),first=l.n.split(" ")[0],it=l.s||"o seu projeto";
+ const t=["Proposta","Negociação"].includes(l.st)?`Olá, ${first}! Conseguiu avaliar a proposta sobre ${it}? Posso esclarecer alguma dúvida?`:`Olá, ${first}! Tudo bem? Passando para saber se posso ajudar com ${it}. Posso te explicar como funciona?`;
+ const warn=l.opt?"🚫 Este lead pediu para não receber mensagens. Não envie.":l.lc&&Date.now()-l.lc<DAY?"⚠️ Houve contato há menos de 24 h. Evite repetir a mensagem.":"";
+ modal("Sugestão de mensagem",`${warn?`<p class="err">${warn}</p>`:""}<p class="note">Modelo simples de demonstração, sem preços ou promessas. Revise antes de enviar.</p><textarea id="sg" rows="4">${esc(t)}</textarea><div class="cta" style="justify-content:flex-start;margin-top:10px"><button class="btn p" ${l.opt?"disabled":""} onclick="navigator.clipboard&&navigator.clipboard.writeText($('sg').value).then(()=>toast('Copiado ✓'),()=>toast('Não foi possível copiar'))">Copiar mensagem</button><button class="btn" onclick="closeModal()">Fechar</button></div>`);
+}
+function fuResult(id){const l=get(id);
+ modal("Registrar resultado do contato — "+l.n,`<label class="fl" for="rs">O que aconteceu?<textarea id="rs" rows="3" maxlength="300" placeholder="Ex.: ligou, vai decidir sexta"></textarea></label><label class="ck"><input type="checkbox" id="rc" checked> Concluir este follow-up</label><div class="cta" style="justify-content:flex-start"><button class="btn p" onclick="fuSaveResult(${id})">Salvar</button><button class="btn" onclick="closeModal()">Cancelar</button></div>`)}
+function fuSaveResult(id){const l=get(id),t=$("rs").value.trim();if(!t)return toast("Descreva o resultado do contato.");addAct(l,"Contato registrado: "+t);l.lc=Date.now();l.lt=Date.now();if($("rc").checked){l.fs="concluído"}save();closeModal();fu();toast("Contato registrado ✓")}
+
+/* ---------- WhatsApp, config ---------- */
 function waTab(){
- $("t-wa").innerHTML=`<div class="grid"><div class="card kpi"><small>STATUS</small><div style="font-size:20px"><span class="dot"></span>Conectado (DEMO)</div></div>
- <div class="card kpi"><small>NÚMERO</small><div style="font-size:20px">+55 XX XXXXX-XXXX</div></div>
- <div class="card kpi"><small>RECEBIDAS</small><div>128</div></div><div class="card kpi"><small>RESPONDIDAS</small><div>121</div></div></div>
- <div class="card" style="margin-top:12px"><h3>Integração oficial</h3><p>O modo DEMO simula o canal. A arquitetura prevê o webhook <code>/api/whatsapp</code> com a Meta Cloud API oficial (sem soluções não oficiais), com token mantido apenas no servidor.</p></div>`;
+ $("t-wa").innerHTML=`<div class="kpis"><div class="card kpi"><small>STATUS</small><div style="font-size:20px"><span class="dot off"></span>Não conectado</div></div><div class="card kpi"><small>MODO</small><div style="font-size:20px">Demonstração</div></div><div class="card kpi"><small>MENSAGENS REAIS</small><div>0</div></div></div>
+ <div class="card"><h3>Integração oficial (pendente)</h3><p>Esta demonstração não envia nem recebe mensagens do WhatsApp. A integração com a API oficial (Meta Cloud API) exige conta Business, número verificado e um backend com webhook.</p>
+ <p class="note">Variáveis necessárias no servidor: <code>WHATSAPP_TOKEN</code>, <code>WHATSAPP_PHONE_NUMBER_ID</code>, <code>WHATSAPP_VERIFY_TOKEN</code>, <code>WHATSAPP_APP_SECRET</code>. Fluxo: validar assinatura do webhook → identificar lead → registrar → (se autorizado) gerar resposta → enviar → registrar resultado.</p></div>`;
 }
+function cfg(){
+ const u=D.cfg.usage;
+ $("t-cfg").innerHTML=`<div class="card"><h3>Configurações da empresa</h3>${fld("c_co","Nome da empresa",inp("c_co",D.cfg.company,"",'maxlength="80"'))}${fld("c_kb","Base de conhecimento (a IA só deve responder com isto)",`<textarea id="c_kb" rows="5" maxlength="2000">${esc(D.cfg.kb)}</textarea>`)}
+ <label class="ck"><input type="checkbox" id="c_auto" ${D.cfg.auto?"checked":""}> Autorizar envio automático das respostas da IA (desmarcado = IA apenas sugere)</label>
+ <button class="btn p" onclick="saveCfg()">Salvar configurações</button></div>
+ <div class="card" style="margin-top:12px"><h3>Consumo de IA neste navegador</h3><p>${u.calls} chamadas · ${u.tokens.toLocaleString("pt-BR")} tokens. Zero significa que a IA real não respondeu (agente local em uso). Custo estimado exige tabela de preços do provedor e registro por empresa no servidor.</p></div>
+ <div class="card" style="margin-top:12px"><h3>Seus dados (LGPD)</h3><p>Os dados desta demonstração ficam apenas neste navegador.</p><div class="cta" style="justify-content:flex-start"><button class="btn" onclick="exportData()">Exportar dados (JSON)</button><button class="btn" onclick="resetDemo()">Restaurar dados de demonstração</button><button class="btn danger" onclick="wipe()">Apagar todos os dados</button></div></div>`;
+}
+function saveCfg(){D.cfg.company=($("c_co").value.trim()||"Minha empresa").slice(0,80);D.cfg.kb=$("c_kb").value.slice(0,2000);D.cfg.auto=$("c_auto").checked;save();toast("Configurações salvas ✓")}
+function exportData(){try{const b=new Blob([JSON.stringify(D,null,2)],{type:"application/json"}),a=document.createElement("a");a.href=URL.createObjectURL(b);a.download="ai-sales-agent-dados.json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),1000)}catch(e){toast("Falha ao exportar")}}
+function resetDemo(){if(!confirm("Restaurar os dados fictícios? Suas alterações serão perdidas."))return;D={v:1,leads:seed(),cfg:D.cfg};S.cur=null;S.drafts={};save();render();toast("Dados de demonstração restaurados")}
+function wipe(){if(!confirm("Apagar TODOS os leads e configurações deste navegador?"))return;D={v:1,leads:[],cfg:defCfg()};S.cur=null;S.drafts={};save();render();toast("Dados apagados")}
+
 </script>
 </body>
 </html>
