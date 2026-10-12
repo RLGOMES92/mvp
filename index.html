@@ -318,6 +318,9 @@ code{background:var(--bg);padding:1px 5px;border-radius:5px;font-size:12px;word-
 <script>
 "use strict";
 const WA_NUMBER="5511983179592";
+// GitHub Pages hospeda apenas os arquivos estáticos; as APIs rodam na Vercel.
+const API_BASE = location.hostname === "rlgomes92.github.io" ? "https://mvp-pi-two.vercel.app" : "";
+const apiUrl = path => API_BASE + path;
 const WA_MSG="Olá Rodrigo! Vi o AI Sales Agent e gostaria de conhecer uma solução semelhante para minha empresa.";
 const STORE="aisa:v1",DAY=864e5,HR=36e5;
 const STAGES=["Novo","Qualificado","Proposta","Negociação","Ganho","Perdido"];
@@ -485,7 +488,7 @@ async function aiReply(l,t,a){
  try{
   const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),12000);
   const hist=l.m.filter(m=>m.r==="c"||m.r==="a").slice(-9,-1).map(m=>({role:m.r==="c"?"user":"assistant",content:m.t}));
-  const r=await fetch("/api/agent",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:t,history:hist,kb:D.cfg.kb,company:D.cfg.company}),signal:ctl.signal});
+  const r=await fetch(apiUrl("/api/agent"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:t,history:hist,kb:D.cfg.kb,company:D.cfg.company}),signal:ctl.signal});
   clearTimeout(to);
   if(r.ok){const d=await r.json();if(d&&typeof d.reply==="string"&&d.reply){if(d.usage){D.cfg.usage.calls++;D.cfg.usage.tokens+=Number(d.usage.total_tokens)||0}return{t:d.reply,src:"ia"}}}
  }catch(e){}
@@ -603,7 +606,7 @@ async function analyze(){
  S.busy=true;$("ds-go").disabled=true;$("ds-host").textContent="";document.querySelectorAll("#ds-steps li").forEach(function(l){l.className="";var d=l.querySelector("small");if(d)d.remove()});show(2);
  var ctl=new AbortController(),to=setTimeout(function(){ctl.abort()},50000),final=null,fail=null;
  try{
-  var res=await fetch("/api/analyze",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({url:url}),signal:ctl.signal});
+  var res=await fetch(apiUrl("/api/analyze"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({url:url}),signal:ctl.signal});
   if(!res.ok){var d={};try{d=await res.json()}catch(e){}fail={message:friendly(res.status,d),manual:res.status!==400&&res.status!==403}}
   else{
    var handle=function(line){if(!line.trim())return;var ev;try{ev=JSON.parse(line)}catch(e){return}
@@ -665,7 +668,7 @@ async function send(){
  try{
   if(S.aiDown)throw {local:true};
   var ctl=new AbortController(),to=setTimeout(function(){ctl.abort()},20000);
-  var res=await fetch("/api/demo-chat",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:q,history:hist,profile:S.profile}),signal:ctl.signal});clearTimeout(to);
+  var res=await fetch(apiUrl("/api/demo-chat"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:q,history:hist,profile:S.profile}),signal:ctl.signal});clearTimeout(to);
   var d={};try{d=await res.json()}catch(e){}
   if(res.ok&&d.reply){wait.remove();bubble("bot",d.reply,"IA · baseada nos dados confirmados");S.msgs.push({role:"user",content:q},{role:"assistant",content:d.reply});offerCta()}
   else if(res.status===503&&d.code==="not_configured"||res.status===404){S.aiDown=true;throw {local:true}}
@@ -686,7 +689,7 @@ async function sendLead(){
  if(!$("ld-consent").checked){err("ld-err","Autorize o retorno comercial para continuar.");return}
  $("ld-send").disabled=true;
  try{
-  var res=await fetch("/api/lead",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:name,company:$("ld-company").value.trim(),contact:contact,consent:true,kind:S.kind,host:(S.profile&&S.profile.host)||"",website:$("ld-website").value})});
+  var res=await fetch(apiUrl("/api/lead"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:name,company:$("ld-company").value.trim(),contact:contact,consent:true,kind:S.kind,host:(S.profile&&S.profile.host)||"",website:$("ld-website").value})});
   var d={};try{d=await res.json()}catch(e){}
   if(res.ok&&d.whatsappText){waOpen(d.whatsappText);err("ld-err","");toast&&toast("Abrimos o WhatsApp com sua mensagem. Ela só é enviada quando você tocar em enviar.")}
   else if(res.ok){err("ld-err","Não foi possível preparar a mensagem. Tente novamente.")}
