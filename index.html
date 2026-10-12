@@ -616,7 +616,7 @@ async function analyze(){
    if(!final&&!fail)fail={message:"A análise foi interrompida antes de terminar. Tente novamente ou preencha manualmente.",manual:true}}
  }catch(e){fail={message:e&&e.name==="AbortError"?"A análise demorou demais. Tente novamente ou preencha manualmente.":"Não foi possível falar com o servidor. Verifique sua conexão ou preencha manualmente.",manual:true}}
  clearTimeout(to);S.busy=false;$("ds-go").disabled=false;
- if(fail){show(1);err("ds-err",fail.message+(fail.manual?"":""));return}
+ if(fail){if(fail.manual){openReview({host:"",contacts:{}},[fail.message||"A análise automática não foi concluída. Você pode continuar preenchendo os dados manualmente."],false,true)}else{show(1);err("ds-err",fail.message||"Confira o endereço informado.")}return}
  openReview(final.profile,final.notes||[],!!final.partial,false)}
 
 /* ---------- 2. conferir e corrigir ---------- */
@@ -680,21 +680,22 @@ async function send(){
 function offerCta(force){if(!S.cta||force){S.cta=true;$("ds-s5").hidden=false}}
 
 /* ---------- 4. contratar / orçamento ---------- */
-function waOpen(text){var n=typeof WA_NUMBER!=="undefined"?WA_NUMBER:"";window.open("https://wa.me/"+n+"?text="+encodeURIComponent(text),"_blank","noopener")}
+function waUrl(text){var n=typeof WA_NUMBER!=="undefined"?WA_NUMBER:"";return "https://wa.me/"+n+"?text="+encodeURIComponent(text)}
+function waOpen(text){var n=typeof WA_NUMBER!=="undefined"?WA_NUMBER:"";if(!n){err("ld-err","O WhatsApp comercial ainda não está configurado.");return}window.open(waUrl(text),"_blank","noopener")}
 function openLead(kind){S.kind=kind;$("ds-lead").hidden=false;if(!$("ld-company").value&&S.profile&&S.profile.name)$("ld-company").value=S.profile.name;err("ld-err","");$("ld-name").focus()}
 async function sendLead(){
  var name=$("ld-name").value.trim(),contact=$("ld-contact").value.trim(),dg=contact.replace(/\D/g,"");err("ld-err","");
  if(name.length<2){err("ld-err","Informe seu nome.");return}
  if(!(/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(contact)||(dg.length>=10&&dg.length<=13))){err("ld-err","Informe um e-mail ou telefone (com DDD) válido.");return}
  if(!$("ld-consent").checked){err("ld-err","Autorize o retorno comercial para continuar.");return}
+ var waWindow=null;try{if(typeof WA_NUMBER!=="undefined"&&WA_NUMBER)waWindow=window.open("about:blank","_blank")}catch(e){}
  $("ld-send").disabled=true;
  try{
   var res=await fetch(apiUrl("/api/lead"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({name:name,company:$("ld-company").value.trim(),contact:contact,consent:true,kind:S.kind,host:(S.profile&&S.profile.host)||"",website:$("ld-website").value})});
   var d={};try{d=await res.json()}catch(e){}
-  if(res.ok&&d.whatsappText){waOpen(d.whatsappText);err("ld-err","");toast&&toast("Abrimos o WhatsApp com sua mensagem. Ela só é enviada quando você tocar em enviar.")}
-  else if(res.ok){err("ld-err","Não foi possível preparar a mensagem. Tente novamente.")}
-  else err("ld-err",d.error||"Não foi possível validar agora. Você pode falar direto pelo WhatsApp.")
- }catch(e){err("ld-err","Não foi possível validar agora. Você pode falar direto pelo WhatsApp.")}
+  if(res.ok&&d.whatsappText){var target=waUrl(d.whatsappText);if(waWindow&&!waWindow.closed)waWindow.location.href=target;else window.location.href=target;err("ld-err","");toast&&toast("O WhatsApp foi aberto com sua mensagem. Ela só será enviada quando você tocar em enviar.")}
+  else{if(waWindow&&!waWindow.closed)waWindow.close();err("ld-err",d.error||(res.ok?"Não foi possível preparar a mensagem. Tente novamente.":"Não foi possível validar agora. Tente novamente."))}
+ }catch(e){if(waWindow&&!waWindow.closed)waWindow.close();err("ld-err","Não foi possível validar agora. Verifique sua conexão e tente novamente.")}
  $("ld-send").disabled=false}
 
 /* ---------- eventos ---------- */
