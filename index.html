@@ -485,14 +485,16 @@ function analyze(l,t){
  return{opt,r};
 }
 async function aiReply(l,t,a){
+ let to;
  try{
-  const ctl=new AbortController(),to=setTimeout(()=>ctl.abort(),12000);
+  const ctl=new AbortController();to=setTimeout(()=>ctl.abort(),18000);
   const hist=l.m.filter(m=>m.r==="c"||m.r==="a").slice(-9,-1).map(m=>({role:m.r==="c"?"user":"assistant",content:m.t}));
   const r=await fetch(apiUrl("/api/agent"),{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({message:t,history:hist,kb:D.cfg.kb,company:D.cfg.company}),signal:ctl.signal});
-  clearTimeout(to);
-  if(r.ok){const d=await r.json();if(d&&typeof d.reply==="string"&&d.reply){if(d.usage){D.cfg.usage.calls++;D.cfg.usage.tokens+=Number(d.usage.total_tokens)||0}return{t:d.reply,src:"ia"}}}
- }catch(e){}
- return{t:a.r,src:"local"};
+  const d=await r.json().catch(()=>({}));
+  if(r.ok&&d&&typeof d.reply==="string"&&d.reply){if(d.usage){D.cfg.usage.calls++;D.cfg.usage.tokens+=Number(d.usage.total_tokens)||0}return{t:d.reply,src:"ia"}}
+  return{t:a.r,src:"local",error:d.error||("O agente retornou erro HTTP "+r.status+".")};
+ }catch(e){return{t:a.r,src:"local",error:e&&e.name==="AbortError"?"A IA demorou para responder.":"Não foi possível conectar ao agente. Verifique a conexão e tente novamente."}}
+ finally{clearTimeout(to)}
 }
 const push=(l,r,t,src)=>{l.m.push({r,t,ts:Date.now(),src})};
 function chat(){
@@ -518,7 +520,7 @@ async function sendMsg(){
  if(a.opt){push(l,"s","Pedido de descadastro registrado. Nenhuma mensagem automática será gerada para este lead.");save();chat();return}
  if(l.hum){addAct(l,"Mensagem recebida durante atendimento humano");save();chat();toast("Atendimento humano ativo: a IA não responde.");return}
  S.busy=l.id;chat();
- const r=await aiReply(l,t,a);S.busy=false;
+ const r=await aiReply(l,t,a);S.busy=false;if(r.error)toast("IA indisponível: "+r.error);
  if(D.cfg.auto){push(l,"a",r.t,r.src);l.lc=Date.now();addAct(l,"Resposta enviada automaticamente ("+(r.src==="ia"?"IA":"agente local")+")")}
  else S.drafts[l.id]={t:r.t,src:r.src};
  save();if(S.tab==="chat")chat();
