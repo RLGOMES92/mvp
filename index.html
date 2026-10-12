@@ -136,6 +136,23 @@ code{background:var(--bg);padding:1px 5px;border-radius:5px;font-size:12px;word-
 @media(max-width:520px){#mv-float-nav .mv-float-trigger{min-height:44px;padding:11px 13px;font-size:12px}#mv-float-nav{right:max(12px,env(safe-area-inset-right));bottom:max(12px,env(safe-area-inset-bottom))}}
 @media(prefers-reduced-motion:reduce){#mv-float-nav .mv-float-trigger{animation:none;scroll-behavior:auto}}
 
+
+/* Correção de cabeçalho e visibilidade do atalho flutuante */
+#mv-float-nav{display:block!important;visibility:visible;opacity:1;z-index:9999}
+#mv-float-nav .mv-float-trigger{font-family:inherit;font-size:13px;line-height:1.2}
+#mv-float-nav .mv-float-link{font-family:inherit}
+@media(max-width:760px){
+ .nav .wrap{height:auto;min-height:56px;padding-top:9px;padding-bottom:10px;display:flex;flex-direction:column;align-items:stretch;justify-content:center;gap:9px}
+ .nav .logo{align-self:flex-start;max-width:100%;white-space:nowrap}
+ .nav .links{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));width:100%;gap:7px}
+ .nav .links .btn{width:100%;min-width:0;min-height:38px;height:auto;padding:7px 6px;font-size:11px;line-height:1.25;white-space:normal;text-align:center;overflow-wrap:anywhere}
+}
+@media(max-width:360px){
+ .nav .links{grid-template-columns:1fr}
+ .nav .links .btn{font-size:12px}
+ #mv-float-nav .mv-float-trigger{padding:10px 12px}
+}
+
 </style>
 </head>
 <body>
@@ -148,6 +165,18 @@ code{background:var(--bg);padding:1px 5px;border-radius:5px;font-size:12px;word-
   <button class="btn sm p" onclick="go('app')">Testar demonstração</button>
  </div>
 </div></div>
+<div id="mv-float-nav" data-open="false">
+ <button class="mv-float-trigger" id="mv-float-trigger" type="button" aria-expanded="false" aria-controls="mv-float-menu">
+  <span class="mv-led" aria-hidden="true"></span><span>Explorar MVP</span><span aria-hidden="true">⌃</span>
+ </button>
+ <div class="mv-float-menu" id="mv-float-menu" role="menu" aria-label="Atalhos do MVP">
+  <button class="mv-float-link" type="button" role="menuitem" data-mv-action="demo">Personalizar demonstração<small>Configure uma demo para seu negócio</small></button>
+  <button class="mv-float-link" type="button" role="menuitem" data-mv-action="app">Testar o CRM<small>Dashboard, leads e pipeline</small></button>
+  <button class="mv-float-link" type="button" role="menuitem" data-mv-action="project">Conhecer o projeto<small>Recursos e funcionamento</small></button>
+  <button class="mv-float-link" type="button" role="menuitem" data-mv-action="plans">Ver planos<small>Opções de implantação</small></button>
+ </div>
+</div>
+
 
 <!-- LANDING -->
 <main id="v-home">
@@ -689,17 +718,6 @@ window.__ds={analyze:analyze,send:send,state:S};
 })();
 </script>
 
-<div id="mv-float-nav" data-open="false">
- <button class="mv-float-trigger" id="mv-float-trigger" type="button" aria-expanded="false" aria-controls="mv-float-menu">
-  <span class="mv-led" aria-hidden="true"></span><span>Explorar MVP</span><span aria-hidden="true">⌃</span>
- </button>
- <div class="mv-float-menu" id="mv-float-menu" role="menu" aria-label="Atalhos do MVP">
-  <button class="mv-float-link" type="button" role="menuitem" data-mv-action="demo">Personalizar demonstração<small>Configure uma demo para seu negócio</small></button>
-  <button class="mv-float-link" type="button" role="menuitem" data-mv-action="app">Testar o CRM<small>Dashboard, leads e pipeline</small></button>
-  <button class="mv-float-link" type="button" role="menuitem" data-mv-action="project">Conhecer o projeto<small>Recursos e funcionamento</small></button>
-  <button class="mv-float-link" type="button" role="menuitem" data-mv-action="plans">Ver planos<small>Opções de implantação</small></button>
- </div>
-</div>
 <script>
 (function(){
  var root=document.getElementById("mv-float-nav");
