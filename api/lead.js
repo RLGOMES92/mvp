@@ -1,13 +1,14 @@
 // POST /api/lead — VALIDA o pedido de contato e devolve o texto para WhatsApp. NÃO armazena nada e NÃO envia a lugar nenhum:
 // o envio só acontece quando o visitante toca em "enviar" no próprio WhatsApp. (Persistência/CRM ainda não existem neste projeto.)
-import { hit, clientIp, sameOrigin } from "./_lib/limit.js";
+import { hit, clientIp, cors } from "./_lib/limit.js";
 import { body } from "./_lib/http.js";
 
 const clean = (s, n) => String(s ?? "").replace(/[\u0000-\u001f\u200B-\u200F\u202A-\u202E]/g, " ").replace(/\s+/g, " ").trim().slice(0, n);
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
+  if (!cors(req, res)) return res.status(403).json({ error: "Origem não permitida." });
+  if (req.method === "OPTIONS") return res.status(204).end();
   if (req.method !== "POST") return res.status(405).json({ error: "Método não permitido." });
-  if (!sameOrigin(req)) return res.status(403).json({ error: "Origem não permitida." });
   const b = body(req, 4000); if (b.error) return res.status(b.error).json({ error: "Requisição inválida." });
   const d = b.data;
   if (clean(d.website, 50)) return res.status(200).json({ ok: true, saved: false, ignored: true });          // honeypot: bots preenchem
