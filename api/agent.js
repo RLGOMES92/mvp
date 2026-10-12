@@ -1,4 +1,5 @@
 // Vercel Serverless Function — /api/agent
+import { cors } from "./_lib/limit.js";
 // A chave fica SOMENTE no servidor (variável de ambiente). Nunca vai para o navegador.
 const MAX_MSG = 500, MAX_HIST = 8, MAX_KB = 2000, WINDOW_MS = 60_000, MAX_REQ = 10;
 const hits = new Map(); // limite por IP (melhor esforço; em produção use Upstash/Vercel KV)
@@ -15,15 +16,8 @@ const clean = (v, n) => String(v ?? "").replace(/[\u0000-\u0008\u000B\u000C\u000
 
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
-  const allowed = (process.env.ALLOWED_ORIGINS || "").split(",").map(s => s.trim()).filter(Boolean);
-  const origin = req.headers.origin;
-  if (allowed.length && origin && !allowed.includes(origin)) return res.status(403).json({ error: "Origem não permitida." });
-  if (allowed.length && origin) { res.setHeader("Access-Control-Allow-Origin", origin); res.setHeader("Vary", "Origin"); }
-  if (req.method === "OPTIONS") {
-    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
-    return res.status(204).end();
-  }
+  if (!cors(req, res)) return res.status(403).json({ error: "Origem não permitida." });
+  if (req.method === "OPTIONS") return res.status(204).end();
   if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
 
   const ip = String(req.headers["x-forwarded-for"] || "anon").split(",")[0].trim();
