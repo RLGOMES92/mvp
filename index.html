@@ -129,7 +129,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:5px;font-size:12px;word-
  <div class="links">
   <button class="btn sm" onclick="go('project')">Projeto</button>
   <button class="btn sm" onclick="go('plans')">Planos</button>
-  <button class="btn sm" onclick="go('home');setTimeout(function(){var e=document.getElementById('demo-ia');e&&e.scrollIntoView({behavior:'smooth'})},60)">Teste no seu site</button>
+  <button class="btn sm" onclick="go('home');setTimeout(function(){var e=document.getElementById('demo-ia');e&&e.scrollIntoView({behavior:'smooth'})},60)">Personalizar demonstração</button>
   <button class="btn sm p" onclick="go('app')">Testar demonstração</button>
  </div>
 </div></div>
@@ -181,7 +181,7 @@ code{background:var(--bg);padding:1px 5px;border-radius:5px;font-size:12px;word-
    <label class="fl">Horário de atendimento (um por linha) <span class="ds-tag" data-f="hours"></span><textarea id="ds-hours" rows="2" maxlength="500"></textarea></label>
    <label class="fl">Perguntas frequentes (uma por linha: Pergunta? =&gt; Resposta) <span class="ds-tag" data-f="faqs"></span><textarea id="ds-faq" rows="3" maxlength="1500"></textarea></label>
    <p id="ds-rv-err" class="ds-err" role="alert"></p>
-   <div class="cta" style="justify-content:flex-start"><button class="btn p" id="ds-confirm" type="button">Confirmar e testar o agente</button><button class="btn" id="ds-again" type="button">Analisar outro site</button></div>
+   <div class="cta" style="justify-content:flex-start"><button class="btn p" id="ds-confirm" type="button">Confirmar e testar o agente</button><button class="btn" id="ds-again" type="button">Montar outra demonstração</button></div>
   </div>
 
   <div id="ds-s4" hidden>
@@ -318,9 +318,6 @@ code{background:var(--bg);padding:1px 5px;border-radius:5px;font-size:12px;word-
 <script>
 "use strict";
 const WA_NUMBER="5511983179592";
-// GitHub Pages hospeda apenas os arquivos estáticos; as APIs rodam na Vercel.
-const API_BASE = location.hostname === "rlgomes92.github.io" ? "https://mvp-pi-two.vercel.app" : "";
-const apiUrl = path => API_BASE + path;
 const WA_MSG="Olá Rodrigo! Vi a demonstração de atendimento comercial e gostaria de conhecer uma solução semelhante para minha empresa.";
 const STORE="aisa:v1",DAY=864e5,HR=36e5;
 const STAGES=["Novo","Qualificado","Proposta","Negociação","Ganho","Perdido"];
@@ -630,7 +627,7 @@ function startChat(){
 function normalizeText(v){return String(v||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
 function localAnswer(q){
  var p=S.profile||{},x=normalizeText(q),c=p.contacts||{phones:[],whatsapp:[],emails:[],address:""},ph=(c.phones||[]).concat(c.whatsapp||[]),services=p.services||[],hours=p.hours||[],faqs=p.faqs||[];
- var miss="Ainda não tenho essa informação nos dados preenchidos. Você pode perguntar sobre serviços, contato, horários ou orçamento — ou falar com a Rodrigo Dev para montar uma solução completa.";
+ var miss="Ainda não tenho essa informação nos dados preenchidos. Você pode perguntar sobre serviços, contato, horários ou orçamento — ou falar com a equipe da Rodrigo Dev para montar uma solução completa.";
  for(var i=0;i<faqs.length;i++){var fq=normalizeText(faqs[i].q),words=fq.split(/[^a-z0-9]+/).filter(function(w){return w.length>3});var matches=words.filter(function(w){return x.indexOf(w)>=0}).length;if(fq&&x.indexOf(fq)>=0)return faqs[i].a;if(words.length&&matches>=Math.min(2,words.length))return faqs[i].a}
  if(/^(oi|ola|bom dia|boa tarde|boa noite|tudo bem)[!. ]*$/.test(x))return "Olá! Seja bem-vindo(a)"+(p.name?" à "+p.name:"")+"! 😊 Posso te ajudar com informações sobre os serviços, horários e como entrar em contato. O que você gostaria de saber?";
  if(/servi[cç]|oferec|produto|fazem|trabalham|vendem/.test(x))return services.length?"A empresa oferece: "+services.join("; ")+". Posso te ajudar com mais alguma informação?":miss;
@@ -671,7 +668,7 @@ $("ds-confirm").addEventListener("click",startChat);$("ds-edit").addEventListene
 $("ds-send").addEventListener("click",send);$("ds-q").addEventListener("keydown",function(e){if(e.key==="Enter")send()});
 document.querySelectorAll("[data-lead]").forEach(function(b){b.addEventListener("click",function(){openLead(b.getAttribute("data-lead"))})});
 $("ld-send").addEventListener("click",sendLead);
-$("ld-wa").addEventListener("click",function(){waOpen("Olá Rodrigo! Testei a demonstração de IA no meu site"+((S.profile&&S.profile.host)?" ("+S.profile.host+")":"")+" e gostaria de conversar.")});
+$("ld-wa").addEventListener("click",function(){waOpen("Olá Rodrigo! Testei a demonstração de atendimento comercial"+((S.profile&&S.profile.host)?" ("+S.profile.host+")":"")+" e gostaria de conversar.")});
 FIELDS.forEach(function(f){$(f[1]).addEventListener("input",function(){var t=document.querySelector('.ds-tag[data-f="'+f[0]+'"]');if(S.found[f[0]]!==undefined&&t){t.textContent="editado por você";t.className="ds-tag edited"}})});
 window.__ds={analyze:analyze,send:send,state:S};
 })();
