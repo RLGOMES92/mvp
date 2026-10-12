@@ -53,7 +53,7 @@ footer{padding:28px 0;color:var(--mu);text-align:center;font-size:13px}
 .li{min-width:170px;padding:10px;border:1px solid var(--bd);border-radius:12px;background:var(--card);cursor:pointer}
 .li.on{border-color:var(--ac);box-shadow:0 0 0 2px color-mix(in srgb,var(--ac) 25%,transparent)}.li small{color:var(--mu);display:block}
 .chat{display:flex;flex-direction:column;gap:8px;max-height:420px;min-height:260px;overflow-y:auto;padding:4px}
-.m{max-width:85%;padding:9px 13px;border-radius:14px;font-size:14px;animation:in .25s}.m.c{background:var(--bg);border:1px solid var(--bd);align-self:flex-start}.m.a{background:var(--ac);color:#fff;align-self:flex-end}
+.m{max-width:min(92%,680px);width:fit-content;padding:10px 13px;border-radius:14px;font-size:14px;line-height:1.5;white-space:pre-wrap;overflow-wrap:anywhere;word-break:break-word;animation:in .25s}.m.c{background:var(--bg);border:1px solid var(--bd);align-self:flex-start}.m.a{background:var(--ac);color:#fff;align-self:flex-end}.m.c:before,.m.a:before{display:block;font-size:11px;font-weight:700;opacity:.8;margin-bottom:3px}.m.c:before{content:"Cliente"}.m.a:before{content:"Agente"}
 @keyframes in{from{opacity:0;transform:translateY(6px)}}
 .send{display:flex;gap:8px;margin-top:10px}.send input,select,textarea{flex:1;min-width:0;padding:10px 12px;border-radius:10px;border:1px solid var(--bd);background:var(--card);color:var(--tx);font:inherit}
 .pill{display:inline-block;padding:3px 10px;border-radius:99px;font-weight:700;font-size:12px}
@@ -66,6 +66,8 @@ footer{padding:28px 0;color:var(--mu);text-align:center;font-size:13px}
 .toast{position:fixed;left:50%;bottom:calc(20px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);background:#0f172a;color:#fff;padding:10px 16px;border-radius:12px;font-size:14px;z-index:50;max-width:92vw;animation:in .25s}
 .dot{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--ok);margin-right:6px}
 .hide{display:none}
+
+@media(max-width:600px){.wrap{padding-left:12px;padding-right:12px}.nav .wrap{height:auto;min-height:56px;align-items:flex-start;padding-top:10px;padding-bottom:10px;flex-wrap:wrap}.nav .links{width:100%;display:grid;grid-template-columns:repeat(3,minmax(0,1fr))}.nav .links .btn{padding:7px 5px;font-size:12px;white-space:nowrap}.hero{padding-top:34px}.inbox{grid-template-columns:minmax(0,1fr);gap:10px}.inbox>.card{padding:12px;min-width:0}.chat{min-height:220px;max-height:52vh;padding:4px 2px}.m{max-width:96%;padding:9px 11px;font-size:14px}.send{align-items:stretch}.send input{flex:1 1 auto;width:0;min-width:0}.send .btn{flex:0 0 auto;padding-left:13px;padding-right:13px}.tabs{gap:5px}.tab{padding:8px 11px;font-size:13px}}
 
 /* v2 */
 .mu,small.mu{color:var(--mu)}.note{font-size:12px;color:var(--mu);margin:8px 0}.err{color:#dc2626;font-size:13px;min-height:1em;margin:6px 0}
