@@ -21,8 +21,29 @@ export function clientIp(req) {
   const h = req.headers || {};
   return String(h["x-vercel-forwarded-for"] || h["x-real-ip"] || h["x-forwarded-for"] || "unknown").split(",")[0].trim().slice(0, 64);
 }
-/** Bloqueia chamadas vindas de outros sites (o navegador envia Origin). Não é fronteira de segurança, apenas reduz uso indevido. */
+/** CORS restrito à origem do app, Vercel e origens extras explicitamente configuradas. */
+export function cors(req, res) {
+  const o = req.headers?.origin;
+  if (!o) return true;
+  try {
+    const u = new URL(o), host = String(req.headers.host || "");
+    const extra = (process.env.DEMO_ALLOWED_ORIGINS || "").split(",").map(s => s.trim()).filter(Boolean);
+    const allowed = u.host === host || u.origin === "https://rlgomes92.github.io" || extra.includes(u.origin);
+    if (!allowed) return false;
+    res.setHeader("Access-Control-Allow-Origin", u.origin);
+    res.setHeader("Vary", "Origin");
+    res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
+    res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+    res.setHeader("Access-Control-Max-Age", "86400");
+    return true;
+  } catch { return false; }
+}
+/** Compatibilidade com os handlers antigos. */
 export function sameOrigin(req) {
   const o = req.headers?.origin; if (!o) return true;
-  try { const u = new URL(o), host = String(req.headers.host || ""); const extra = (process.env.DEMO_ALLOWED_ORIGINS || "").split(",").map(s => s.trim()).filter(Boolean); return u.host === host || extra.includes(u.origin); } catch { return false; }
+  try {
+    const u = new URL(o), host = String(req.headers.host || "");
+    const extra = (process.env.DEMO_ALLOWED_ORIGINS || "").split(",").map(s => s.trim()).filter(Boolean);
+    return u.host === host || u.origin === "https://rlgomes92.github.io" || extra.includes(u.origin);
+  } catch { return false; }
 }
