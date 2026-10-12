@@ -1,14 +1,15 @@
 // POST /api/demo-chat  { message, history[], profile }  → resposta do agente personalizado (sempre no servidor, chave nunca no navegador).
 import { chat, LlmError, aiConfigured } from "./_lib/llm.js";
 import { sanitizeProfile, demoSystem, guardDemoReply } from "./_lib/profile.js";
-import { hit, clientIp, sameOrigin } from "./_lib/limit.js";
+import { hit, clientIp, cors } from "./_lib/limit.js";
 import { body, num, dayKey } from "./_lib/http.js";
 
 export const config = { maxDuration: 30 };
 export default async function handler(req, res) {
   res.setHeader("Cache-Control", "no-store");
+  if (!cors(req, res)) return res.status(403).json({ error: "Origem não permitida." });
+  if (req.method === "OPTIONS") return res.status(204).end();
   if (req.method !== "POST") return res.status(405).json({ error: "Método não permitido." });
-  if (!sameOrigin(req)) return res.status(403).json({ error: "Origem não permitida." });
   const b = body(req, 16000); if (b.error) return res.status(b.error).json({ error: "Requisição inválida." });
   const message = typeof b.data.message === "string" ? b.data.message.replace(/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/g, "").trim() : "";
   if (!message) return res.status(400).json({ error: "Escreva uma mensagem." });
