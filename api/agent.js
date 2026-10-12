@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // Vercel Serverless Function — /api/agent
 // A chave fica SOMENTE no servidor (variável de ambiente). Nunca vai para o navegador.
 const MAX_MSG = 500, MAX_HIST = 8, MAX_KB = 2000, WINDOW_MS = 60_000, MAX_REQ = 10;
@@ -79,33 +78,3 @@ export default async function handler(req, res) {
     return res.status(e?.name === "AbortError" ? 504 : 500).json({ error: e?.name === "AbortError" ? "A IA demorou para responder." : "Erro interno no agente." });
   } finally { clearTimeout(timer); }
 }
-=======
-export default async function handler(req, res) {
-  if (req.method !== "POST") return res.status(405).json({ error: "Method not allowed" });
-  try {
-    const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : (req.body || {});
-    const message = String(body.message || "").trim();
-    if (!message) return res.status(400).json({ error: "Mensagem obrigatória." });
-
-    const token = process.env["AI_GATEWAY_API_KEY"];
-    if (!token) return res.status(503).json({ mode: "demo", error: "Gateway de IA ainda não configurado." });
-
-    const prompt = "Você é o agente comercial da Rodrigo Dev. Responda em português do Brasil, de forma curta, profissional e natural. Atenda, entenda a necessidade, qualifique o lead e conduza para uma próxima ação. Nunca invente preço, prazo ou disponibilidade. Mensagem do cliente: " + message;
-
-    const r = await fetch("https://ai-gateway.vercel.sh/v1/chat/completions", {
-      method: "POST",
-      headers: { "Content-Type": "application/json", "Authorization": "Bearer " + token },
-      body: JSON.stringify({
-        model: "openai/gpt-5-mini",
-        messages: [{ role: "user", content: prompt }]
-      })
-    });
-    const data = await r.json();
-    if (!r.ok) return res.status(r.status).json({ error: data?.error?.message || "Erro no gateway." });
-    const reply = data?.choices?.[0]?.message?.content || "Entendi. Vou registrar sua solicitação e orientar o próximo passo.";
-    return res.status(200).json({ reply });
-  } catch {
-    return res.status(500).json({ error: "Erro interno no agente." });
-  }
-}
->>>>>>> origin/main
